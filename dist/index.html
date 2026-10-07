@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>BOLETA CLOTHING — Piezas que no ves en cualquier lado</title>
+  <meta name="description" content="BOLETA / VAULT. Streetwear, joyería, eyewear y objects por encargo. Reserva con 50% de inicial. Envíos a Barquisimeto y toda Venezuela.">
+  <meta name="theme-color" content="#08060D">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="BOLETA CLOTHING — Piezas que no ves en cualquier lado">
+  <meta property="og:description" content="Colección por encargo. Streetwear · Joyería · Eyewear · Objects. Pedidos directos por WhatsApp.">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts: Manrope (UI/Títulos) + DM Mono (Códigos/Metadata) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ══════════ FLOATING EDITOR TOOLBAR (Ctrl + Shift + E) ══════════ -->
+  <div id="editorToolbar" class="editor-toolbar" style="display: none;">
+    <div class="editor-toolbar-inner">
+      <div class="editor-status">
+        <span class="pulse-editor-dot"></span>
+        <strong>MODO EDICIÓN ACTIVO</strong>
+        <span id="editorStatsBadge" class="editor-badge-count">0 Activos • 0 Descartados</span>
+      </div>
+      <div class="editor-actions">
+        <button id="editorNewItemBtn" class="btn-editor-primary" title="Crear nuevo producto con subida de fotos (Base de datos SQLite)">
+          ➕ Nuevo Producto
+        </button>
+        <button id="editorExportBtn" class="btn-editor-primary" title="Exportar y descargar catalog.json saneado">
+          💾 Guardar y Exportar JSON
+        </button>
+        <button id="editorResetBtn" class="btn-editor-secondary" title="Revertir cambios al catálogo original">
+          🔄 Recargar Original
+        </button>
+        <button id="editorExitBtn" class="btn-editor-exit" title="Salir del Modo Edición">
+          ✕ Salir
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ 1. SITE HEADER ══════════ -->
+  <header class="site-header">
+    <div class="header-inner">
+      <button id="navToggle" class="nav-toggle" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+
+      <a href="#hero" class="brand-logo-wrapper" title="BOLETA CLOTHING — Inicio">
+        <img src="images/logo.png" alt="BOLETA CLOTHING" class="brand-logo-img">
+      </a>
+
+      <nav class="site-nav" id="siteNav" aria-label="Navegación principal">
+        <a href="#hero" class="nav-link">INICIO</a>
+        <a href="#catalogo" class="nav-link">CATÁLOGO</a>
+        <a href="#como-funciona" class="nav-link">CÓMO FUNCIONA</a>
+        <a href="#" class="nav-link b2b-link">CONTACTO</a>
+      </nav>
+
+      <div class="header-actions">
+        <button id="headerSearchBtn" class="header-icon-btn" aria-label="Buscar en catálogo" title="Buscar">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+        </button>
+        <button id="headerCartBtn" class="header-cart-btn" aria-label="Abrir mi pedido">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span class="header-cart-label">MI PEDIDO</span>
+          <span id="cartCountBadge" class="cart-count-badge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══════════ 01. HERO ══════════ -->
+  <section id="hero" class="hero-section">
+    <div class="hero-glow hero-glow-a"></div>
+    <div class="hero-glow hero-glow-b"></div>
+    <svg class="hero-sparkle hero-sparkle-a" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg>
+    <svg class="hero-sparkle hero-sparkle-b" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg>
+    <svg class="hero-globe" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+      <circle cx="32" cy="32" r="24"/>
+      <ellipse cx="32" cy="32" rx="24" ry="10"/>
+      <ellipse cx="32" cy="32" rx="24" ry="19"/>
+      <line x1="32" y1="8" x2="32" y2="56"/>
+      <line x1="8" y1="32" x2="56" y2="32"/>
+    </svg>
+    <svg class="hero-wire" viewBox="0 0 800 120" fill="none" stroke="currentColor" stroke-width="1.2" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M-10 80 C 120 20, 260 110, 400 60 S 680 30, 820 90" />
+      <path d="M-10 95 C 130 40, 270 125, 420 75 S 690 45, 820 105" opacity="0.5"/>
+    </svg>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-slash">✦</span> BOLETA / VAULT <span class="hero-badge-slash">✦</span>
+      </div>
+      <h1 class="hero-title">
+        PIEZAS QUE<br>
+        NO VES EN<br>
+        <span class="hero-title-accent">CUALQUIER LADO.</span>
+      </h1>
+      <p class="hero-subtitle">STREETWEAR <span>·</span> JEWELRY <span>·</span> EYEWEAR <span>·</span> OBJECTS</p>
+      <a href="#catalogo" class="btn-hero-cta">
+        VER CATÁLOGO
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <div class="hero-features">
+      <div class="hero-feature">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l2.2 6.1L21 11l-6.8 1.9L12 19l-2.2-6.1L3 11l6.8-1.9z"/></svg>
+        PRODUCTOS POR ENCARGO
+      </div>
+      <div class="hero-feature">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="6" width="13" height="11" rx="2"/><path d="M16 10h3l2 3v4h-5"/><circle cx="8" cy="19" r="1.6"/><circle cx="18" cy="19" r="1.6"/></svg>
+        ENVÍOS SEGUROS
+      </div>
+      <div class="hero-feature">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
+        PAGO POR WHATSAPP
+      </div>
+      <div class="hero-feature">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2l8 3v6c0 5-3.5 9.5-8 11-4.5-1.5-8-6-8-11V5z"/><path d="M9 12l2 2 4-4.5"/></svg>
+        CALIDAD GARANTIZADA
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 02. CATÁLOGO / VITRINA ══════════ -->
+  <main class="catalog-section" id="catalogo">
+    <div class="section-head">
+      <span class="section-index">02.</span>
+      <h2 class="section-title">CATÁLOGO <span>/</span> VITRINA</h2>
+      <span id="productCount" class="section-count">Cargando colección…</span>
+    </div>
+
+    <div class="controls-bar" aria-label="Filtros del catálogo">
+      <nav class="category-tabs" id="categoryTabs" aria-label="Categorías de productos">
+        <!-- Renderizado dinámico desde JS -->
+      </nav>
+
+      <div class="search-sort-group">
+        <div class="search-box">
+          <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" id="searchInput" class="search-input" placeholder="Buscar productos, marcas o categorías…" autocomplete="off">
+          <button id="searchClear" class="search-clear" title="Limpiar búsqueda">✕</button>
+        </div>
+        <select id="sortSelect" class="sort-select" aria-label="Ordenar productos">
+          <option value="featured">Más recientes</option>
+          <option value="price-asc">Precio: menor a mayor</option>
+          <option value="price-desc">Precio: mayor a menor</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="product-grid" id="productGrid" aria-live="polite">
+      <!-- Tarjetas renderizadas dinámicamente con JS -->
+    </div>
+  </main>
+
+  <!-- ══════════ 06. CÓMO FUNCIONA EL ENCARGO ══════════ -->
+  <section id="como-funciona" class="how-section">
+    <div class="section-head">
+      <span class="section-index">06.</span>
+      <h2 class="section-title">ASÍ FUNCIONA<br>EL ENCARGO</h2>
+    </div>
+
+    <div class="how-steps">
+      <article class="how-step">
+        <span class="how-step-num">01</span>
+        <h3 class="how-step-title">ELIGES</h3>
+        <p class="how-step-desc">Explora el catálogo y selecciona tus piezas favoritas.</p>
+      </article>
+      <article class="how-step">
+        <span class="how-step-num">02</span>
+        <h3 class="how-step-title">CONFIRMAMOS</h3>
+        <p class="how-step-desc">Te enviamos la disponibilidad final, precio y tiempo de entrega.</p>
+      </article>
+      <article class="how-step">
+        <span class="how-step-num">03</span>
+        <h3 class="how-step-title">RESERVAS</h3>
+        <p class="how-step-desc">Abonas el 50% por WhatsApp y confirmas tu pedido. Lo apartamos de inmediato.</p>
+      </article>
+      <article class="how-step">
+        <span class="how-step-num">04</span>
+        <h3 class="how-step-title">RECIBES</h3>
+        <p class="how-step-desc">Cancelas el saldo restante y recibes tu pieza en Barquisimeto o por envío.</p>
+      </article>
+    </div>
+
+    <a href="#catalogo" class="btn-hero-cta how-cta">
+      VER CATÁLOGO
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </section>
+
+  <!-- ══════════ 07. FOOTER & B2B HOOK ══════════ -->
+  <footer class="site-footer">
+    <div class="footer-b2b-card">
+      <span class="footer-b2b-tag">⚡ ¿Quieres una web así para tu negocio?</span>
+      <p class="footer-b2b-desc">
+        Diseñamos vitrinas editoriales interactivas con pedidos directos a tu WhatsApp para que vendas más y proyectes una imagen de nivel internacional.
+      </p>
+      <a href="#" class="btn-b2b-cta b2b-link">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.301-.15-1.78-.878-2.056-.978-.276-.1-.477-.15-.678.15-.201.3-.777.978-.953 1.179-.176.2-.351.226-.652.075-.3-.15-1.267-.467-2.414-1.488-.893-.796-1.496-1.78-1.672-2.08-.176-.3-.019-.463.132-.612.136-.134.301-.351.452-.527.15-.176.201-.301.301-.502.101-.201.05-.377-.025-.527-.075-.15-.678-1.632-.929-2.235-.244-.587-.492-.507-.678-.516-.176-.008-.377-.01-.578-.01-.201 0-.527.075-.803.377s-1.054 1.029-1.054 2.511c0 1.482 1.079 2.912 1.23 3.113.15.2 2.123 3.243 5.143 4.548.718.311 1.279.497 1.716.636.721.229 1.377.197 1.895.12.578-.087 1.78-.727 2.031-1.431.251-.703.251-1.306.176-1.431-.076-.126-.276-.201-.577-.351z"/></svg>
+        Escríbeme por WhatsApp
+      </a>
+    </div>
+
+    <div class="footer-grid">
+      <div class="footer-brand-col">
+        <img src="images/logo.png" alt="BOLETA CLOTHING" class="footer-logo">
+        <p class="footer-signature">BOLETA ARCHIVE<br><span>EST. 2026</span></p>
+        <ul class="footer-badges">
+          <li>Productos por encargo</li>
+          <li>Envíos seguros</li>
+          <li>Pago por WhatsApp</li>
+        </ul>
+      </div>
+
+      <nav class="footer-nav" aria-label="Enlaces del sitio">
+        <a href="#hero">INICIO</a>
+        <a href="#catalogo">CATÁLOGO</a>
+        <a href="#como-funciona">CÓMO FUNCIONA</a>
+        <a href="#" class="b2b-link">CONTACTO</a>
+        <a href="#" id="footerEditorToggle" class="footer-editor-link" title="Activar/Desactivar Modo Editor (Ctrl + Shift + E)">⚙ MODO EDITOR</a>
+      </nav>
+
+      <div class="footer-social-col">
+        <span class="footer-social-title">SÍGUENOS</span>
+        <div class="footer-socials">
+          <a href="#" class="footer-social b2b-link" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.4"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="#" class="footer-social b2b-link" aria-label="TikTok">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 3c.4 2.2 1.9 3.7 4.4 4v3.2c-1.6 0-3.1-.5-4.4-1.3v6.6a6.1 6.1 0 1 1-6.1-6.1c.3 0 .7 0 1 .1v3.3a2.9 2.9 0 1 0 2.1 2.8V3h3z"/></svg>
+          </a>
+          <a href="#" class="footer-social b2b-link" aria-label="WhatsApp">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.301-.15-1.78-.878-2.056-.978-.276-.1-.477-.15-.678.15-.201.3-.777.978-.953 1.179-.176.2-.351.226-.652.075-.3-.15-1.267-.467-2.414-1.488-.893-.796-1.496-1.78-1.672-2.08-.176-.3-.019-.463.132-.612.136-.134.301-.351.452-.527.15-.176.201-.301.301-.502.101-.201.05-.377-.025-.527-.075-.15-.678-1.632-.929-2.235-.244-.587-.492-.507-.678-.516-.176-.008-.377-.01-.578-.01-.201 0-.527.075-.803.377s-1.054 1.029-1.054 2.511c0 1.482 1.079 2.912 1.23 3.113.15.2 2.123 3.243 5.143 4.548.718.311 1.279.497 1.716.636.721.229 1.377.197 1.895.12.578-.087 1.78-.727 2.031-1.431.251-.703.251-1.306.176-1.431-.076-.126-.276-.201-.577-.351z"/></svg>
+          </a>
+        </div>
+        <p class="footer-copy">© 2026 BOLETA CLOTHING. Todos los derechos reservados.<br>Las marcas referenciadas pertenecen a sus respectivos creadores.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══════════ FLOATING ELEMENTS ══════════ -->
+  <button id="floatingCartBtn" class="floating-cart-btn" aria-label="Abrir mi pedido">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <path d="M16 10a4 4 0 0 1-8 0"/>
+    </svg>
+    <span id="floatingCartCount" class="floating-cart-count">0</span>
+  </button>
+
+  <a href="#" class="b2b-floating-badge b2b-link" title="Solicitar desarrollo web para tu tienda">
+    <span class="b2b-badge-bolt">⚡</span>
+    <span class="b2b-badge-text">¿Quieres una web así para tu negocio? <strong>Escríbeme por WhatsApp</strong></span>
+  </a>
+
+  <!-- ══════════ 04. MI PEDIDO — CARRITO LATERAL ══════════ -->
+  <div id="cartDrawerOverlay" class="cart-drawer-overlay"></div>
+  <aside id="cartDrawer" class="cart-drawer" aria-label="Mi pedido">
+    <div class="drawer-header">
+      <h2 class="drawer-title">MI PEDIDO <span id="drawerCount" class="drawer-count">(0)</span></h2>
+      <button id="cartDrawerClose" class="drawer-close-btn" aria-label="Cerrar pedido">✕</button>
+    </div>
+
+    <div id="cartDrawerBody" class="drawer-body">
+      <!-- Contenido renderizado con JS -->
+    </div>
+
+    <div class="drawer-footer">
+      <div class="totals-row">
+        <span class="totals-label">Subtotal USD</span>
+        <span id="cartTotalUsd" class="totals-value">$0 USD</span>
+      </div>
+      <div class="totals-row">
+        <span class="totals-label">Subtotal BCV</span>
+        <span id="cartTotalBcv" class="totals-value totals-value-bcv">0$ BCV</span>
+      </div>
+      <div class="totals-row">
+        <span class="totals-label">Envío</span>
+        <span class="totals-value totals-value-neutral">(a confirmar)</span>
+      </div>
+
+      <div class="deposit-box">
+        <div class="deposit-line">
+          <span>Abono inicial (50%):</span>
+          <strong><span id="cartDepositUsd">$0 USD</span> · <span id="cartDepositBcv">0$ BCV</span></strong>
+        </div>
+        <div class="deposit-line deposit-line-muted">
+          <span>Saldo restante:</span>
+          <span>Al llegar a Barquisimeto — <span id="cartRemainingUsd">$0 USD</span> · <span id="cartRemainingBcv">0$ BCV</span></span>
+        </div>
+        <div class="deposit-note">📸 Más fotos e información detallada al privado.</div>
+      </div>
+
+      <button id="checkoutBtn" class="btn-checkout-whatsapp">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.301-.15-1.78-.878-2.056-.978-.276-.1-.477-.15-.678.15-.201.3-.777.978-.953 1.179-.176.2-.351.226-.652.075-.3-.15-1.267-.467-2.414-1.488-.893-.796-1.496-1.78-1.672-2.08-.176-.3-.019-.463.132-.612.136-.134.301-.351.452-.527.15-.176.201-.301.301-.502.101-.201.05-.377-.025-.527-.075-.15-.678-1.632-.929-2.235-.244-.587-.492-.507-.678-.516-.176-.008-.377-.01-.578-.01-.201 0-.527.075-.803.377s-1.054 1.029-1.054 2.511c0 1.482 1.079 2.912 1.23 3.113.15.2 2.123 3.243 5.143 4.548.718.311 1.279.497 1.716.636.721.229 1.377.197 1.895.12.578-.087 1.78-.727 2.031-1.431.251-.703.251-1.306.176-1.431-.076-.126-.276-.201-.577-.351z"/></svg>
+        ENVIAR POR WHATSAPP
+      </button>
+
+      <p class="checkout-disclaimer">
+        Una vez enviado, te contactaremos para confirmar disponibilidad, tallas y método de pago. No se realiza ningún cobro en la página web.
+      </p>
+    </div>
+  </aside>
+
+  <!-- ══════════ 03. QUICK VIEW — DETALLE DE PRODUCTO ══════════ -->
+  <div id="productModal" class="modal-overlay">
+    <div class="modal-card modal-quickview">
+      <button id="modalCloseBtn" class="modal-close-btn" aria-label="Cerrar detalle">✕</button>
+
+      <div class="qv-gallery">
+        <div id="modalThumbs" class="qv-thumbs"><!-- Miniaturas --></div>
+        <div class="qv-viewer">
+          <button id="modalPrevImg" class="qv-arrow qv-arrow-prev" aria-label="Foto anterior">‹</button>
+          <img id="modalImage" class="modal-image" src="" alt="Detalle del producto">
+          <button id="modalNextImg" class="qv-arrow qv-arrow-next" aria-label="Siguiente foto">›</button>
+          <span id="modalImgCounter" class="qv-counter">1/1</span>
+        </div>
+      </div>
+
+      <div class="modal-content">
+        <div class="modal-tags-row">
+          <span id="modalTag" class="modal-tag-chip">● POR ENCARGO</span>
+          <span id="modalCode" class="modal-code-chip">#BOL-000</span>
+        </div>
+
+        <h2 id="modalTitle" class="modal-title">Título del Producto</h2>
+        <div id="modalBrandLine" class="modal-brand-line"><span id="modalBrand">Marca</span> <span>/</span> <span id="modalCategory">Categoría</span></div>
+
+        <div class="modal-prices-row">
+          <span id="modalPriceUsd" class="modal-price-usd">$0 USD</span>
+          <span id="modalPriceBcv" class="modal-price-bcv">0$ BCV</span>
+        </div>
+
+        <p id="modalDesc" class="modal-desc"></p>
+
+        <div class="modal-variant-block">
+          <span class="modal-variant-label">TALLAS</span>
+          <div id="modalVariantPills" class="modal-variant-pills"><!-- Renderizado dinámico --></div>
+        </div>
+
+        <div class="modal-variant-block" id="modalColorBlock">
+          <span class="modal-variant-label">COLOR: <span id="modalColorName">Blanco</span></span>
+          <div id="modalColorDots" class="modal-color-dots"></div>
+        </div>
+
+        <div class="modal-spec-row">
+          <span class="modal-spec-label">Material</span>
+          <span id="modalMaterial" class="modal-spec-value">—</span>
+        </div>
+        <div class="modal-spec-row">
+          <span class="modal-spec-label">Disponibilidad</span>
+          <span class="modal-spec-value modal-spec-ok">Por encargo · Entrega en Barquisimeto / Envíos</span>
+        </div>
+
+        <button id="modalAddCartBtn" class="btn-modal-add">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 5v14M5 12h14"/></svg>
+          AÑADIR AL PEDIDO
+        </button>
+        <button id="modalWhatsappBtn" class="btn-modal-whatsapp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.301-.15-1.78-.878-2.056-.978-.276-.1-.477-.15-.678.15-.201.3-.777.978-.953 1.179-.176.2-.351.226-.652.075-.3-.15-1.267-.467-2.414-1.488-.893-.796-1.496-1.78-1.672-2.08-.176-.3-.019-.463.132-.612.136-.134.301-.351.452-.527.15-.176.201-.301.301-.502.101-.201.05-.377-.025-.527-.075-.15-.678-1.632-.929-2.235-.244-.587-.492-.507-.678-.516-.176-.008-.377-.01-.578-.01-.201 0-.527.075-.803.377s-1.054 1.029-1.054 2.511c0 1.482 1.079 2.912 1.23 3.113.15.2 2.123 3.243 5.143 4.548.718.311 1.279.497 1.716.636.721.229 1.377.197 1.895.12.578-.087 1.78-.727 2.031-1.431.251-.703.251-1.306.176-1.431-.076-.126-.276-.201-.577-.351z"/></svg>
+          ENVIAR POR WHATSAPP
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ MODO EDITOR — MODAL DE EDICIÓN ══════════ -->
+  <div id="productEditModal" class="modal-overlay">
+    <div class="modal-card modal-edit-card">
+      <button id="editModalCloseBtn" class="modal-close-btn" aria-label="Cerrar modal de edición">✕</button>
+      <div class="modal-media edit-modal-media">
+        <img id="editModalImg" src="" alt="Previsualización">
+        <span id="editModalCode" class="card-code">#BOL-000</span>
+
+        <!-- Gestor de galería del producto -->
+        <div class="edit-gallery-block">
+          <div class="edit-gallery-strip" id="editGalleryStrip"><!-- Miniaturas de galería --></div>
+          <div class="edit-drop-zone" id="editPhotoDropZone" title="Añadir fotos a la galería de este producto">
+            <input type="file" id="editPhotoInput" accept="image/*" multiple style="display: none;">
+            <span>➕</span>
+            <strong>Añadir fotos desde mi PC</strong>
+            <small>Arrastra archivos aquí o haz clic · se guardan en dist/photos/</small>
+          </div>
+          <input type="file" id="editMainPhotoInput" accept="image/*" style="display: none;">
+          <button type="button" id="editMainPhotoBtn" class="btn-editor-secondary edit-main-photo-btn" title="Reemplazar la foto principal">
+            🖼 Cambiar foto principal
+          </button>
+        </div>
+      </div>
+
+      <form id="productEditForm" class="modal-content modal-edit-form">
+        <h3 class="modal-edit-title"><span>✏️</span> Editar Producto</h3>
+
+        <label class="purchased-switch-row" for="editFieldPurchased">
+          <input type="checkbox" id="editFieldPurchased" class="purchased-checkbox">
+          <span class="purchased-track"><span class="purchased-thumb"></span></span>
+          <span class="purchased-label-text">Comprado / En Tránsito a Barquisimeto</span>
+        </label>
+
+        <div class="edit-form-group">
+          <label for="editFieldTitle">Título del Producto:</label>
+          <input type="text" id="editFieldTitle" class="edit-input" required>
+        </div>
+
+        <div class="edit-form-row">
+          <div class="edit-form-group">
+            <label for="editFieldCategory">Categoría:</label>
+            <select id="editFieldCategory" class="edit-input">
+              <option value="Joyería">Joyería</option>
+              <option value="Lentes">Lentes</option>
+              <option value="Shorts">Shorts</option>
+              <option value="Prendas">Prendas</option>
+              <option value="Accesorios">Accesorios</option>
+              <option value="Objects">Objects</option>
+            </select>
+          </div>
+          <div class="edit-form-group">
+            <label for="editFieldBrand">Marca:</label>
+            <input type="text" id="editFieldBrand" class="edit-input">
+          </div>
+        </div>
+
+        <div class="edit-form-row">
+          <div class="edit-form-group">
+            <label for="editFieldPriceUsd">Precio USD ($):</label>
+            <input type="number" id="editFieldPriceUsd" class="edit-input" min="1" step="1" required>
+          </div>
+          <div class="edit-form-group">
+            <label for="editFieldPriceBcv">Precio BCV:</label>
+            <input type="text" id="editFieldPriceBcv" class="edit-input" placeholder="ej. 35$ BCV">
+          </div>
+        </div>
+
+        <div class="edit-form-group">
+          <label for="editFieldMaterial">Material / Especificaciones:</label>
+          <input type="text" id="editFieldMaterial" class="edit-input">
+        </div>
+
+        <div class="edit-form-group">
+          <label for="editFieldSizes">Variantes / Tallas (separadas por coma):</label>
+          <input type="text" id="editFieldSizes" class="edit-input" placeholder="ej. S, M, L, XL ó Ajustable">
+        </div>
+
+        <button type="submit" class="btn-editor-primary edit-submit-btn">
+          ✓ Guardar Cambios del Producto
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══════════ MODO EDITOR — CONFIRMACIÓN DRAG-TO-MERGE ══════════ -->
+  <div id="mergeConfirmModal" class="modal-overlay">
+    <div class="modal-card modal-merge-card">
+      <button id="mergeModalCloseBtn" class="modal-close-btn" aria-label="Cerrar modal de fusión">✕</button>
+      <div class="modal-merge-content">
+        <div class="merge-icon">🔗</div>
+        <h3 class="modal-edit-title">¿Deseas fusionar la foto de este item como foto adicional?</h3>
+        <p class="merge-desc">
+          Se añadirá la imagen de <strong id="mergeSourceTitle"></strong> como foto adicional en la galería de <strong id="mergeTargetTitle"></strong>. El item duplicado se descartará de la vitrina.
+        </p>
+        <div class="merge-preview-row">
+          <div class="merge-img-box">
+            <span class="merge-img-tag">✏ Origen (se descarta)</span>
+            <img id="mergeSourceImg" src="" alt="Origen" class="merge-preview-img">
+          </div>
+          <span class="merge-arrow">➔</span>
+          <div class="merge-img-box">
+            <span class="merge-img-tag merge-img-tag-target">✓ Destino (recibe foto)</span>
+            <img id="mergeTargetImg" src="" alt="Destino" class="merge-preview-img">
+          </div>
+        </div>
+        <div class="merge-actions">
+          <button id="mergeCancelBtn" class="btn-editor-secondary">Cancelar</button>
+          <button id="mergeConfirmBtn" class="btn-editor-primary">✓ Sí, Fusionar Foto</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ MODO EDITOR — NUEVO PRODUCTO ══════════ -->
+  <div id="addProductModal" class="modal-overlay">
+    <div class="modal-card modal-edit-card modal-add-card">
+      <button id="addProductCloseBtn" class="modal-close-btn" aria-label="Cerrar modal">✕</button>
+      <form id="addProductForm" class="modal-content modal-edit-form">
+        <h3 class="modal-edit-title"><span class="edit-title-accent">➕</span> Nuevo Producto</h3>
+
+        <!-- Zona de Drag & Drop para subir imagen -->
+        <div class="upload-drop-zone" id="uploadDropZone">
+          <input type="file" id="newProductFileInput" accept="image/*" multiple style="display: none;">
+          <div id="uploadPlaceholder" class="upload-placeholder">
+            <span class="upload-icon">📸</span>
+            <div class="upload-title">
+              Arrastra fotos aquí o <span class="upload-link">haz clic para elegir</span>
+            </div>
+            <span class="upload-hint">Se guardan en dist/photos/ · JPG, PNG o WEBP</span>
+          </div>
+          <div id="uploadPreviewBox" class="upload-preview-box" style="display: none;">
+            <div id="uploadPreviewStrip" class="upload-preview-strip"></div>
+          </div>
+          <button type="button" id="removeUploadImgBtn" class="btn-remove-upload" style="display: none;" title="Quitar fotos seleccionadas">✕ Quitar fotos</button>
+        </div>
+
+        <div class="edit-form-group">
+          <label for="newFieldTitle">Título del Producto:</label>
+          <input type="text" id="newFieldTitle" class="edit-input" placeholder="ej. Cadena Chrome Hearts Dagger Cross" required>
+        </div>
+
+        <div class="edit-form-row">
+          <div class="edit-form-group">
+            <label for="newFieldCategory">Categoría:</label>
+            <select id="newFieldCategory" class="edit-input">
+              <option value="Joyería">Joyería</option>
+              <option value="Lentes">Lentes</option>
+              <option value="Shorts">Shorts</option>
+              <option value="Prendas">Prendas</option>
+              <option value="Accesorios">Accesorios</option>
+              <option value="Objects">Objects</option>
+            </select>
+          </div>
+          <div class="edit-form-group">
+            <label for="newFieldBrand">Marca:</label>
+            <input type="text" id="newFieldBrand" class="edit-input" placeholder="BOLETA, Corteiz, Margiela…" value="BOLETA">
+          </div>
+        </div>
+
+        <div class="edit-form-row">
+          <div class="edit-form-group">
+            <label for="newFieldPriceUsd">Precio USD ($):</label>
+            <input type="number" id="newFieldPriceUsd" class="edit-input" min="1" step="1" placeholder="ej. 30" required>
+          </div>
+          <div class="edit-form-group">
+            <label for="newFieldPriceBcv">Precio BCV (Opcional):</label>
+            <input type="text" id="newFieldPriceBcv" class="edit-input" placeholder="ej. 35$ BCV (auto)">
+          </div>
+        </div>
+
+        <div class="edit-form-group">
+          <label for="newFieldMaterial">Material / Especificaciones:</label>
+          <input type="text" id="newFieldMaterial" class="edit-input" placeholder="ej. Plata 925 maciza / Titanio">
+        </div>
+
+        <div class="edit-form-group">
+          <label for="newFieldSizes">Variantes / Tallas:</label>
+          <input type="text" id="newFieldSizes" class="edit-input" placeholder="ej. Única ó S, M, L, XL" value="Única">
+        </div>
+
+        <label class="purchased-switch-row" for="newFieldPurchased">
+          <input type="checkbox" id="newFieldPurchased" class="purchased-checkbox">
+          <span class="purchased-track"><span class="purchased-thumb"></span></span>
+          <span class="purchased-label-text">Comprado / En Tránsito a Barquisimeto</span>
+        </label>
+
+        <button type="submit" id="newProductSubmitBtn" class="btn-editor-primary edit-submit-btn">
+          ⚡ Publicar Producto en la Vitrina
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Data & Application Logic -->
+  <script src="data/products.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
