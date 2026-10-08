@@ -31,7 +31,9 @@ def generate_dist():
     os.makedirs(dist_js_dir, exist_ok=True)
 
     # 1. Copiar logo oficial
-    logo_src = os.path.join("bdv-branding-reference-pack", "assets", "bdv-logo-original.png")
+    logo_src = "logo qes.png"
+    if not os.path.exists(logo_src):
+        logo_src = os.path.join("bdv-branding-reference-pack", "assets", "bdv-logo-original.png")
     if not os.path.exists(logo_src):
         logo_src = os.path.join("ChatExport_2026-10-06", "logo.png")
     logo_dst = os.path.join(dist_images_dir, "logo.png")

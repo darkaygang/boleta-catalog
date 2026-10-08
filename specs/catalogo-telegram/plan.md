@@ -16,3 +16,8 @@
 14. Implementación del backend FastAPI (`server/main.py` y `server/db.py`) con API REST CRUD, upload de fotos a `dist/photos/` y montaje de `dist/`.
 15. Desarrollo del modal interactivo "➕ Nuevo Item" en el editor web (`dist/js/app.js` e `index.html`) con subida drag & drop y llamada asíncrona a `/api/products`.
 16. Preparación para Render.com: Creación de `requirements.txt` y `render.yaml`, pruebas unitarias completas y verificación en servidor local.
+17. Integración y verificación del logo oficial (`logo qes.png` copiado a `dist/images/logo.png`) en el header responsive.
+18. Implementación del PIN gate de seguridad en `dist/js/app.js` e `index.html` (validación contra PIN `3012`, `sessionStorage`, modal Obsidian/Purple y toasts).
+19. Enrutamiento dual de WhatsApp (B2C `584245314215` y B2B `573224734848`) y enlaces de redes sociales (Instagram/TikTok con `target="_blank"`).
+20. Optimización de endpoint keep-alive `/api/health` en FastAPI y endurecimiento integral de seguridad (headers HTTP, CSP, validación de uploads y prevención XSS).
+

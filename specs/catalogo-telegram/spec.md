@@ -57,3 +57,16 @@ MIENTRAS el Modo Editor esté activo, la barra superior deberá ofrecer el botó
 
 RF-15 (Render.com Zero-Config Deployment):
 El repositorio deberá incluir `requirements.txt` (con `fastapi`, `uvicorn[standard]`, `python-multipart`) y `render.yaml` para despliegue automatizado en Render con comando de inicio `uvicorn server.main:app --host 0.0.0.0 --port $PORT`.
+
+RF-16 (Security PIN Gate for Admin Mode):
+CUANDO el usuario intente activar el Modo Editor (vía Ctrl+Shift+E, botón en footer o toggleEditMode), SI `sessionStorage.getItem('boleta_admin_auth') !== 'true'`, el sistema deberá desplegar el modal `#pinGateModal` ("🔒 Acceso Administrativo - Ingrese PIN de Seguridad"). Al validar contra PIN `3012`, el sistema almacenará `sessionStorage.setItem('boleta_admin_auth', 'true')` y activará el editor; si es incorrecto, presentará notificación toast y mensaje "PIN Incorrecto".
+
+RF-17 (Dual WhatsApp & Social Routing):
+El sistema deberá enrutar todos los pedidos, consultas, navbar y checkout al número B2C `584245314215`. Únicamente los 2 bloques B2B (`#b2bFloatingBadge` y `#b2bFooterBanner`) deberán enrutar a WhatsApp `573224734848`. Los enlaces sociales del footer (Instagram `@boleta_clothing` y TikTok `@boleta.clothing`) deberán abrirse en nueva pestaña con `target="_blank"` y `rel="noopener"`.
+
+RF-18 (Instant Keep-Alive Health Endpoint):
+El backend FastAPI deberá responder en `@app.get("/api/health")` con código HTTP 200 y JSON inmediatamente para compatibilidad con servicios de monitoreo externo y keep-alive en Render.
+
+RF-19 (Web Application Security Hardening):
+El servidor deberá inyectar cabeceras de seguridad HTTP (`X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `X-XSS-Protection`, `Referrer-Policy`, `Content-Security-Policy`). Los endpoints de carga de archivos deberán validar extensiones permitidas (.jpg, .jpeg, .png, .webp, .gif), limitar el tamaño de archivo a 10MB y generar nombres criptográficamente aleatorios previniendo path traversal. El frontend deberá escapar strings dinámicos (`escapeHtml`) previniendo inyecciones XSS.
+

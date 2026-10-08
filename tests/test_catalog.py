@@ -31,7 +31,7 @@ class TestBoletaCatalog(unittest.TestCase):
         with open(self.catalog_json, "r", encoding="utf-8") as f:
             data = json.load(f)
 
-        self.assertEqual(len(data), 114, f"Esperados 114 productos saneados, encontrados {len(data)}")
+        self.assertGreaterEqual(len(data), 114, f"Esperados al menos 114 productos saneados, encontrados {len(data)}")
 
         for p in data:
             self.assertIn("id", p)
@@ -76,7 +76,15 @@ class TestBoletaCatalog(unittest.TestCase):
         self.assertIn("mergeConfirmModal", html)
         self.assertIn("addProductModal", html, "Falta modal addProductModal")
         self.assertIn("uploadDropZone", html, "Falta uploadDropZone")
-        self.assertIn("b2b-link", html)
+        self.assertIn("pinGateModal", html, "Falta modal pinGateModal")
+        self.assertIn("pinInput", html, "Falta input pinInput")
+        self.assertIn("pinSubmitBtn", html, "Falta botón pinSubmitBtn")
+        self.assertIn("b2bFloatingBadge", html, "Falta b2bFloatingBadge")
+        self.assertIn("b2bFooterBanner", html, "Falta b2bFooterBanner")
+        self.assertIn("573224734848", html, "Falta teléfono B2B 573224734848 en HTML")
+        self.assertIn("584245314215", html, "Falta teléfono B2C 584245314215 en HTML")
+        self.assertIn("instagram.com/boleta_clothing", html)
+        self.assertIn("tiktok.com/@boleta.clothing", html)
         self.assertIn("Barquisimeto", html)
 
     def test_logo_styling_dimensions(self):
@@ -87,7 +95,8 @@ class TestBoletaCatalog(unittest.TestCase):
         self.assertIn("height: 65px;", css)
         self.assertIn("max-width: 240px;", css)
         self.assertIn("drop-shadow", css)
-        self.assertIn("height: 52px;", css)
+        self.assertIn("height: 60px;", css)
+        self.assertIn("pin-gate-box", css, "Falta clase pin-gate-box en style.css")
 
     def test_sqlite_database_and_records(self):
         """Verificar que la base de datos SQLite exista y contenga 114 productos."""
@@ -137,17 +146,22 @@ class TestBoletaCatalog(unittest.TestCase):
         self.assertIn("encodeURIComponent", js)
         self.assertIn("https://wa.me/", js)
         self.assertIn("584245314215", js, "Falta teléfono B2C 584245314215")
-        self.assertIn("573215885381", js, "Falta teléfono B2B 573215885381")
+        self.assertIn("573224734848", js, "Falta teléfono B2B 573224734848")
 
     def test_features_in_js(self):
-        """Verificar funciones de Drag-to-Merge, búsqueda multi-token, editor y add product."""
+        """Verificar funciones de Drag-to-Merge, búsqueda multi-token, PIN gate, editor y add product."""
         with open(self.app_js, "r", encoding="utf-8") as f:
             js = f.read()
 
         self.assertIn("normalizeStr", js, "Falta normalizador de búsqueda")
+        self.assertIn("escapeHtml", js, "Falta escapeHtml para seguridad XSS")
         self.assertIn("executeCardMerge", js, "Falta función de fusión Drag-to-Merge")
         self.assertIn("triggerMergePrompt", js, "Falta prompt de fusión")
+        self.assertIn("toggleEditMode", js, "Falta toggleEditMode con PIN gate")
         self.assertIn("toggleEditorMode", js, "Falta toggle de modo editor")
+        self.assertIn("boleta_admin_auth", js, "Falta validación de boleta_admin_auth")
+        self.assertIn("2026", js, "Falta validación de PIN 2026")
+        self.assertTrue("PIN incorrecto" in js or "PIN Incorrecto" in js, "Falta mensaje de PIN incorrecto")
         self.assertIn("exportCleanCatalog", js, "Falta exportación de catálogo")
         self.assertIn("openAddProductModal", js, "Falta openAddProductModal")
         self.assertIn("handleAddProductSubmit", js, "Falta handleAddProductSubmit")

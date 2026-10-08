@@ -10,7 +10,7 @@
   // Configuración de contactos y reglas de encargo
   const CONFIG = {
     whatsappPhone: "584245314215", // Teléfono oficial para pedidos de items (B2C)
-    b2bPhone: "573215885381",      // Teléfono oficial para desarrollo web (B2B)
+    b2bPhone: "573224734848",      // Teléfono oficial para desarrollo web (B2B)
     initialDepositPercent: 50
   };
 
@@ -22,6 +22,17 @@
       .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase()
       .trim();
+  }
+
+  // Helper para escapar strings HTML
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   // Estado global de la aplicación
@@ -157,7 +168,14 @@
     newFieldMaterial: document.getElementById('newFieldMaterial'),
     newFieldSizes: document.getElementById('newFieldSizes'),
     newFieldPurchased: document.getElementById('newFieldPurchased'),
-    newProductSubmitBtn: document.getElementById('newProductSubmitBtn')
+    newProductSubmitBtn: document.getElementById('newProductSubmitBtn'),
+
+    // Modal PIN Gate de Seguridad
+    pinGateModal: document.getElementById('pinGateModal'),
+    pinInput: document.getElementById('pinInput'),
+    pinSubmitBtn: document.getElementById('pinSubmitBtn'),
+    pinCancelBtn: document.getElementById('pinCancelBtn'),
+    pinError: document.getElementById('pinError')
   };
 
   // Inicialización
@@ -169,7 +187,7 @@
   }
 
   function checkInitialEditorState() {
-    if (localStorage.getItem('boleta_editor_active') === '1' || localStorage.getItem('bdv_editor_active') === '1') {
+    if (sessionStorage.getItem('boleta_admin_auth') === 'true' && (localStorage.getItem('boleta_editor_active') === '1' || localStorage.getItem('bdv_editor_active') === '1')) {
       toggleEditorMode(true);
     }
   }
@@ -975,8 +993,66 @@ _Deseo confirmar disponibilidad, tallas y coordinar fotos al privado._`;
   }
 
   // =========================================================================
-  // MODO EDITOR & ADMIN
+  // MODO EDITOR & ADMIN CON PIN GATE DE SEGURIDAD (PIN: 2026)
   // =========================================================================
+
+  function openPinGateModal() {
+    if (!dom.pinGateModal) {
+      const enteredPin = prompt("Ingrese PIN de seguridad para acceder al Modo Editor:");
+      if (enteredPin === '2026') {
+        sessionStorage.setItem('boleta_admin_auth', 'true');
+        toggleEditorMode(true);
+      } else if (enteredPin !== null) {
+        alert("PIN incorrecto");
+      }
+      return;
+    }
+
+    if (dom.pinInput) dom.pinInput.value = '';
+    if (dom.pinError) dom.pinError.textContent = '';
+    dom.pinGateModal.classList.add('active');
+    setTimeout(() => {
+      if (dom.pinInput) dom.pinInput.focus();
+    }, 80);
+  }
+
+  function closePinGateModal() {
+    if (dom.pinGateModal) dom.pinGateModal.classList.remove('active');
+    if (dom.pinInput) dom.pinInput.value = '';
+    if (dom.pinError) dom.pinError.textContent = '';
+  }
+
+  function handlePinSubmit() {
+    const pin = dom.pinInput ? dom.pinInput.value.trim() : '';
+    if (pin === '2026') {
+      sessionStorage.setItem('boleta_admin_auth', 'true');
+      closePinGateModal();
+      toggleEditorMode(true);
+      showToast('🔓 Modo Editor activado');
+    } else {
+      if (dom.pinError) {
+        dom.pinError.textContent = 'PIN incorrecto';
+      }
+      alert('PIN incorrecto');
+      if (dom.pinInput) {
+        dom.pinInput.value = '';
+        dom.pinInput.focus();
+      }
+    }
+  }
+
+  function toggleEditMode(forceActive = null) {
+    if (forceActive === false || (forceActive === null && state.isEditorMode)) {
+      toggleEditorMode(false);
+      return;
+    }
+
+    if (sessionStorage.getItem('boleta_admin_auth') === 'true') {
+      toggleEditorMode(true);
+    } else {
+      openPinGateModal();
+    }
+  }
 
   function toggleEditorMode(forceActive = null) {
     if (forceActive !== null) {
@@ -1554,7 +1630,7 @@ _Deseo confirmar disponibilidad, tallas y coordinar fotos al privado._`;
     if (dom.footerEditorToggle) {
       dom.footerEditorToggle.addEventListener('click', (e) => {
         e.preventDefault();
-        toggleEditorMode();
+        toggleEditMode();
       });
     }
 
@@ -1674,29 +1750,51 @@ _Deseo confirmar disponibilidad, tallas y coordinar fotos al privado._`;
     document.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'E' || e.key === 'e')) {
         e.preventDefault();
-        toggleEditorMode();
+        toggleEditMode();
       } else if (e.key === 'Escape') {
         closeProductModal();
         closeProductEditModal();
         closeMergeModal();
         closeAddProductModal();
         closeCartDrawer();
+        closePinGateModal();
       } else if (e.key === 'Enter' && dom.mergeConfirmModal && dom.mergeConfirmModal.classList.contains('active')) {
         e.preventDefault();
         executeCardMerge();
       }
     });
 
-    // Enlaces B2B a WhatsApp (+57 321 5885381)
+    // Eventos del PIN Gate Modal
+    if (dom.pinSubmitBtn) dom.pinSubmitBtn.addEventListener('click', handlePinSubmit);
+    if (dom.pinCancelBtn) dom.pinCancelBtn.addEventListener('click', closePinGateModal);
+    if (dom.pinInput) {
+      dom.pinInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handlePinSubmit();
+        }
+      });
+    }
+    if (dom.pinGateModal) {
+      dom.pinGateModal.addEventListener('click', (e) => {
+        if (e.target === dom.pinGateModal) closePinGateModal();
+      });
+    }
+
+    // Enlaces B2B a WhatsApp (+57 322 4734848)
     document.querySelectorAll('.b2b-link').forEach(link => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
-        const b2bMsg = encodeURIComponent("Hola, vi la vitrina de BOLETA CLOTHING y me interesa una página web interactiva para mi negocio.");
-        const phone = CONFIG.b2bPhone ? CONFIG.b2bPhone.replace(/[^0-9]/g, '') : '573215885381';
+        const b2bMsg = encodeURIComponent("Hola Cristian, vi la vitrina de Boleta y me interesa una web para mi negocio");
+        const phone = CONFIG.b2bPhone ? CONFIG.b2bPhone.replace(/[^0-9]/g, '') : '573224734848';
         window.open(`https://wa.me/${phone}?text=${b2bMsg}`, '_blank');
       });
     });
   }
+
+  // Exponer API global para pruebas y consola
+  window.toggleEditMode = toggleEditMode;
+  window.toggleEditorMode = toggleEditMode;
 
   // Ejecución al cargar DOM
   if (document.readyState === 'loading') {

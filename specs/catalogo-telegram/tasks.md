@@ -30,3 +30,9 @@
 [x] T28 Escribir dist/css/style.css con grid móvil 2 columnas (360px-600px), Quick View modal y drawer de pedido.
 [x] T29 Escribir dist/js/app.js con filtros de categoría, Quick View con miniaturas, cálculo dual USD/BCV, WhatsApp checkout, Modo Editor (Ctrl+Shift+E), Drag-to-Merge y subida de fotos desde PC.
 [x] T30 Verificar pase completo de la suite de pruebas unitarias y servidor activo en http://127.0.0.1:8080.
+[x] T31 Copiar logo qes.png a dist/images/logo.png y verificar carga y dimensiones en header responsive.
+[x] T32 Implementar PIN gate de seguridad en app.js e index.html con modal Obsidian/Purple, validación 3012, sessionStorage y toasts.
+[x] T33 Configurar enrutamiento de teléfonos WhatsApp (B2C: 584245314215, B2B: 573224734848) y enlaces de redes en footer (Instagram y TikTok target="_blank").
+[x] T34 Verificar @app.get("/api/health") HTTP 200 inmediato y reforzar la seguridad web (cabeceras HTTP, validación de uploads y sanitización XSS).
+[x] T35 Ejecutar pruebas unitarias en tests/test_catalog.py, compilar dist/, levantar servidor local uvicorn y actualizar MEMORY.md.
+

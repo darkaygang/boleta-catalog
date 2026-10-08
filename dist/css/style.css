@@ -2212,6 +2212,69 @@ body.editor-mode-active .card-editor-overlay {
 }
 
 /* ==========================================================================
+   PIN GATE DE SEGURIDAD (MODO EDITOR)
+   ========================================================================== */
+.pin-gate-box {
+  max-width: 380px;
+  width: 90%;
+  padding: 32px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+}
+.pin-gate-icon {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+}
+.pin-gate-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+.pin-input-wrap {
+  width: 100%;
+  margin-bottom: 8px;
+}
+.pin-input {
+  width: 100%;
+  max-width: 180px;
+  text-align: center;
+  font-size: 1.4rem;
+  letter-spacing: 0.25em;
+  font-family: var(--font-mono);
+  background: var(--surface-input);
+  border: 1px solid rgba(139, 77, 255, 0.4);
+  color: #FFF;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+.pin-input:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 15px var(--purple-glow);
+}
+.pin-error {
+  color: #FF5E7E;
+  font-size: 0.76rem;
+  font-weight: 600;
+  min-height: 1.2em;
+  margin-bottom: 12px;
+}
+.pin-gate-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+.pin-gate-actions button {
+  flex: 1;
+  justify-content: center;
+  padding: 10px 16px;
+}
+
+/* ==========================================================================
    TOAST NOTIFICATION
    ========================================================================== */
 .toast-container {
@@ -2308,8 +2371,8 @@ body.editor-mode-active .card-editor-overlay {
 /* STRICT MOBILE 2-COLUMN LAYOUT (360px - 440px) */
 @media (max-width: 600px) {
   .brand-logo-img {
-    height: 52px;
-    max-width: 180px;
+    height: 60px;
+    max-width: 210px;
   }
   .header-cart-label {
     display: none;
