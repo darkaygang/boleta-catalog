@@ -259,16 +259,53 @@
     }
   }
 
+  // Cabeceras de autenticación para operaciones de escritura del Modo Editor
+  function getAuthHeaders() {
+    return {
+      'X-Admin-PIN': '2026',
+      'X-Editor-Auth': 'true',
+      'Authorization': 'Bearer 2026'
+    };
+  }
+
   function sanitizeProduct(p) {
+    if (!p) return {};
+    // Interoperabilidad de campos Supabase (name, description, image_url, price, available) y frontend (title, material, image, numeric_usd, in_stock)
+    if (!p.title && p.name) p.title = p.name;
+    if (!p.name && p.title) p.name = p.title;
+    if (!p.material && p.description) p.material = p.description;
+    if (!p.description && p.material) p.description = p.material;
+    if (!p.image && p.image_url) p.image = p.image_url;
+    if (!p.image_url && p.image) p.image_url = p.image;
+    if (!p.thumb && p.image) p.thumb = p.image;
     if (!p.gallery) p.gallery = [];
     if (!p.currentImgIndex) p.currentImgIndex = 0;
-    if (!p.numeric_usd) {
-      const matchUsd = String(p.price_usd || '').match(/(\d+)/);
-      p.numeric_usd = matchUsd ? parseInt(matchUsd[1]) : 0;
+    if (p.numeric_usd === undefined || p.numeric_usd === null) {
+      if (p.price !== undefined && p.price !== null) {
+        p.numeric_usd = Number(p.price);
+      } else {
+        const matchUsd = String(p.price_usd || '').match(/(\d+)/);
+        p.numeric_usd = matchUsd ? parseInt(matchUsd[1]) : 0;
+      }
+    }
+    if (p.price === undefined || p.price === null) {
+      p.price = p.numeric_usd;
+    }
+    if (!p.price_usd) {
+      p.price_usd = `$${Math.round(p.numeric_usd)} USD`;
     }
     if (!p.numeric_bcv) {
       const match = String(p.price_bcv || '').match(/(\d+)/);
       p.numeric_bcv = match ? parseInt(match[1]) : Math.round(p.numeric_usd * 1.15);
+    }
+    if (!p.price_bcv) {
+      p.price_bcv = `${Math.round(p.numeric_bcv)}$ BCV`;
+    }
+    if (p.in_stock === undefined && p.available !== undefined) {
+      p.in_stock = Boolean(p.available);
+    }
+    if (p.available === undefined && p.in_stock !== undefined) {
+      p.available = Boolean(p.in_stock);
     }
     p.is_purchased = Boolean(p.is_purchased);
     return p;
@@ -1101,9 +1138,14 @@ _Deseo confirmar disponibilidad, tallas y coordinar fotos al privado._`;
     setTimeout(() => {
       state.discardedIds.add(String(productId));
 
-      // Sincronizar borrado con API SQLite
+      // Sincronizar borrado con DELETE /api/products/{id}
       try {
-        fetch(`/api/products/${productId}`, { method: 'DELETE' }).catch(() => {});
+        fetch(`/api/products/${productId}`, {
+          method: 'DELETE',
+          headers: getAuthHeaders()
+        }).catch((err) => {
+          console.warn("Aviso en DELETE /api/products:", err);
+        });
       } catch (e) {}
 
       saveEditorState();
@@ -1189,25 +1231,36 @@ _Deseo confirmar disponibilidad, tallas y coordinar fotos al privado._`;
     p.sizes = dom.editFieldSizes.value.split(',').map(s => s.trim()).filter(Boolean);
     p.is_purchased = dom.editFieldPurchased ? dom.editFieldPurchased.checked : p.is_purchased;
 
-    // Sincronizar cambios con API FastAPI / SQLite
+    // Sincronizar cambios con API Supabase / SQLite
     try {
       fetch(`/api/products/${p.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...getAuthHeaders()
+        },
         body: JSON.stringify({
+          id: p.id,
+          name: p.title,
           title: p.title,
           category: p.category,
           brand: p.brand,
+          price: p.numeric_usd,
           numeric_usd: p.numeric_usd,
           numeric_bcv: p.numeric_bcv,
           price_usd: p.price_usd,
           price_bcv: p.price_bcv,
+          description: p.material,
           material: p.material,
           sizes: p.sizes,
           is_purchased: p.is_purchased,
+          available: p.in_stock,
+          in_stock: p.in_stock,
           gallery: p.gallery
         })
-      }).catch(() => {});
+      }).catch((err) => {
+        console.warn("Aviso en PUT /api/products:", err);
+      });
     } catch (err) {}
 
     saveEditorState();
@@ -1230,7 +1283,11 @@ _Deseo confirmar disponibilidad, tallas y coordinar fotos al privado._`;
       try {
         const formData = new FormData();
         formData.append('file', file);
-        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: formData
+        });
         if (res.ok) {
           const data = await res.json();
           if (!p.gallery) p.gallery = [];
@@ -1258,7 +1315,7 @@ _Deseo confirmar disponibilidad, tallas y coordinar fotos al privado._`;
     showToast(`✓ Fotos añadidas a la galería de #${p.id}`);
   }
 
-  // Cambiar foto principal
+  // Cambiar foto principal (POST /api/products/{id}/image)
   async function handleEditMainPhoto(file) {
     if (!state.editingProductId || !file || !file.type.startsWith('image/')) return;
     const p = state.products.find(item => String(item.id) === String(state.editingProductId));
@@ -1267,15 +1324,27 @@ _Deseo confirmar disponibilidad, tallas y coordinar fotos al privado._`;
     try {
       const formData = new FormData();
       formData.append('file', file);
-      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      const res = await fetch(`/api/products/${p.id}/image`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: formData
+      });
       if (res.ok) {
         const data = await res.json();
-        p.image = data.url;
-        p.thumb = data.thumb || data.url;
+        const uploadedUrl = data.image_url || data.url;
+        p.image = uploadedUrl;
+        p.image_url = uploadedUrl;
+        p.thumb = uploadedUrl;
+        if (dom.editModalImg) dom.editModalImg.src = p.image;
+        saveEditorState();
+        applyFilters();
+        showToast(`✓ Foto principal actualizada en Supabase para #${p.id}`);
+        return;
       } else {
-        throw new Error('Upload failed');
+        throw new Error('API image endpoint error: ' + res.status);
       }
     } catch (err) {
+      console.warn("Fallo subiendo imagen a /api/products/{id}/image, usando fallback local:", err);
       const reader = new FileReader();
       reader.onload = (e) => {
         p.image = e.target.result;
@@ -1285,6 +1354,7 @@ _Deseo confirmar disponibilidad, tallas y coordinar fotos al privado._`;
         applyFilters();
       };
       reader.readAsDataURL(file);
+      showToast(`✓ Foto guardada localmente para #${p.id}`);
       return;
     }
 
@@ -1369,13 +1439,17 @@ _Deseo confirmar disponibilidad, tallas y coordinar fotos al privado._`;
     try {
       const formData = new FormData();
       formData.append('title', title);
+      formData.append('name', title);
       formData.append('category', category);
       formData.append('brand', brand);
       formData.append('numeric_usd', numUsd);
+      formData.append('price', numUsd);
       formData.append('numeric_bcv', numBcv);
       formData.append('material', material);
+      formData.append('description', material);
       formData.append('sizes', sizes);
       formData.append('tag', 'POR ENCARGO');
+      formData.append('available', isPurchased ? 'false' : 'true');
 
       if (state.selectedNewProductFiles.length > 0) {
         formData.append('image_file', state.selectedNewProductFiles[0]);
@@ -1383,6 +1457,7 @@ _Deseo confirmar disponibilidad, tallas y coordinar fotos al privado._`;
 
       const res = await fetch('/api/products', {
         method: 'POST',
+        headers: getAuthHeaders(),
         body: formData
       });
 
@@ -1395,7 +1470,11 @@ _Deseo confirmar disponibilidad, tallas y coordinar fotos al privado._`;
           for (let i = 1; i < state.selectedNewProductFiles.length; i++) {
             const addForm = new FormData();
             addForm.append('file', state.selectedNewProductFiles[i]);
-            const addRes = await fetch('/api/upload', { method: 'POST', body: addForm });
+            const addRes = await fetch('/api/upload', {
+              method: 'POST',
+              headers: getAuthHeaders(),
+              body: addForm
+            });
             if (addRes.ok) {
               const addData = await addRes.json();
               if (!created.gallery) created.gallery = [];

@@ -90,7 +90,7 @@ def init_db():
     conn.close()
 
 def row_to_dict(row):
-    """Convierte un registro de SQLite a diccionario compatible con el frontend."""
+    """Convierte un registro de SQLite a diccionario compatible con el frontend y Supabase."""
     if row is None:
         return None
     d = dict(row)
@@ -107,6 +107,13 @@ def row_to_dict(row):
 
     d["is_purchased"] = bool(d.get("is_purchased", 0))
     d["in_stock"] = bool(d.get("in_stock", 1))
+
+    # Aliases de compatibilidad directa con Supabase (name, price, description, image_url, available)
+    d["name"] = d.get("title") or ""
+    d["price"] = float(d.get("numeric_usd") or 0.0)
+    d["description"] = d.get("material") or ""
+    d["image_url"] = d.get("image") or ""
+    d["available"] = d.get("in_stock", True)
     return d
 
 def get_all_products(include_discarded=False):
@@ -139,23 +146,29 @@ def create_product(product_data):
         max_row = cursor.fetchone()[0]
         p_id = str((max_row or 1000) + 1)
 
-    code = product_data.get("code") or f"#BOL-{p_id}"
-    title = product_data.get("title", "Nuevo Producto")
+    # Mapeo de campos Supabase
+    title = product_data.get("title") or product_data.get("name") or "Nuevo Producto"
     category = product_data.get("category", "Accesorios")
     brand = product_data.get("brand", "BOLETA")
-    numeric_usd = float(product_data.get("numeric_usd", 0) or 0)
+    try:
+        numeric_usd = float(product_data.get("numeric_usd") if product_data.get("numeric_usd") is not None else (product_data.get("price") or 0))
+    except (ValueError, TypeError):
+        numeric_usd = 0.0
+
     numeric_bcv = float(product_data.get("numeric_bcv", 0) or round(numeric_usd * 1.15))
     price_usd = product_data.get("price_usd") or f"${int(numeric_usd)} USD"
     price_bcv = product_data.get("price_bcv") or f"{int(numeric_bcv)}$ BCV"
-    image = product_data.get("image", "")
-    thumb = product_data.get("thumb", image)
+    image = product_data.get("image") or product_data.get("image_url") or ""
+    thumb = product_data.get("thumb") or image
     gallery = json.dumps(product_data.get("gallery", []), ensure_ascii=False)
     sizes = json.dumps(product_data.get("sizes", []), ensure_ascii=False)
-    material = product_data.get("material", "")
+    material = product_data.get("material") or product_data.get("description") or ""
     tag = product_data.get("tag", "Por encargo")
     is_purchased = 1 if product_data.get("is_purchased") else 0
-    in_stock = 1 if product_data.get("in_stock", True) else 0
+    in_stock_val = product_data.get("in_stock") if product_data.get("in_stock") is not None else product_data.get("available", True)
+    in_stock = 1 if in_stock_val else 0
     status = product_data.get("status", "aprobado")
+    code = product_data.get("code") or f"#BOL-{p_id}"
 
     cursor.execute("""
     INSERT INTO products (
@@ -180,6 +193,22 @@ def update_product(product_id, updates):
     if not existing:
         conn.close()
         return None
+
+    # Mapear nombres de columnas de Supabase
+    if "name" in updates and "title" not in updates:
+        updates["title"] = updates["name"]
+    if "price" in updates and "numeric_usd" not in updates:
+        updates["numeric_usd"] = float(updates["price"])
+        updates["price_usd"] = f"${int(float(updates['price']))} USD"
+        updates["numeric_bcv"] = round(float(updates["price"]) * 1.15)
+        updates["price_bcv"] = f"{int(round(float(updates['price']) * 1.15))}$ BCV"
+    if "description" in updates and "material" not in updates:
+        updates["material"] = updates["description"]
+    if "image_url" in updates and "image" not in updates:
+        updates["image"] = updates["image_url"]
+        updates["thumb"] = updates["image_url"]
+    if "available" in updates and "in_stock" not in updates:
+        updates["in_stock"] = bool(updates["available"])
 
     # Campos actualizables
     fields = []

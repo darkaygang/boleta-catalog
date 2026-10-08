@@ -1,170 +1,5 @@
 [
   {
-    "id": "65fb372a",
-    "code": "#BOL-65fb372a",
-    "title": "Belts Internet Explorer Mod. 143",
-    "category": "Joyería",
-    "brand": "BOLETA",
-    "price_usd": "$25 USD",
-    "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
-    "image": "photos/item_1791418548379_37d543d7.jpg",
-    "thumb": "photos/item_1791418548379_37d543d7.jpg",
-    "gallery": [
-      "photos/upload_1791418548420_143316a2.jpg"
-    ],
-    "sizes": [
-      "Única"
-    ],
-    "material": "",
-    "tag": "POR ENCARGO",
-    "is_purchased": false,
-    "in_stock": true,
-    "status": "aprobado",
-    "created_at": "2026-10-08 00:15:48",
-    "currentImgIndex": 0
-  },
-  {
-    "id": "a89dbf2d",
-    "code": "#BOL-a89dbf2d",
-    "title": "Belts DVD Y2K  Mod. 142",
-    "category": "Accesorios",
-    "brand": "BOLETA",
-    "price_usd": "$25 USD",
-    "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
-    "image": "photos/item_1791417831904_e24a16f2.jpg",
-    "thumb": "photos/item_1791417831904_e24a16f2.jpg",
-    "gallery": [
-      "photos/upload_1791417831941_857c97be.webp"
-    ],
-    "sizes": [
-      "Única"
-    ],
-    "material": "",
-    "tag": "POR ENCARGO",
-    "is_purchased": false,
-    "in_stock": true,
-    "status": "aprobado",
-    "created_at": "2026-10-08 00:03:51",
-    "currentImgIndex": 0
-  },
-  {
-    "id": "948ff7bf",
-    "code": "#BOL-948ff7bf",
-    "title": "Belt Windows 7 Y2K Mod. 141",
-    "category": "Accesorios",
-    "brand": "BOLETA",
-    "price_usd": "$25 USD",
-    "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
-    "image": "photos/item_1791417761433_3e21557b.jpg",
-    "thumb": "photos/item_1791417761433_3e21557b.jpg",
-    "gallery": [
-      "photos/upload_1791417761491_58dff281.jpg",
-      "photos/upload_1791417761512_da69703f.jpg",
-      "photos/upload_1791417761539_b3743f95.jpg"
-    ],
-    "sizes": [
-      "Única"
-    ],
-    "material": "",
-    "tag": "POR ENCARGO",
-    "is_purchased": false,
-    "in_stock": true,
-    "status": "aprobado",
-    "created_at": "2026-10-08 00:02:41",
-    "currentImgIndex": 0
-  },
-  {
-    "id": "1004",
-    "code": "#BOL-1004",
-    "title": "Belts Chrome Hearts Mod. 140",
-    "category": "Accesorios",
-    "brand": "Chrome Hearts",
-    "price_usd": "$25 USD",
-    "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
-    "image": "photos/upload_1791417497638_154cb65b.jpg",
-    "thumb": "photos/upload_1791417497638_154cb65b.jpg",
-    "gallery": [
-      "photos/upload_1791408279946_16e715.jpg",
-      "photos/upload_1791408279988_5af3e9.jpg",
-      "photos/upload_1791408280002_ff3cb2.jpg",
-      "photos/upload_1791408280020_37a398.jpg",
-      "photos/upload_1791408280036_4948df.jpg",
-      "photos/upload_1791408280049_b3b227.jpg",
-      "photos/upload_1791408280060_d1f1d6.jpg",
-      "photos/upload_1791408280070_b7f5af.jpg"
-    ],
-    "sizes": [
-      "Única"
-    ],
-    "material": "",
-    "tag": "POR ENCARGO",
-    "is_purchased": false,
-    "in_stock": true,
-    "status": "aprobado",
-    "created_at": "2026-10-07 21:24:39",
-    "currentImgIndex": 0
-  },
-  {
-    "id": "1003",
-    "code": "#BOL-1003",
-    "title": "Belts Supreme V2 Mod. 139",
-    "category": "Accesorios",
-    "brand": "Supreme",
-    "price_usd": "$25 USD",
-    "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
-    "image": "photos/item_1791408178691_e7fe.jpg",
-    "thumb": "photos/item_1791408178691_e7fe.jpg",
-    "gallery": [],
-    "sizes": [
-      "Única"
-    ],
-    "material": "",
-    "tag": "POR ENCARGO",
-    "is_purchased": false,
-    "in_stock": true,
-    "status": "aprobado",
-    "created_at": "2026-10-07 21:22:58",
-    "currentImgIndex": 0
-  },
-  {
-    "id": "1002",
-    "code": "#BOL-1002",
-    "title": "Belts Supreme Mod. 138",
-    "category": "Accesorios",
-    "brand": "Supreme",
-    "price_usd": "$25 USD",
-    "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
-    "image": "photos/item_1791408076425_82bf.webp",
-    "thumb": "photos/item_1791408076425_82bf.webp",
-    "gallery": [
-      "photos/upload_1791408076490_cc12ba.webp",
-      "photos/upload_1791408076504_78a04c.webp",
-      "photos/upload_1791408076521_d827bf.jpg"
-    ],
-    "sizes": [
-      "Única"
-    ],
-    "material": "",
-    "tag": "POR ENCARGO",
-    "is_purchased": false,
-    "in_stock": true,
-    "status": "aprobado",
-    "created_at": "2026-10-07 21:21:16",
-    "currentImgIndex": 0
-  },
-  {
     "id": "1001",
     "code": "#BOL-1001",
     "title": "Belts varios Y2K Mod. 137",
@@ -172,8 +7,8 @@
     "brand": "BOLETA",
     "price_usd": "$25 USD",
     "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
     "image": "photos/item_1791407536638_2568.webp",
     "thumb": "photos/item_1791407536638_2568.webp",
     "gallery": [
@@ -193,7 +28,170 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 21:12:16",
-    "currentImgIndex": 1
+    "name": "Belts varios Y2K Mod. 137",
+    "price": 25.0,
+    "description": "",
+    "image_url": "photos/item_1791407536638_2568.webp",
+    "available": true
+  },
+  {
+    "id": "1002",
+    "code": "#BOL-1002",
+    "title": "Belts Supreme Mod. 138",
+    "category": "Accesorios",
+    "brand": "Supreme",
+    "price_usd": "$25 USD",
+    "price_bcv": "30$ BCV",
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
+    "image": "photos/item_1791408076425_82bf.webp",
+    "thumb": "photos/item_1791408076425_82bf.webp",
+    "gallery": [
+      "photos/upload_1791408076490_cc12ba.webp",
+      "photos/upload_1791408076504_78a04c.webp",
+      "photos/upload_1791408076521_d827bf.jpg"
+    ],
+    "sizes": [
+      "Única"
+    ],
+    "material": "",
+    "tag": "POR ENCARGO",
+    "is_purchased": false,
+    "in_stock": true,
+    "status": "aprobado",
+    "created_at": "2026-10-07 21:21:16",
+    "name": "Belts Supreme Mod. 138",
+    "price": 25.0,
+    "description": "",
+    "image_url": "photos/item_1791408076425_82bf.webp",
+    "available": true
+  },
+  {
+    "id": "1003",
+    "code": "#BOL-1003",
+    "title": "Belts Supreme V2 Mod. 139",
+    "category": "Accesorios",
+    "brand": "Supreme",
+    "price_usd": "$25 USD",
+    "price_bcv": "30$ BCV",
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
+    "image": "photos/item_1791408178691_e7fe.jpg",
+    "thumb": "photos/item_1791408178691_e7fe.jpg",
+    "gallery": [],
+    "sizes": [
+      "Única"
+    ],
+    "material": "",
+    "tag": "POR ENCARGO",
+    "is_purchased": false,
+    "in_stock": true,
+    "status": "aprobado",
+    "created_at": "2026-10-07 21:22:58",
+    "name": "Belts Supreme V2 Mod. 139",
+    "price": 25.0,
+    "description": "",
+    "image_url": "photos/item_1791408178691_e7fe.jpg",
+    "available": true
+  },
+  {
+    "id": "1004",
+    "code": "#BOL-1004",
+    "title": "Belts Chrome Hearts Mod. 140",
+    "category": "Accesorios",
+    "brand": "Chrome Hearts",
+    "price_usd": "$25 USD",
+    "price_bcv": "30$ BCV",
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
+    "image": "photos/item_1791408279868_1762.jpg",
+    "thumb": "photos/item_1791408279868_1762.jpg",
+    "gallery": [
+      "photos/upload_1791408279946_16e715.jpg",
+      "photos/upload_1791408279988_5af3e9.jpg",
+      "photos/upload_1791408280002_ff3cb2.jpg",
+      "photos/upload_1791408280020_37a398.jpg",
+      "photos/upload_1791408280036_4948df.jpg",
+      "photos/upload_1791408280049_b3b227.jpg",
+      "photos/upload_1791408280060_d1f1d6.jpg",
+      "photos/upload_1791408280070_b7f5af.jpg"
+    ],
+    "sizes": [
+      "Única"
+    ],
+    "material": "",
+    "tag": "POR ENCARGO",
+    "is_purchased": false,
+    "in_stock": true,
+    "status": "aprobado",
+    "created_at": "2026-10-07 21:24:39",
+    "name": "Belts Chrome Hearts Mod. 140",
+    "price": 25.0,
+    "description": "",
+    "image_url": "photos/item_1791408279868_1762.jpg",
+    "available": true
+  },
+  {
+    "id": "65fb372a",
+    "code": "#BOL-65fb372a",
+    "title": "Belts Internet Explorer Mod. 143",
+    "category": "Joyería",
+    "brand": "BOLETA",
+    "price_usd": "$25 USD",
+    "price_bcv": "30$ BCV",
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
+    "image": "photos/item_1791418548379_37d543d7.jpg",
+    "thumb": "photos/item_1791418548379_37d543d7.jpg",
+    "gallery": [
+      "photos/upload_1791418548420_143316a2.jpg"
+    ],
+    "sizes": [
+      "Única"
+    ],
+    "material": "",
+    "tag": "POR ENCARGO",
+    "is_purchased": false,
+    "in_stock": true,
+    "status": "aprobado",
+    "created_at": "2026-10-08 00:15:48",
+    "name": "Belts Internet Explorer Mod. 143",
+    "price": 25.0,
+    "description": "",
+    "image_url": "photos/item_1791418548379_37d543d7.jpg",
+    "available": true
+  },
+  {
+    "id": "948ff7bf",
+    "code": "#BOL-948ff7bf",
+    "title": "Belt Windows 7 Y2K Mod. 141",
+    "category": "Accesorios",
+    "brand": "BOLETA",
+    "price_usd": "$25 USD",
+    "price_bcv": "30$ BCV",
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
+    "image": "photos/item_1791417761433_3e21557b.jpg",
+    "thumb": "photos/item_1791417761433_3e21557b.jpg",
+    "gallery": [
+      "photos/upload_1791417761491_58dff281.jpg",
+      "photos/upload_1791417761512_da69703f.jpg",
+      "photos/upload_1791417761539_b3743f95.jpg"
+    ],
+    "sizes": [
+      "Única"
+    ],
+    "material": "",
+    "tag": "POR ENCARGO",
+    "is_purchased": false,
+    "in_stock": true,
+    "status": "aprobado",
+    "created_at": "2026-10-08 00:02:41",
+    "name": "Belt Windows 7 Y2K Mod. 141",
+    "price": 25.0,
+    "description": "",
+    "image_url": "photos/item_1791417761433_3e21557b.jpg",
+    "available": true
   },
   {
     "id": "BOL-001",
@@ -203,8 +201,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "30$ USD",
     "price_bcv": "35$ BCV",
-    "numeric_usd": 30,
-    "numeric_bcv": 35,
+    "numeric_usd": 30.0,
+    "numeric_bcv": 35.0,
     "image": "photos/photo_559@29-09-2026_22-47-31.jpg",
     "thumb": "photos/photo_559@29-09-2026_22-47-31_thumb.jpg",
     "gallery": [],
@@ -217,7 +215,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Brazalete Chrome Hearts Mod. 1",
+    "price": 30.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_559@29-09-2026_22-47-31.jpg",
+    "available": true
   },
   {
     "id": "BOL-002",
@@ -227,8 +229,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "30$ USD",
     "price_bcv": "35$ BCV",
-    "numeric_usd": 30,
-    "numeric_bcv": 35,
+    "numeric_usd": 30.0,
+    "numeric_bcv": 35.0,
     "image": "photos/photo_560@29-09-2026_22-47-31.jpg",
     "thumb": "photos/photo_560@29-09-2026_22-47-31_thumb.jpg",
     "gallery": [],
@@ -241,7 +243,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Brazalete Chrome Hearts Mod. 2",
+    "price": 30.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_560@29-09-2026_22-47-31.jpg",
+    "available": true
   },
   {
     "id": "BOL-003",
@@ -251,8 +257,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "30$ USD",
     "price_bcv": "35$ BCV",
-    "numeric_usd": 30,
-    "numeric_bcv": 35,
+    "numeric_usd": 30.0,
+    "numeric_bcv": 35.0,
     "image": "photos/photo_561@29-09-2026_22-47-31.jpg",
     "thumb": "photos/photo_561@29-09-2026_22-47-31_thumb.jpg",
     "gallery": [],
@@ -265,7 +271,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Brazalete Chrome Hearts Mod. 3",
+    "price": 30.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_561@29-09-2026_22-47-31.jpg",
+    "available": true
   },
   {
     "id": "BOL-004",
@@ -275,8 +285,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "30$ USD",
     "price_bcv": "35$ BCV",
-    "numeric_usd": 30,
-    "numeric_bcv": 35,
+    "numeric_usd": 30.0,
+    "numeric_bcv": 35.0,
     "image": "photos/photo_562@29-09-2026_22-47-31.jpg",
     "thumb": "photos/photo_562@29-09-2026_22-47-31_thumb.jpg",
     "gallery": [],
@@ -289,7 +299,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Brazalete Chrome Hearts Mod. 4",
+    "price": 30.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_562@29-09-2026_22-47-31.jpg",
+    "available": true
   },
   {
     "id": "BOL-005",
@@ -299,8 +313,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "30$ USD",
     "price_bcv": "35$ BCV",
-    "numeric_usd": 30,
-    "numeric_bcv": 35,
+    "numeric_usd": 30.0,
+    "numeric_bcv": 35.0,
     "image": "photos/photo_563@29-09-2026_22-47-31.jpg",
     "thumb": "photos/photo_563@29-09-2026_22-47-31_thumb.jpg",
     "gallery": [],
@@ -313,7 +327,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Brazalete Chrome Hearts Mod. 5",
+    "price": 30.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_563@29-09-2026_22-47-31.jpg",
+    "available": true
   },
   {
     "id": "BOL-006",
@@ -323,8 +341,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "30$ USD",
     "price_bcv": "35$ BCV",
-    "numeric_usd": 30,
-    "numeric_bcv": 35,
+    "numeric_usd": 30.0,
+    "numeric_bcv": 35.0,
     "image": "photos/photo_564@29-09-2026_22-47-31.jpg",
     "thumb": "photos/photo_564@29-09-2026_22-47-31_thumb.jpg",
     "gallery": [],
@@ -337,7 +355,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Brazalete Chrome Hearts Mod. 6",
+    "price": 30.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_564@29-09-2026_22-47-31.jpg",
+    "available": true
   },
   {
     "id": "BOL-007",
@@ -347,8 +369,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "30$ USD",
     "price_bcv": "35$ BCV",
-    "numeric_usd": 30,
-    "numeric_bcv": 35,
+    "numeric_usd": 30.0,
+    "numeric_bcv": 35.0,
     "image": "photos/photo_565@29-09-2026_22-47-31.jpg",
     "thumb": "photos/photo_565@29-09-2026_22-47-31_thumb.jpg",
     "gallery": [],
@@ -361,7 +383,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Brazalete Chrome Hearts Mod. 7",
+    "price": 30.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_565@29-09-2026_22-47-31.jpg",
+    "available": true
   },
   {
     "id": "BOL-008",
@@ -371,8 +397,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "30$ USD",
     "price_bcv": "35$ BCV",
-    "numeric_usd": 30,
-    "numeric_bcv": 35,
+    "numeric_usd": 30.0,
+    "numeric_bcv": 35.0,
     "image": "photos/photo_566@29-09-2026_22-47-31.jpg",
     "thumb": "photos/photo_566@29-09-2026_22-47-31_thumb.jpg",
     "gallery": [],
@@ -385,7 +411,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Brazalete Chrome Hearts Mod. 8",
+    "price": 30.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_566@29-09-2026_22-47-31.jpg",
+    "available": true
   },
   {
     "id": "BOL-009",
@@ -395,8 +425,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "30$ USD",
     "price_bcv": "35$ BCV",
-    "numeric_usd": 30,
-    "numeric_bcv": 35,
+    "numeric_usd": 30.0,
+    "numeric_bcv": 35.0,
     "image": "photos/photo_567@29-09-2026_22-47-31.jpg",
     "thumb": "photos/photo_567@29-09-2026_22-47-31_thumb.jpg",
     "gallery": [],
@@ -409,7 +439,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Brazalete Chrome Hearts Mod. 9",
+    "price": 30.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_567@29-09-2026_22-47-31.jpg",
+    "available": true
   },
   {
     "id": "BOL-011",
@@ -419,8 +453,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "20$ USD",
     "price_bcv": "25$ BCV",
-    "numeric_usd": 20,
-    "numeric_bcv": 25,
+    "numeric_usd": 20.0,
+    "numeric_bcv": 25.0,
     "image": "photos/photo_569@30-09-2026_10-36-37.jpg",
     "thumb": "photos/photo_569@30-09-2026_10-36-37_thumb.jpg",
     "gallery": [],
@@ -433,7 +467,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Lentes Chrome Hearts Standard Mod. 11",
+    "price": 20.0,
+    "description": "Acetato premium & detalles metálicos",
+    "image_url": "photos/photo_569@30-09-2026_10-36-37.jpg",
+    "available": true
   },
   {
     "id": "BOL-013",
@@ -443,8 +481,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "20$ USD",
     "price_bcv": "25$ BCV",
-    "numeric_usd": 20,
-    "numeric_bcv": 25,
+    "numeric_usd": 20.0,
+    "numeric_bcv": 25.0,
     "image": "photos/photo_571@30-09-2026_10-36-37.jpg",
     "thumb": "photos/photo_571@30-09-2026_10-36-37_thumb.jpg",
     "gallery": [
@@ -459,7 +497,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Lentes Chrome Hearts Standard Mod. 13",
+    "price": 20.0,
+    "description": "Acetato premium & detalles metálicos",
+    "image_url": "photos/photo_571@30-09-2026_10-36-37.jpg",
+    "available": true
   },
   {
     "id": "BOL-015",
@@ -469,8 +511,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "20$ USD",
     "price_bcv": "25$ BCV",
-    "numeric_usd": 20,
-    "numeric_bcv": 25,
+    "numeric_usd": 20.0,
+    "numeric_bcv": 25.0,
     "image": "photos/photo_573@30-09-2026_10-36-37.jpg",
     "thumb": "photos/photo_573@30-09-2026_10-36-37_thumb.jpg",
     "gallery": [
@@ -485,7 +527,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Lentes Chrome Hearts Standard Mod. 15",
+    "price": 20.0,
+    "description": "Acetato premium & detalles metálicos",
+    "image_url": "photos/photo_573@30-09-2026_10-36-37.jpg",
+    "available": true
   },
   {
     "id": "BOL-016",
@@ -495,8 +541,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "20$ USD",
     "price_bcv": "25$ BCV",
-    "numeric_usd": 20,
-    "numeric_bcv": 25,
+    "numeric_usd": 20.0,
+    "numeric_bcv": 25.0,
     "image": "photos/photo_574@30-09-2026_10-36-37.jpg",
     "thumb": "photos/photo_574@30-09-2026_10-36-37_thumb.jpg",
     "gallery": [
@@ -511,7 +557,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Lentes Chrome Hearts Standard Mod. 16",
+    "price": 20.0,
+    "description": "Acetato premium & detalles metálicos",
+    "image_url": "photos/photo_574@30-09-2026_10-36-37.jpg",
+    "available": true
   },
   {
     "id": "BOL-020",
@@ -521,8 +571,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "25$ USD",
     "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
     "image": "photos/photo_578@30-09-2026_10-39-18.jpg",
     "thumb": "photos/photo_578@30-09-2026_10-39-18_thumb.jpg",
     "gallery": [
@@ -538,7 +588,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Lentes Chrome Hearts Exclusivos Mod. 20",
+    "price": 25.0,
+    "description": "Armazón labrado & lunas UV400",
+    "image_url": "photos/photo_578@30-09-2026_10-39-18.jpg",
+    "available": true
   },
   {
     "id": "BOL-021",
@@ -548,8 +602,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "25$ USD",
     "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
     "image": "photos/photo_579@30-09-2026_10-39-18.jpg",
     "thumb": "photos/photo_579@30-09-2026_10-39-18_thumb.jpg",
     "gallery": [
@@ -564,7 +618,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Lentes Chrome Hearts Exclusivos Mod. 21",
+    "price": 25.0,
+    "description": "Armazón labrado & lunas UV400",
+    "image_url": "photos/photo_579@30-09-2026_10-39-18.jpg",
+    "available": true
   },
   {
     "id": "BOL-023",
@@ -574,8 +632,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "25$ USD",
     "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
     "image": "photos/photo_581@30-09-2026_10-39-18.jpg",
     "thumb": "photos/photo_581@30-09-2026_10-39-18_thumb.jpg",
     "gallery": [],
@@ -588,7 +646,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Lentes Chrome Hearts Exclusivos Mod. 23",
+    "price": 25.0,
+    "description": "Armazón labrado & lunas UV400",
+    "image_url": "photos/photo_581@30-09-2026_10-39-18.jpg",
+    "available": true
   },
   {
     "id": "BOL-024",
@@ -598,8 +660,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "25$ USD",
     "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
     "image": "photos/photo_582@30-09-2026_10-39-18.jpg",
     "thumb": "photos/photo_582@30-09-2026_10-39-18_thumb.jpg",
     "gallery": [],
@@ -612,7 +674,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Lentes Chrome Hearts Exclusivos Mod. 24",
+    "price": 25.0,
+    "description": "Armazón labrado & lunas UV400",
+    "image_url": "photos/photo_582@30-09-2026_10-39-18.jpg",
+    "available": true
   },
   {
     "id": "BOL-025",
@@ -622,8 +688,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "25$ USD",
     "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
     "image": "photos/photo_583@30-09-2026_10-39-18.jpg",
     "thumb": "photos/photo_583@30-09-2026_10-39-18_thumb.jpg",
     "gallery": [],
@@ -636,7 +702,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Lentes Chrome Hearts Exclusivos Mod. 25",
+    "price": 25.0,
+    "description": "Armazón labrado & lunas UV400",
+    "image_url": "photos/photo_583@30-09-2026_10-39-18.jpg",
+    "available": true
   },
   {
     "id": "BOL-026",
@@ -646,8 +716,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "25$ USD",
     "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
     "image": "photos/photo_584@30-09-2026_10-39-18.jpg",
     "thumb": "photos/photo_584@30-09-2026_10-39-18_thumb.jpg",
     "gallery": [],
@@ -660,7 +730,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Lentes Chrome Hearts Exclusivos Mod. 26",
+    "price": 25.0,
+    "description": "Armazón labrado & lunas UV400",
+    "image_url": "photos/photo_584@30-09-2026_10-39-18.jpg",
+    "available": true
   },
   {
     "id": "BOL-027",
@@ -670,8 +744,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "25$ USD",
     "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
     "image": "photos/photo_585@30-09-2026_10-39-18.jpg",
     "thumb": "photos/photo_585@30-09-2026_10-39-18_thumb.jpg",
     "gallery": [],
@@ -684,7 +758,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Lentes Chrome Hearts Exclusivos Mod. 27",
+    "price": 25.0,
+    "description": "Armazón labrado & lunas UV400",
+    "image_url": "photos/photo_585@30-09-2026_10-39-18.jpg",
+    "available": true
   },
   {
     "id": "BOL-029",
@@ -694,8 +772,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "25$ USD",
     "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
     "image": "photos/photo_587@30-09-2026_10-44-54.jpg",
     "thumb": "photos/photo_587@30-09-2026_10-44-54_thumb.jpg",
     "gallery": [
@@ -710,7 +788,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Lentes Chrome Hearts Exclusivos Mod. 29",
+    "price": 25.0,
+    "description": "Armazón labrado & lunas UV400",
+    "image_url": "photos/photo_587@30-09-2026_10-44-54.jpg",
+    "available": true
   },
   {
     "id": "BOL-030",
@@ -720,8 +802,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "25$ USD",
     "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
     "image": "photos/photo_588@30-09-2026_10-54-53.jpg",
     "thumb": "photos/photo_588@30-09-2026_10-54-53_thumb.jpg",
     "gallery": [
@@ -736,7 +818,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Lentes Chrome Hearts Exclusivos Mod. 30",
+    "price": 25.0,
+    "description": "Armazón labrado & lunas UV400",
+    "image_url": "photos/photo_588@30-09-2026_10-54-53.jpg",
+    "available": true
   },
   {
     "id": "BOL-032",
@@ -746,8 +832,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "25$ USD",
     "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
     "image": "photos/photo_590@30-09-2026_10-57-11.jpg",
     "thumb": "photos/photo_590@30-09-2026_10-57-11_thumb.jpg",
     "gallery": [
@@ -762,7 +848,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Lentes Chrome Hearts Exclusivos Mod. 32",
+    "price": 25.0,
+    "description": "Armazón labrado & lunas UV400",
+    "image_url": "photos/photo_590@30-09-2026_10-57-11.jpg",
+    "available": true
   },
   {
     "id": "BOL-035",
@@ -772,8 +862,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "25$ USD",
     "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
     "image": "photos/photo_593@30-09-2026_10-59-54.jpg",
     "thumb": "photos/photo_593@30-09-2026_10-59-54_thumb.jpg",
     "gallery": [
@@ -788,7 +878,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Lentes Chrome Hearts Exclusivos Mod. 35",
+    "price": 25.0,
+    "description": "Armazón labrado & lunas UV400",
+    "image_url": "photos/photo_593@30-09-2026_10-59-54.jpg",
+    "available": true
   },
   {
     "id": "BOL-037",
@@ -798,8 +892,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "25$ USD",
     "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
     "image": "photos/photo_595@30-09-2026_11-00-37.jpg",
     "thumb": "photos/photo_595@30-09-2026_11-00-37_thumb.jpg",
     "gallery": [
@@ -814,7 +908,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Lentes Chrome Hearts Exclusivos Mod. 37",
+    "price": 25.0,
+    "description": "Armazón labrado & lunas UV400",
+    "image_url": "photos/photo_595@30-09-2026_11-00-37.jpg",
+    "available": true
   },
   {
     "id": "BOL-039",
@@ -824,8 +922,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_597@01-10-2026_00-45-33.jpg",
     "thumb": "photos/photo_597@01-10-2026_00-45-33_thumb.jpg",
     "gallery": [],
@@ -842,7 +940,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Anillo Chrome Hearts Mod. 39",
+    "price": 18.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_597@01-10-2026_00-45-33.jpg",
+    "available": true
   },
   {
     "id": "BOL-040",
@@ -852,8 +954,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_598@01-10-2026_00-45-38.jpg",
     "thumb": "photos/photo_598@01-10-2026_00-45-38_thumb.jpg",
     "gallery": [],
@@ -870,7 +972,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Anillo Chrome Hearts Mod. 40",
+    "price": 18.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_598@01-10-2026_00-45-38.jpg",
+    "available": true
   },
   {
     "id": "BOL-041",
@@ -880,8 +986,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_599@01-10-2026_00-45-56.jpg",
     "thumb": "photos/photo_599@01-10-2026_00-45-56_thumb.jpg",
     "gallery": [
@@ -900,7 +1006,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Anillo Chrome Hearts Mod. 41",
+    "price": 18.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_599@01-10-2026_00-45-56.jpg",
+    "available": true
   },
   {
     "id": "BOL-043",
@@ -910,8 +1020,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_601@01-10-2026_00-46-07.jpg",
     "thumb": "photos/photo_601@01-10-2026_00-46-07_thumb.jpg",
     "gallery": [],
@@ -928,7 +1038,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Anillo Chrome Hearts Mod. 43",
+    "price": 18.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_601@01-10-2026_00-46-07.jpg",
+    "available": true
   },
   {
     "id": "BOL-044",
@@ -938,8 +1052,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_602@01-10-2026_00-46-13.jpg",
     "thumb": "photos/photo_602@01-10-2026_00-46-13_thumb.jpg",
     "gallery": [],
@@ -956,7 +1070,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Anillo Chrome Hearts Mod. 44",
+    "price": 18.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_602@01-10-2026_00-46-13.jpg",
+    "available": true
   },
   {
     "id": "BOL-045",
@@ -966,8 +1084,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_603@01-10-2026_00-46-18.jpg",
     "thumb": "photos/photo_603@01-10-2026_00-46-18_thumb.jpg",
     "gallery": [],
@@ -984,7 +1102,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Anillo Chrome Hearts Mod. 45",
+    "price": 18.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_603@01-10-2026_00-46-18.jpg",
+    "available": true
   },
   {
     "id": "BOL-046",
@@ -994,8 +1116,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_604@01-10-2026_00-46-26.jpg",
     "thumb": "photos/photo_604@01-10-2026_00-46-26_thumb.jpg",
     "gallery": [],
@@ -1012,7 +1134,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Anillo Chrome Hearts Mod. 46",
+    "price": 18.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_604@01-10-2026_00-46-26.jpg",
+    "available": true
   },
   {
     "id": "BOL-047",
@@ -1022,8 +1148,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_605@01-10-2026_00-46-31.jpg",
     "thumb": "photos/photo_605@01-10-2026_00-46-31_thumb.jpg",
     "gallery": [],
@@ -1040,7 +1166,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Anillo Chrome Hearts Mod. 47",
+    "price": 18.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_605@01-10-2026_00-46-31.jpg",
+    "available": true
   },
   {
     "id": "BOL-048",
@@ -1050,8 +1180,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_606@01-10-2026_00-48-32.jpg",
     "thumb": "photos/photo_606@01-10-2026_00-48-32_thumb.jpg",
     "gallery": [],
@@ -1068,7 +1198,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Anillo Chrome Hearts Mod. 48",
+    "price": 18.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_606@01-10-2026_00-48-32.jpg",
+    "available": true
   },
   {
     "id": "BOL-049",
@@ -1078,8 +1212,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_607@01-10-2026_00-49-02.jpg",
     "thumb": "photos/photo_607@01-10-2026_00-49-02_thumb.jpg",
     "gallery": [],
@@ -1096,7 +1230,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Anillo Chrome Hearts Mod. 49",
+    "price": 18.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_607@01-10-2026_00-49-02.jpg",
+    "available": true
   },
   {
     "id": "BOL-050",
@@ -1106,8 +1244,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_608@01-10-2026_00-50-01.jpg",
     "thumb": "photos/photo_608@01-10-2026_00-50-01_thumb.jpg",
     "gallery": [],
@@ -1124,7 +1262,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Anillo Chrome Hearts Mod. 50",
+    "price": 18.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_608@01-10-2026_00-50-01.jpg",
+    "available": true
   },
   {
     "id": "BOL-051",
@@ -1134,8 +1276,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_609@01-10-2026_00-50-23.jpg",
     "thumb": "photos/photo_609@01-10-2026_00-50-23_thumb.jpg",
     "gallery": [],
@@ -1152,7 +1294,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Anillo Chrome Hearts Mod. 51",
+    "price": 18.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_609@01-10-2026_00-50-23.jpg",
+    "available": true
   },
   {
     "id": "BOL-052",
@@ -1162,8 +1308,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_610@01-10-2026_00-50-50.jpg",
     "thumb": "photos/photo_610@01-10-2026_00-50-50_thumb.jpg",
     "gallery": [],
@@ -1180,7 +1326,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Anillo Chrome Hearts Mod. 52",
+    "price": 18.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_610@01-10-2026_00-50-50.jpg",
+    "available": true
   },
   {
     "id": "BOL-053",
@@ -1190,8 +1340,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_611@01-10-2026_00-51-11.jpg",
     "thumb": "photos/photo_611@01-10-2026_00-51-11_thumb.jpg",
     "gallery": [],
@@ -1208,7 +1358,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Anillo Chrome Hearts Mod. 53",
+    "price": 18.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_611@01-10-2026_00-51-11.jpg",
+    "available": true
   },
   {
     "id": "BOL-054",
@@ -1218,8 +1372,8 @@
     "brand": "Maison Margiela",
     "price_usd": "30$ USD",
     "price_bcv": "35$ BCV",
-    "numeric_usd": 30,
-    "numeric_bcv": 35,
+    "numeric_usd": 30.0,
+    "numeric_bcv": 35.0,
     "image": "photos/photo_612@01-10-2026_02-01-23.jpg",
     "thumb": "photos/photo_612@01-10-2026_02-01-23_thumb.jpg",
     "gallery": [],
@@ -1232,7 +1386,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Brazalete Maison Margiela Numbers Mod. 54",
+    "price": 30.0,
+    "description": "Acero de titanio",
+    "image_url": "photos/photo_612@01-10-2026_02-01-23.jpg",
+    "available": true
   },
   {
     "id": "BOL-055",
@@ -1242,8 +1400,8 @@
     "brand": "Maison Margiela",
     "price_usd": "25$ USD",
     "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
     "image": "photos/photo_613@01-10-2026_02-03-10.jpg",
     "thumb": "photos/photo_613@01-10-2026_02-03-10_thumb.jpg",
     "gallery": [],
@@ -1256,7 +1414,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Brazalete Maison Margiela Numbers Mod. 55",
+    "price": 25.0,
+    "description": "Acero de titanio",
+    "image_url": "photos/photo_613@01-10-2026_02-03-10.jpg",
+    "available": true
   },
   {
     "id": "BOL-056",
@@ -1266,8 +1428,8 @@
     "brand": "Maison Margiela",
     "price_usd": "30$ USD",
     "price_bcv": "35$ BCV",
-    "numeric_usd": 30,
-    "numeric_bcv": 35,
+    "numeric_usd": 30.0,
+    "numeric_bcv": 35.0,
     "image": "photos/photo_614@01-10-2026_02-13-22.jpg",
     "thumb": "photos/photo_614@01-10-2026_02-13-22_thumb.jpg",
     "gallery": [],
@@ -1282,7 +1444,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Anillo Maison Margiela Numeric Mod. 56",
+    "price": 30.0,
+    "description": "Acero de titanio",
+    "image_url": "photos/photo_614@01-10-2026_02-13-22.jpg",
+    "available": true
   },
   {
     "id": "BOL-057",
@@ -1292,8 +1458,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "28$ USD",
     "price_bcv": "32$ BCV",
-    "numeric_usd": 28,
-    "numeric_bcv": 32,
+    "numeric_usd": 28.0,
+    "numeric_bcv": 32.0,
     "image": "photos/photo_615@01-10-2026_02-22-33.jpg",
     "thumb": "photos/photo_615@01-10-2026_02-22-33_thumb.jpg",
     "gallery": [],
@@ -1307,7 +1473,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Cadena Chrome Hearts Gothic Cross Mod. 57",
+    "price": 28.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_615@01-10-2026_02-22-33.jpg",
+    "available": true
   },
   {
     "id": "BOL-058",
@@ -1317,8 +1487,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "28$ USD",
     "price_bcv": "32$ BCV",
-    "numeric_usd": 28,
-    "numeric_bcv": 32,
+    "numeric_usd": 28.0,
+    "numeric_bcv": 32.0,
     "image": "photos/photo_616@01-10-2026_02-22-42.jpg",
     "thumb": "photos/photo_616@01-10-2026_02-22-42_thumb.jpg",
     "gallery": [],
@@ -1332,7 +1502,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Cadena Chrome Hearts Gothic Cross Mod. 58",
+    "price": 28.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_616@01-10-2026_02-22-42.jpg",
+    "available": true
   },
   {
     "id": "BOL-059",
@@ -1342,8 +1516,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "28$ USD",
     "price_bcv": "32$ BCV",
-    "numeric_usd": 28,
-    "numeric_bcv": 32,
+    "numeric_usd": 28.0,
+    "numeric_bcv": 32.0,
     "image": "photos/photo_617@01-10-2026_02-22-58.jpg",
     "thumb": "photos/photo_617@01-10-2026_02-22-58_thumb.jpg",
     "gallery": [],
@@ -1357,7 +1531,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Cadena Chrome Hearts Gothic Cross Mod. 59",
+    "price": 28.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_617@01-10-2026_02-22-58.jpg",
+    "available": true
   },
   {
     "id": "BOL-060",
@@ -1367,8 +1545,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "28$ USD",
     "price_bcv": "32$ BCV",
-    "numeric_usd": 28,
-    "numeric_bcv": 32,
+    "numeric_usd": 28.0,
+    "numeric_bcv": 32.0,
     "image": "photos/photo_618@01-10-2026_02-23-26.jpg",
     "thumb": "photos/photo_618@01-10-2026_02-23-26_thumb.jpg",
     "gallery": [],
@@ -1382,7 +1560,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Cadena Chrome Hearts Gothic Cross Mod. 60",
+    "price": 28.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_618@01-10-2026_02-23-26.jpg",
+    "available": true
   },
   {
     "id": "BOL-061",
@@ -1392,8 +1574,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "28$ USD",
     "price_bcv": "32$ BCV",
-    "numeric_usd": 28,
-    "numeric_bcv": 32,
+    "numeric_usd": 28.0,
+    "numeric_bcv": 32.0,
     "image": "photos/photo_619@01-10-2026_02-23-53.jpg",
     "thumb": "photos/photo_619@01-10-2026_02-23-53_thumb.jpg",
     "gallery": [],
@@ -1407,7 +1589,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Cadena Chrome Hearts Gothic Cross Mod. 61",
+    "price": 28.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_619@01-10-2026_02-23-53.jpg",
+    "available": true
   },
   {
     "id": "BOL-062",
@@ -1417,8 +1603,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "28$ USD",
     "price_bcv": "32$ BCV",
-    "numeric_usd": 28,
-    "numeric_bcv": 32,
+    "numeric_usd": 28.0,
+    "numeric_bcv": 32.0,
     "image": "photos/photo_620@01-10-2026_02-28-55.jpg",
     "thumb": "photos/photo_620@01-10-2026_02-28-55_thumb.jpg",
     "gallery": [],
@@ -1432,7 +1618,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Cadena Chrome Hearts Gothic Cross Mod. 62",
+    "price": 28.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_620@01-10-2026_02-28-55.jpg",
+    "available": true
   },
   {
     "id": "BOL-063",
@@ -1442,8 +1632,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "28$ USD",
     "price_bcv": "32$ BCV",
-    "numeric_usd": 28,
-    "numeric_bcv": 32,
+    "numeric_usd": 28.0,
+    "numeric_bcv": 32.0,
     "image": "photos/photo_621@01-10-2026_02-29-19.jpg",
     "thumb": "photos/photo_621@01-10-2026_02-29-19_thumb.jpg",
     "gallery": [],
@@ -1457,7 +1647,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Cadena Chrome Hearts Gothic Cross Mod. 63",
+    "price": 28.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_621@01-10-2026_02-29-19.jpg",
+    "available": true
   },
   {
     "id": "BOL-064",
@@ -1467,8 +1661,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "28$ USD",
     "price_bcv": "32$ BCV",
-    "numeric_usd": 28,
-    "numeric_bcv": 32,
+    "numeric_usd": 28.0,
+    "numeric_bcv": 32.0,
     "image": "photos/photo_622@01-10-2026_02-29-53.jpg",
     "thumb": "photos/photo_622@01-10-2026_02-29-53_thumb.jpg",
     "gallery": [],
@@ -1482,7 +1676,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Cadena Chrome Hearts Gothic Cross Mod. 64",
+    "price": 28.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_622@01-10-2026_02-29-53.jpg",
+    "available": true
   },
   {
     "id": "BOL-065",
@@ -1492,8 +1690,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "28$ USD",
     "price_bcv": "32$ BCV",
-    "numeric_usd": 28,
-    "numeric_bcv": 32,
+    "numeric_usd": 28.0,
+    "numeric_bcv": 32.0,
     "image": "photos/photo_623@01-10-2026_02-30-24.jpg",
     "thumb": "photos/photo_623@01-10-2026_02-30-24_thumb.jpg",
     "gallery": [],
@@ -1507,7 +1705,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Cadena Chrome Hearts Gothic Cross Mod. 65",
+    "price": 28.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_623@01-10-2026_02-30-24.jpg",
+    "available": true
   },
   {
     "id": "BOL-066",
@@ -1517,8 +1719,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "28$ USD",
     "price_bcv": "32$ BCV",
-    "numeric_usd": 28,
-    "numeric_bcv": 32,
+    "numeric_usd": 28.0,
+    "numeric_bcv": 32.0,
     "image": "photos/photo_624@01-10-2026_02-31-33.jpg",
     "thumb": "photos/photo_624@01-10-2026_02-31-33_thumb.jpg",
     "gallery": [],
@@ -1532,7 +1734,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Cadena Chrome Hearts Gothic Cross Mod. 66",
+    "price": 28.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_624@01-10-2026_02-31-33.jpg",
+    "available": true
   },
   {
     "id": "BOL-067",
@@ -1542,8 +1748,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "28$ USD",
     "price_bcv": "32$ BCV",
-    "numeric_usd": 28,
-    "numeric_bcv": 32,
+    "numeric_usd": 28.0,
+    "numeric_bcv": 32.0,
     "image": "photos/photo_625@01-10-2026_02-32-13.jpg",
     "thumb": "photos/photo_625@01-10-2026_02-32-13_thumb.jpg",
     "gallery": [],
@@ -1557,7 +1763,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Cadena Chrome Hearts Gothic Cross Mod. 67",
+    "price": 28.0,
+    "description": "Acero + Plata 905",
+    "image_url": "photos/photo_625@01-10-2026_02-32-13.jpg",
+    "available": true
   },
   {
     "id": "BOL-068",
@@ -1567,8 +1777,8 @@
     "brand": "Eric Emanuel / Bape",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_626@01-10-2026_10-09-02.jpg",
     "thumb": "photos/photo_626@01-10-2026_10-09-02_thumb.jpg",
     "gallery": [],
@@ -1584,7 +1794,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 68",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_626@01-10-2026_10-09-02.jpg",
+    "available": true
   },
   {
     "id": "BOL-069",
@@ -1594,8 +1808,8 @@
     "brand": "Ryoko Rain / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_627@01-10-2026_10-09-02.jpg",
     "thumb": "photos/photo_627@01-10-2026_10-09-02_thumb.jpg",
     "gallery": [],
@@ -1611,7 +1825,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 69",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_627@01-10-2026_10-09-02.jpg",
+    "available": true
   },
   {
     "id": "BOL-070",
@@ -1621,8 +1839,8 @@
     "brand": "Eric Emanuel / Bape",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_628@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_628@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -1638,7 +1856,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 70",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_628@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-071",
@@ -1648,8 +1870,8 @@
     "brand": "Ryoko Rain / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_629@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_629@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -1665,7 +1887,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 71",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_629@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-072",
@@ -1675,8 +1901,8 @@
     "brand": "Inka Power / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_630@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_630@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -1692,7 +1918,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 72",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_630@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-073",
@@ -1702,8 +1932,8 @@
     "brand": "Inka Power / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_631@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_631@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -1719,7 +1949,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 73",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_631@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-074",
@@ -1729,8 +1963,8 @@
     "brand": "Ryoko Rain / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_632@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_632@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -1746,7 +1980,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 74",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_632@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-075",
@@ -1756,8 +1994,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_633@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_633@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -1773,7 +2011,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 75",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_633@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-076",
@@ -1783,8 +2025,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_634@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_634@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -1800,7 +2042,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 76",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_634@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-077",
@@ -1810,8 +2056,8 @@
     "brand": "Inka Power / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_635@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_635@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -1827,7 +2073,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 77",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_635@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-078",
@@ -1837,8 +2087,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_636@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_636@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -1854,7 +2104,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 78",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_636@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-079",
@@ -1864,8 +2118,8 @@
     "brand": "Inka Power / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_637@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_637@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -1881,7 +2135,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 79",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_637@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-080",
@@ -1891,8 +2149,8 @@
     "brand": "Kinetic / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_638@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_638@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -1908,7 +2166,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 80",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_638@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-081",
@@ -1918,8 +2180,8 @@
     "brand": "Inka Power / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_639@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_639@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -1935,7 +2197,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 81",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_639@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-082",
@@ -1945,8 +2211,8 @@
     "brand": "Kinetic / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_640@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_640@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -1962,7 +2228,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 82",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_640@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-083",
@@ -1972,8 +2242,8 @@
     "brand": "Ryoko Rain / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_641@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_641@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -1989,7 +2259,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 83",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_641@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-084",
@@ -1999,8 +2273,8 @@
     "brand": "Ryoko Rain / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_642@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_642@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -2016,7 +2290,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 84",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_642@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-085",
@@ -2026,8 +2304,8 @@
     "brand": "Kinetic / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_643@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_643@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -2043,7 +2321,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 85",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_643@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-086",
@@ -2053,8 +2335,8 @@
     "brand": "Kinetic / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_644@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_644@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -2070,7 +2352,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 86",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_644@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-087",
@@ -2080,8 +2366,8 @@
     "brand": "Kinetic / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_645@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_645@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -2097,7 +2383,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 87",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_645@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-088",
@@ -2107,8 +2397,8 @@
     "brand": "Kinetic / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_646@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_646@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -2124,7 +2414,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 88",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_646@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-089",
@@ -2134,8 +2428,8 @@
     "brand": "Kinetic / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_647@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_647@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -2151,7 +2445,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 89",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_647@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-090",
@@ -2161,8 +2459,8 @@
     "brand": "Kinetic / Streetwear",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_648@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_648@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -2178,7 +2476,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 90",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_648@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-091",
@@ -2188,8 +2490,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_649@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_649@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -2205,7 +2507,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 91",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_649@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-092",
@@ -2215,8 +2521,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_650@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_650@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -2232,7 +2538,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 92",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_650@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-093",
@@ -2242,8 +2552,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_651@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_651@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -2259,7 +2569,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 93",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_651@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-094",
@@ -2269,8 +2583,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_652@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_652@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -2286,7 +2600,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 94",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_652@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-095",
@@ -2296,8 +2614,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_653@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_653@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -2313,7 +2631,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 95",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_653@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-096",
@@ -2323,8 +2645,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_654@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_654@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -2340,7 +2662,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 96",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_654@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-097",
@@ -2350,8 +2676,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_655@01-10-2026_10-09-03.jpg",
     "thumb": "photos/photo_655@01-10-2026_10-09-03_thumb.jpg",
     "gallery": [],
@@ -2367,7 +2693,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 97",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_655@01-10-2026_10-09-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-098",
@@ -2377,8 +2707,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_656@01-10-2026_10-09-07.jpg",
     "thumb": "photos/photo_656@01-10-2026_10-09-07_thumb.jpg",
     "gallery": [],
@@ -2394,7 +2724,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 98",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_656@01-10-2026_10-09-07.jpg",
+    "available": true
   },
   {
     "id": "BOL-099",
@@ -2404,8 +2738,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_657@01-10-2026_10-09-07.jpg",
     "thumb": "photos/photo_657@01-10-2026_10-09-07_thumb.jpg",
     "gallery": [],
@@ -2421,7 +2755,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 99",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_657@01-10-2026_10-09-07.jpg",
+    "available": true
   },
   {
     "id": "BOL-100",
@@ -2431,8 +2769,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_658@01-10-2026_10-09-07.jpg",
     "thumb": "photos/photo_658@01-10-2026_10-09-07_thumb.jpg",
     "gallery": [],
@@ -2448,7 +2786,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 100",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_658@01-10-2026_10-09-07.jpg",
+    "available": true
   },
   {
     "id": "BOL-101",
@@ -2458,8 +2800,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_659@01-10-2026_10-09-07.jpg",
     "thumb": "photos/photo_659@01-10-2026_10-09-07_thumb.jpg",
     "gallery": [],
@@ -2475,7 +2817,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 101",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_659@01-10-2026_10-09-07.jpg",
+    "available": true
   },
   {
     "id": "BOL-102",
@@ -2485,8 +2831,8 @@
     "brand": "Eric Emanuel / Bape",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_660@01-10-2026_10-09-07.jpg",
     "thumb": "photos/photo_660@01-10-2026_10-09-07_thumb.jpg",
     "gallery": [],
@@ -2502,7 +2848,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 102",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_660@01-10-2026_10-09-07.jpg",
+    "available": true
   },
   {
     "id": "BOL-103",
@@ -2512,8 +2862,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_661@01-10-2026_10-09-07.jpg",
     "thumb": "photos/photo_661@01-10-2026_10-09-07_thumb.jpg",
     "gallery": [],
@@ -2529,7 +2879,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 103",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_661@01-10-2026_10-09-07.jpg",
+    "available": true
   },
   {
     "id": "BOL-104",
@@ -2539,8 +2893,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_662@01-10-2026_10-09-07.jpg",
     "thumb": "photos/photo_662@01-10-2026_10-09-07_thumb.jpg",
     "gallery": [],
@@ -2556,7 +2910,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 104",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_662@01-10-2026_10-09-07.jpg",
+    "available": true
   },
   {
     "id": "BOL-105",
@@ -2566,8 +2924,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_663@01-10-2026_10-09-07.jpg",
     "thumb": "photos/photo_663@01-10-2026_10-09-07_thumb.jpg",
     "gallery": [],
@@ -2583,7 +2941,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 105",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_663@01-10-2026_10-09-07.jpg",
+    "available": true
   },
   {
     "id": "BOL-106",
@@ -2593,8 +2955,8 @@
     "brand": "Eric Emanuel / Streetwear",
     "price_usd": "18$ USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_664@01-10-2026_10-09-07.jpg",
     "thumb": "photos/photo_664@01-10-2026_10-09-07_thumb.jpg",
     "gallery": [],
@@ -2610,7 +2972,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 106",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_664@01-10-2026_10-09-07.jpg",
+    "available": true
   },
   {
     "id": "BOL-107",
@@ -2620,8 +2986,8 @@
     "brand": "Eric Emanuel / Bape",
     "price_usd": "$18 USD",
     "price_bcv": "20$ BCV",
-    "numeric_usd": 18,
-    "numeric_bcv": 20,
+    "numeric_usd": 18.0,
+    "numeric_bcv": 20.0,
     "image": "photos/photo_665@01-10-2026_10-09-07.jpg",
     "thumb": "photos/photo_665@01-10-2026_10-09-07_thumb.jpg",
     "gallery": [],
@@ -2637,7 +3003,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Shorts Mesh Streetwear Mod. 107",
+    "price": 18.0,
+    "description": "Double-layer Polyester Mesh",
+    "image_url": "photos/photo_665@01-10-2026_10-09-07.jpg",
+    "available": true
   },
   {
     "id": "BOL-108",
@@ -2647,8 +3017,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "15$ USD",
     "price_bcv": "18$ BCV",
-    "numeric_usd": 15,
-    "numeric_bcv": 18,
+    "numeric_usd": 15.0,
+    "numeric_bcv": 18.0,
     "image": "photos/photo_666@01-10-2026_10-29-49.jpg",
     "thumb": "photos/photo_666@01-10-2026_10-29-49_thumb.jpg",
     "gallery": [],
@@ -2661,7 +3031,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Chain Silicona Chrome Hearts Mod. 108",
+    "price": 15.0,
+    "description": "Silicona grabada de alta resistencia",
+    "image_url": "photos/photo_666@01-10-2026_10-29-49.jpg",
+    "available": true
   },
   {
     "id": "BOL-109",
@@ -2671,8 +3045,8 @@
     "brand": "Chrome Hearts",
     "price_usd": "15$ USD",
     "price_bcv": "18$ BCV",
-    "numeric_usd": 15,
-    "numeric_bcv": 18,
+    "numeric_usd": 15.0,
+    "numeric_bcv": 18.0,
     "image": "photos/photo_667@01-10-2026_10-29-49.jpg",
     "thumb": "photos/photo_667@01-10-2026_10-29-49_thumb.jpg",
     "gallery": [],
@@ -2685,7 +3059,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Chain Silicona Chrome Hearts Mod. 109",
+    "price": 15.0,
+    "description": "Silicona grabada de alta resistencia",
+    "image_url": "photos/photo_667@01-10-2026_10-29-49.jpg",
+    "available": true
   },
   {
     "id": "BOL-110",
@@ -2695,8 +3073,8 @@
     "brand": "Designer Cases",
     "price_usd": "$12 USD",
     "price_bcv": "15$ BCV",
-    "numeric_usd": 12,
-    "numeric_bcv": 15,
+    "numeric_usd": 12.0,
+    "numeric_bcv": 15.0,
     "image": "photos/photo_668@01-10-2026_23-15-01.jpg",
     "thumb": "photos/photo_668@01-10-2026_23-15-01_thumb.jpg",
     "gallery": [],
@@ -2713,7 +3091,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Case iPhone Goyard Series Mod. 110",
+    "price": 12.0,
+    "description": "Cuero vegano / TPU anti-impacto",
+    "image_url": "photos/photo_668@01-10-2026_23-15-01.jpg",
+    "available": true
   },
   {
     "id": "BOL-111",
@@ -2723,8 +3105,8 @@
     "brand": "Designer Cases",
     "price_usd": "$12 USD",
     "price_bcv": "15$ BCV",
-    "numeric_usd": 12,
-    "numeric_bcv": 15,
+    "numeric_usd": 12.0,
+    "numeric_bcv": 15.0,
     "image": "photos/photo_669@01-10-2026_23-15-26.jpg",
     "thumb": "photos/photo_669@01-10-2026_23-15-26_thumb.jpg",
     "gallery": [],
@@ -2741,7 +3123,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Case iPhone Goyard Series Mod. 111",
+    "price": 12.0,
+    "description": "Cuero vegano / TPU anti-impacto",
+    "image_url": "photos/photo_669@01-10-2026_23-15-26.jpg",
+    "available": true
   },
   {
     "id": "BOL-112",
@@ -2751,8 +3137,8 @@
     "brand": "Designer Cases",
     "price_usd": "$12 USD",
     "price_bcv": "15$ BCV",
-    "numeric_usd": 12,
-    "numeric_bcv": 15,
+    "numeric_usd": 12.0,
+    "numeric_bcv": 15.0,
     "image": "photos/photo_670@01-10-2026_23-16-05.jpg",
     "thumb": "photos/photo_670@01-10-2026_23-16-05_thumb.jpg",
     "gallery": [],
@@ -2769,7 +3155,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Case iPhone Stone Island Series Mod. 112",
+    "price": 12.0,
+    "description": "Cuero vegano / TPU anti-impacto",
+    "image_url": "photos/photo_670@01-10-2026_23-16-05.jpg",
+    "available": true
   },
   {
     "id": "BOL-114",
@@ -2779,8 +3169,8 @@
     "brand": "Designer Cases",
     "price_usd": "$12 USD",
     "price_bcv": "15$ BCV",
-    "numeric_usd": 12,
-    "numeric_bcv": 15,
+    "numeric_usd": 12.0,
+    "numeric_bcv": 15.0,
     "image": "photos/photo_672@01-10-2026_23-17-24.jpg",
     "thumb": "photos/photo_672@01-10-2026_23-17-24_thumb.jpg",
     "gallery": [
@@ -2799,7 +3189,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Case iPhone Chrome Hearts Series Mod. 114",
+    "price": 12.0,
+    "description": "Cuero vegano / TPU anti-impacto",
+    "image_url": "photos/photo_672@01-10-2026_23-17-24.jpg",
+    "available": true
   },
   {
     "id": "BOL-115",
@@ -2809,8 +3203,8 @@
     "brand": "Designer Cases",
     "price_usd": "$12 USD",
     "price_bcv": "15$ BCV",
-    "numeric_usd": 12,
-    "numeric_bcv": 15,
+    "numeric_usd": 12.0,
+    "numeric_bcv": 15.0,
     "image": "photos/photo_673@01-10-2026_23-19-02.jpg",
     "thumb": "photos/photo_673@01-10-2026_23-19-02_thumb.jpg",
     "gallery": [],
@@ -2827,7 +3221,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Case iPhone Chrome Hearts Series Mod. 115",
+    "price": 12.0,
+    "description": "Cuero vegano / TPU anti-impacto",
+    "image_url": "photos/photo_673@01-10-2026_23-19-02.jpg",
+    "available": true
   },
   {
     "id": "BOL-116",
@@ -2837,8 +3235,8 @@
     "brand": "Designer Cases",
     "price_usd": "$12 USD",
     "price_bcv": "15$ BCV",
-    "numeric_usd": 12,
-    "numeric_bcv": 15,
+    "numeric_usd": 12.0,
+    "numeric_bcv": 15.0,
     "image": "photos/photo_674@01-10-2026_23-19-45.jpg",
     "thumb": "photos/photo_674@01-10-2026_23-19-45_thumb.jpg",
     "gallery": [],
@@ -2855,7 +3253,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Case iPhone Chrome Hearts Series Mod. 116",
+    "price": 12.0,
+    "description": "Cuero vegano / TPU anti-impacto",
+    "image_url": "photos/photo_674@01-10-2026_23-19-45.jpg",
+    "available": true
   },
   {
     "id": "BOL-117",
@@ -2865,8 +3267,8 @@
     "brand": "Designer Cases",
     "price_usd": "$12 USD",
     "price_bcv": "15$ BCV",
-    "numeric_usd": 12,
-    "numeric_bcv": 15,
+    "numeric_usd": 12.0,
+    "numeric_bcv": 15.0,
     "image": "photos/photo_675@01-10-2026_23-32-10.jpg",
     "thumb": "photos/photo_675@01-10-2026_23-32-10_thumb.jpg",
     "gallery": [],
@@ -2883,7 +3285,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Case iPhone Chrome Hearts Series Mod. 117",
+    "price": 12.0,
+    "description": "Cuero vegano / TPU anti-impacto",
+    "image_url": "photos/photo_675@01-10-2026_23-32-10.jpg",
+    "available": true
   },
   {
     "id": "BOL-118",
@@ -2893,8 +3299,8 @@
     "brand": "Designer Cases",
     "price_usd": "$12 USD",
     "price_bcv": "15$ BCV",
-    "numeric_usd": 12,
-    "numeric_bcv": 15,
+    "numeric_usd": 12.0,
+    "numeric_bcv": 15.0,
     "image": "photos/photo_676@01-10-2026_23-41-02.jpg",
     "thumb": "photos/photo_676@01-10-2026_23-41-02_thumb.jpg",
     "gallery": [],
@@ -2911,7 +3317,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Case iPhone Chrome Hearts Series Mod. 118",
+    "price": 12.0,
+    "description": "Cuero vegano / TPU anti-impacto",
+    "image_url": "photos/photo_676@01-10-2026_23-41-02.jpg",
+    "available": true
   },
   {
     "id": "BOL-119",
@@ -2921,8 +3331,8 @@
     "brand": "Designer Cases",
     "price_usd": "$12 USD",
     "price_bcv": "15$ BCV",
-    "numeric_usd": 12,
-    "numeric_bcv": 15,
+    "numeric_usd": 12.0,
+    "numeric_bcv": 15.0,
     "image": "photos/photo_677@01-10-2026_23-42-36.jpg",
     "thumb": "photos/photo_677@01-10-2026_23-42-36_thumb.jpg",
     "gallery": [],
@@ -2939,7 +3349,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Case iPhone Baby Milo Series Mod. 119",
+    "price": 12.0,
+    "description": "Cuero vegano / TPU anti-impacto",
+    "image_url": "photos/photo_677@01-10-2026_23-42-36.jpg",
+    "available": true
   },
   {
     "id": "BOL-120",
@@ -2949,8 +3363,8 @@
     "brand": "BAPE / Baby Milo",
     "price_usd": "$20 USD",
     "price_bcv": "25$ BCV",
-    "numeric_usd": 20,
-    "numeric_bcv": 25,
+    "numeric_usd": 20.0,
+    "numeric_bcv": 25.0,
     "image": "photos/photo_678@01-10-2026_23-48-03.jpg",
     "thumb": "photos/photo_678@01-10-2026_23-48-03_thumb.jpg",
     "gallery": [
@@ -2965,7 +3379,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Baby Milo Phone Case Bag Mod. 120",
+    "price": 20.0,
+    "description": "Felpa premium & correa bandolera",
+    "image_url": "photos/photo_678@01-10-2026_23-48-03.jpg",
+    "available": true
   },
   {
     "id": "BOL-122",
@@ -2975,8 +3393,8 @@
     "brand": "Corteiz",
     "price_usd": "22$ USD",
     "price_bcv": "25$ BCV",
-    "numeric_usd": 22,
-    "numeric_bcv": 25,
+    "numeric_usd": 22.0,
+    "numeric_bcv": 25.0,
     "image": "photos/photo_680@01-10-2026_23-58-49.jpg",
     "thumb": "photos/photo_680@01-10-2026_23-58-49_thumb.jpg",
     "gallery": [
@@ -2994,7 +3412,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Corteiz Top Tank Guerrilla Mod. 122",
+    "price": 22.0,
+    "description": "100% Algodón Ribbed",
+    "image_url": "photos/photo_680@01-10-2026_23-58-49.jpg",
+    "available": true
   },
   {
     "id": "BOL-126",
@@ -3004,8 +3426,8 @@
     "brand": "Forget Raven",
     "price_usd": "30$ USD",
     "price_bcv": "35$ BCV",
-    "numeric_usd": 30,
-    "numeric_bcv": 35,
+    "numeric_usd": 30.0,
+    "numeric_bcv": 35.0,
     "image": "photos/photo_684@02-10-2026_12-02-01.jpg",
     "thumb": "photos/photo_684@02-10-2026_12-02-01_thumb.jpg",
     "gallery": [
@@ -3022,7 +3444,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Forget Raven Heavyweight Tee Mod. 126",
+    "price": 30.0,
+    "description": "Algodón 280 GSM lavado ácido",
+    "image_url": "photos/photo_684@02-10-2026_12-02-01.jpg",
+    "available": true
   },
   {
     "id": "BOL-127",
@@ -3032,8 +3458,8 @@
     "brand": "Forget Raven",
     "price_usd": "30$ USD",
     "price_bcv": "35$ BCV",
-    "numeric_usd": 30,
-    "numeric_bcv": 35,
+    "numeric_usd": 30.0,
+    "numeric_bcv": 35.0,
     "image": "photos/photo_685@02-10-2026_12-02-13.jpg",
     "thumb": "photos/photo_685@02-10-2026_12-02-13_thumb.jpg",
     "gallery": [],
@@ -3048,7 +3474,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Forget Raven Heavyweight Tee Mod. 127",
+    "price": 30.0,
+    "description": "Algodón 280 GSM lavado ácido",
+    "image_url": "photos/photo_685@02-10-2026_12-02-13.jpg",
+    "available": true
   },
   {
     "id": "BOL-128",
@@ -3058,8 +3488,8 @@
     "brand": "Forget Raven",
     "price_usd": "30$ USD",
     "price_bcv": "35$ BCV",
-    "numeric_usd": 30,
-    "numeric_bcv": 35,
+    "numeric_usd": 30.0,
+    "numeric_bcv": 35.0,
     "image": "photos/photo_686@02-10-2026_12-02-57.jpg",
     "thumb": "photos/photo_686@02-10-2026_12-02-57_thumb.jpg",
     "gallery": [
@@ -3076,7 +3506,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Forget Raven Heavyweight Tee Mod. 128",
+    "price": 30.0,
+    "description": "Algodón 280 GSM lavado ácido",
+    "image_url": "photos/photo_686@02-10-2026_12-02-57.jpg",
+    "available": true
   },
   {
     "id": "BOL-130",
@@ -3086,8 +3520,8 @@
     "brand": "Forget Raven",
     "price_usd": "30$ USD",
     "price_bcv": "35$ BCV",
-    "numeric_usd": 30,
-    "numeric_bcv": 35,
+    "numeric_usd": 30.0,
+    "numeric_bcv": 35.0,
     "image": "photos/photo_688@02-10-2026_12-02-57.jpg",
     "thumb": "photos/photo_688@02-10-2026_12-02-57_thumb.jpg",
     "gallery": [
@@ -3104,7 +3538,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Forget Raven Heavyweight Tee Mod. 130",
+    "price": 30.0,
+    "description": "Algodón 280 GSM lavado ácido",
+    "image_url": "photos/photo_688@02-10-2026_12-02-57.jpg",
+    "available": true
   },
   {
     "id": "BOL-132",
@@ -3114,8 +3552,8 @@
     "brand": "Forget Raven",
     "price_usd": "30$ USD",
     "price_bcv": "35$ BCV",
-    "numeric_usd": 30,
-    "numeric_bcv": 35,
+    "numeric_usd": 30.0,
+    "numeric_bcv": 35.0,
     "image": "photos/photo_690@02-10-2026_12-03-11.jpg",
     "thumb": "photos/photo_690@02-10-2026_12-03-11_thumb.jpg",
     "gallery": [
@@ -3132,7 +3570,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Forget Raven Heavyweight Tee Mod. 132",
+    "price": 30.0,
+    "description": "Algodón 280 GSM lavado ácido",
+    "image_url": "photos/photo_690@02-10-2026_12-03-11.jpg",
+    "available": true
   },
   {
     "id": "BOL-134",
@@ -3142,8 +3584,8 @@
     "brand": "Forget Raven",
     "price_usd": "30$ USD",
     "price_bcv": "35$ BCV",
-    "numeric_usd": 30,
-    "numeric_bcv": 35,
+    "numeric_usd": 30.0,
+    "numeric_bcv": 35.0,
     "image": "photos/photo_692@02-10-2026_13-41-18.jpg",
     "thumb": "photos/photo_692@02-10-2026_13-41-18_thumb.jpg",
     "gallery": [
@@ -3160,7 +3602,11 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 0
+    "name": "Forget Raven Heavyweight Tee Mod. 134",
+    "price": 30.0,
+    "description": "Algodón 280 GSM lavado ácido",
+    "image_url": "photos/photo_692@02-10-2026_13-41-18.jpg",
+    "available": true
   },
   {
     "id": "BOL-136",
@@ -3170,8 +3616,8 @@
     "brand": "Retro & Modern Jerseys",
     "price_usd": "$25 USD",
     "price_bcv": "30$ BCV",
-    "numeric_usd": 25,
-    "numeric_bcv": 30,
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
     "image": "photos/photo_694@06-10-2026_10-31-23.jpg",
     "thumb": "photos/photo_694@06-10-2026_10-31-23_thumb.jpg",
     "gallery": [
@@ -3199,6 +3645,66 @@
     "in_stock": true,
     "status": "aprobado",
     "created_at": "2026-10-07 20:42:19",
-    "currentImgIndex": 9
+    "name": "Jersey Fútbol Club / Selección (Quality 1.1) Mod. 136",
+    "price": 25.0,
+    "description": "Dri-FIT / Poliéster deportivo",
+    "image_url": "photos/photo_694@06-10-2026_10-31-23.jpg",
+    "available": true
+  },
+  {
+    "id": "a89dbf2d",
+    "code": "#BOL-a89dbf2d",
+    "title": "Belts DVD Y2K  Mod. 142",
+    "category": "Accesorios",
+    "brand": "BOLETA",
+    "price_usd": "$25 USD",
+    "price_bcv": "30$ BCV",
+    "numeric_usd": 25.0,
+    "numeric_bcv": 30.0,
+    "image": "photos/item_1791417831904_e24a16f2.jpg",
+    "thumb": "photos/item_1791417831904_e24a16f2.jpg",
+    "gallery": [],
+    "sizes": [
+      "Única"
+    ],
+    "material": "",
+    "tag": "POR ENCARGO",
+    "is_purchased": false,
+    "in_stock": true,
+    "status": "aprobado",
+    "created_at": "2026-10-08 00:03:51",
+    "name": "Belts DVD Y2K  Mod. 142",
+    "price": 25.0,
+    "description": "",
+    "image_url": "photos/item_1791417831904_e24a16f2.jpg",
+    "available": true
+  },
+  {
+    "id": "test_sb_cc6e59",
+    "code": "#BOL-test_sb_cc6e59",
+    "title": "Lentes Cybergoth Alien Edition",
+    "category": "Lentes",
+    "brand": "BOLETA",
+    "price_usd": "$35 USD",
+    "price_bcv": "40$ BCV",
+    "numeric_usd": 35.0,
+    "numeric_bcv": 40.0,
+    "image": "images/logo.png",
+    "thumb": "images/logo.png",
+    "gallery": [],
+    "sizes": [
+      "Única"
+    ],
+    "material": "Acetato negro brillo con filtro UV400",
+    "tag": "Por encargo",
+    "is_purchased": false,
+    "in_stock": true,
+    "status": "aprobado",
+    "created_at": "2026-10-08 01:44:14",
+    "name": "Lentes Cybergoth Alien Edition",
+    "price": 35.0,
+    "description": "Acetato negro brillo con filtro UV400",
+    "image_url": "images/logo.png",
+    "available": true
   }
 ]

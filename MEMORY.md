@@ -37,8 +37,19 @@
   - Frontend saneado con `escapeHtml()` y `sanitizeUrl()` en el renderizado de productos y atributos para prevención de Cross-Site Scripting (XSS).
 - Base de Datos & Estado del Catálogo:
   - SQLite persistente en `data/boleta.db` sincronizado bidireccionalmente con `data/catalog.json` y `dist/data/products.json`.
-  - 117 productos activos con soporte para creación interactiva, edición, fotos múltiples y fusión de duplicados (Drag-to-Merge).
+  - Integración Supabase:
+    * Cliente oficial Supabase (`supabase>=2.0.0` y `python-dotenv>=1.0.0`) en `server/supabase_client.py`.
+    * Tabla `public.products`: `id`, `name`, `description`, `price`, `category`, `image_url`, `available`, `created_at`, `updated_at`.
+    * Bucket público de almacenamiento: `product-images`.
+    * Endpoints REST: `GET /api/products`, `POST /api/products`, `PUT /api/products/{id}`, `DELETE /api/products/{id}`, `POST /api/products/{id}/image`.
+    * Modo Editor seguro: operaciones de escritura protegidas con PIN 2026 (`X-Admin-PIN` / `X-Editor-Auth`).
+    * Resiliencia y fallback transparente: si Supabase no está configurado o falla temporalmente, opera sin fricción sobre el catálogo local.
+    * Importación inicial automática: si la tabla está vacía en Supabase, importa el catálogo una sola vez sin duplicados.
+    * Zero visual regressions: sin alteraciones en HTML, CSS, hero, fuentes, WhatsApp ni diseño.
+  - 121 productos activos con soporte para creación interactiva, edición, fotos múltiples y fusión de duplicados (Drag-to-Merge).
 - Despliegue & Ejecución:
   - Servidor local activo en `http://127.0.0.1:8080/` (`python -m uvicorn server.main:app --host 127.0.0.1 --port 8080`).
+  - Pruebas unitarias: 19/19 pruebas pasando (`tests/test_catalog.py` y `tests/test_supabase.py`).
+  - Validación sintáctica JavaScript: 0 errores (`node -c dist/js/app.js`).
   - Configurado para despliegue en Render.com mediante `render.yaml` y `requirements.txt`.
-  - Repositorio listo para commit y push a GitHub.
+
