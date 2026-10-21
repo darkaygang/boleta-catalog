@@ -70,3 +70,6 @@ El backend FastAPI deberá responder en `@app.get("/api/health")` con código HT
 RF-19 (Web Application Security Hardening):
 El servidor deberá inyectar cabeceras de seguridad HTTP (`X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `X-XSS-Protection`, `Referrer-Policy`, `Content-Security-Policy`). Los endpoints de carga de archivos deberán validar extensiones permitidas (.jpg, .jpeg, .png, .webp, .gif), limitar el tamaño de archivo a 10MB y generar nombres criptográficamente aleatorios previniendo path traversal. El frontend deberá escapar strings dinámicos (`escapeHtml`) previniendo inyecciones XSS.
 
+
+## Revisión aprobada 21/10/2026
+Ver ../estudio-interactivo/spec.md: reglas RF-20–32 prevalecen sobre PIN público, abono fijo y conversión ficticia históricos.

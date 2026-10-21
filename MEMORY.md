@@ -1,55 +1,34 @@
-# Memoria de Estado
+# BOLETA — checkpoint 21/10/2026
+## Confirmado
+Cristian eligió diseño C con cuadro guía A, autorizó construcción y agentes. URL producción https://boleta-catalog.onrender.com.
+Base auditada main 7fbff1011d00f915b8d964e366ef201c74a05580. Se preservaron datos/fotos originales.
+Se construyó en rama codex/boleta-estudio-interactivo. No se ha desplegado rediseño todavía.
 
-- Estado: Producción finalizada y ajustada puntualmente para BOLETA CLOTHING. Integración de logo oficial (`dist/images/logo.png`) optimizado para móvil (60px), PIN gate de seguridad administrativo (2026), enrutamiento dual de WhatsApp (B2C +58 4245314215 y B2B +57 3224734848), redes sociales verificadas (Instagram, TikTok, WhatsApp) y servidor FastAPI activo.
-- Tareas: Ajustes completados con 10/10 pruebas unitarias pasando (0.052s).
-- Identidad de Marca & Logo Oficial:
-  - Archivo fuente `logo qes.png` copiado a `dist/images/logo.png`.
-  - Dimensiones responsive: 65px de alto en desktop (max-width 240px) y 60px en móvil (max-width 210px) para máxima legibilidad e impacto en teléfonos.
-  - Renderizado verificado en el header sticky (`.brand-logo-img`) y en el footer (`.footer-logo`).
-- PIN Gate de Seguridad para Modo Editor:
-  - Activación por atajo `Ctrl + Shift + E`, botón en footer "⚙️ Modo Editor" o `window.toggleEditMode()`.
-  - Verificación de sesión: consulta `sessionStorage.getItem('boleta_admin_auth') === 'true'`.
-  - Si no está autenticado, despliega modal `#pinGateModal`.
-  - Validación de PIN contra `2026`:
-    * Correcto: almacena `sessionStorage.setItem('boleta_admin_auth', 'true')`, cierra modal, activa toolbar de edición y muestra toast "🔓 Modo Editor activado".
-    * Incorrecto: muestra alerta `alert("PIN incorrecto")`, mensaje de error en modal, limpia el input y mantiene el foco.
-  - Al salir ("✕ Salir"), desactiva el editor manteniendo la seguridad del acceso.
-- Enrutamiento de Teléfonos y Redes:
-  - Tienda / B2C (Navbar CONTACTO, Checkout de Carrito, Botón Producto WhatsApp, Footer CONTACTO, Icono Teléfono Footer): `584245314215` (`https://wa.me/584245314215`).
-  - Agencia / B2B (Card Footer y Badge Flotante "¿Quieres una web así para tu negocio?"): `https://wa.me/573224734848?text=Hola%20Cristian,%20vi%20la%20vitrina%20de%20Boleta%20y%20me%20interesa%20una%20web%20para%20mi%20negocio`.
-  - Redes Sociales en footer con `target="_blank"` y `rel="noopener"`:
-    * TikTok: `https://www.tiktok.com/@boleta.clothing`
-    * Instagram: `https://www.instagram.com/boleta_clothing/`
-    * Teléfono / WhatsApp: `https://wa.me/584245314215`
-- Seguridad Web & Servidor FastAPI:
-  - Keep-Alive: `@app.get("/api/health")` devuelve HTTP 200 inmediatamente con timestamp, uptime y productos activos.
-  - Middleware de cabeceras de seguridad HTTP:
-    * `X-Content-Type-Options: nosniff`
-    * `X-Frame-Options: SAMEORIGIN`
-    * `X-XSS-Protection: 1; mode=block`
-    * `Referrer-Policy: strict-origin-when-cross-origin`
-    * `Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self'; frame-ancestors 'none';`
-    * `Permissions-Policy: geolocation=(), microphone=(), camera=()`
-  - Validación de cargas (`/api/upload` y `/api/products`):
-    * Extensiones estrictamente permitidas: `.jpg`, `.jpeg`, `.png`, `.webp`, `.gif`.
-    * Límite de tamaño máximo: 10 MB por archivo.
-    * Nombres seguros aleatorios (`os.urandom(4).hex()`) para prevenir path traversal y sobrescrituras no deseadas.
-  - Frontend saneado con `escapeHtml()` y `sanitizeUrl()` en el renderizado de productos y atributos para prevención de Cross-Site Scripting (XSS).
-- Base de Datos & Estado del Catálogo:
-  - SQLite persistente en `data/boleta.db` sincronizado bidireccionalmente con `data/catalog.json` y `dist/data/products.json`.
-  - Integración Supabase:
-    * Cliente oficial Supabase (`supabase>=2.0.0` y `python-dotenv>=1.0.0`) en `server/supabase_client.py`.
-    * Tabla `public.products`: `id`, `name`, `description`, `price`, `category`, `image_url`, `available`, `created_at`, `updated_at`.
-    * Bucket público de almacenamiento: `product-images`.
-    * Endpoints REST: `GET /api/products`, `POST /api/products`, `PUT /api/products/{id}`, `DELETE /api/products/{id}`, `POST /api/products/{id}/image`.
-    * Modo Editor seguro: operaciones de escritura protegidas con PIN 2026 (`X-Admin-PIN` / `X-Editor-Auth`).
-    * Resiliencia y fallback transparente: si Supabase no está configurado o falla temporalmente, opera sin fricción sobre el catálogo local.
-    * Importación inicial automática: si la tabla está vacía en Supabase, importa el catálogo una sola vez sin duplicados.
-    * Zero visual regressions: sin alteraciones en HTML, CSS, hero, fuentes, WhatsApp ni diseño.
-  - 121 productos activos con soporte para creación interactiva, edición, fotos múltiples y fusión de duplicados (Drag-to-Merge).
-- Despliegue & Ejecución:
-  - Servidor local activo en `http://127.0.0.1:8080/` (`python -m uvicorn server.main:app --host 127.0.0.1 --port 8080`).
-  - Pruebas unitarias: 19/19 pruebas pasando (`tests/test_catalog.py` y `tests/test_supabase.py`).
-  - Validación sintáctica JavaScript: 0 errores (`node -c dist/js/app.js`).
-  - Configurado para despliegue en Render.com mediante `render.yaml` y `requirements.txt`.
+## Implementado y verificado localmente
+- Frontend ligero vanilla + CSS: opción C, temas, intro600ms, hero con lentes/anillo del catálogo, fuentes locales.
+- Guía/FAQ/tutorial y encargo reescrito, variante/cantidad/precios con revalidación WhatsApp.
+- Guía tattoo único bajo ojo izquierdo; hoja actualizada entregada al propietario. Assets optimizados.
+- Editor visual autenticado: contenidos/fuentes/color/medios/FAQ/premios/orden/visibilidad/piezas, borrador/publicación/historial.
+- Auth cookie HttpOnly+CSRF, sin PIN público. ADMIN_PASSWORD>=12 requerido.
+- Estado durable privado Supabase JSONB+CAS, migración aditiva docs/supabase-redesign.sql; originales legacy conservados.
+- Leads sin cuenta con consentimientos separados, export/eliminación admin; no envía mensajes.
+- Métricas agregadas opt-in; clic no prueba conversación o pago.
+- Ruleta gratuita con 3 fondos reales descargables, sin compra/registro; premios servidor e idempotencia por navegador.
+- Spotify solo al pulsar; no audio/video ni iframe inicial. Digital Solution separado.
+- Miniaturas cacheadas480px, originales intactos.
+- 23/23 tests unittest aislados PASAN. Node syntax tres módulos PASA.
+- Browser Chrome local: 10 recorridos/grupos funcionales PASAN, sin errores JS ni recursos fallidos; sin overflow 360/390/430/1440.
+- Medición local sin throttling: LCP612ms, CLS0.0037, recursos559163 bytes antes de interacción,16requests,0iframes Spotify. No son métricas de campo.
 
+## Preparación de producción pendiente
+1. Backup integral de Supabase/medios real por propietario (backup local tarea solo público + repo).
+2. Ejecutar SQL aditivo y configurar ADMIN_PASSWORD, SUPABASE_URL/service key y BOLETA_PUBLIC_ORIGIN.
+3. Revisar PR/preview, desplegar con un worker y verificar persistencia. No habilitar disco efímero como almacenamiento.
+No hay acceso SQL/variables Render disponible en esta sesión. No afirmar despliegue.
+Sin migración, lectura snapshot disponible pero writes503, correctamente sin falso éxito.
+Sesiones/rate limits por proceso; login de nuevo tras restart.
+Guías: docs/editar-boleta.md y docs/activar-render.md. Specs: specs/estudio-interactivo/.
+
+## Comercial pendiente
+Pedido nuevo/fotos/unidades vendibles, variantes reales, precios faltantes, materiales/autenticidad, anticipo/cancelaciones y tasa BCV fechada.
+15/12/2026 estimado, no garantizado. No inferir originalidad Chrome Hearts de títulos históricos. Banners posteriores cuando usuario los pida.

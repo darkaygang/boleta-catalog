@@ -1,0 +1,12 @@
+# Tareas y evidencia
+- [x] Diseño C y alcance aprobados por usuario 21/10/2026.
+- [x] Rama codex/boleta-estudio-interactivo y respaldo work/backup-21oct.
+- [x] Backend y persistencia (RF-23/24/25/26/29), tests aislados.
+- [x] UI responsive y temas (RF-20/31), QA móvil/desktop.
+- [x] Guía/tutorial y encargo (RF-21/28), prueba flujo WhatsApp.
+- [x] Intro y radio (RF-22/27), comprobar carga bajo demanda.
+- [x] Mascota tattoo y assets (RF-32), inspección visual.
+- [x] Editor borrador/publicación/reversión (RF-25), prueba visual.
+- [x] Stats/opt-in y ruleta desactivada sin términos (RF-23/24/29).
+- [x] Integración Digital Solution (RF-30).
+- [ ] PR, documentación y entrega verificable.

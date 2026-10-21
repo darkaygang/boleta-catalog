@@ -21,3 +21,6 @@
 19. Enrutamiento dual de WhatsApp (B2C `584245314215` y B2B `573224734848`) y enlaces de redes sociales (Instagram/TikTok con `target="_blank"`).
 20. Optimización de endpoint keep-alive `/api/health` en FastAPI y endurecimiento integral de seguridad (headers HTTP, CSP, validación de uploads y prevención XSS).
 
+
+## Rediseño aprobado 21/10/2026
+Plan vigente ampliado: ../estudio-interactivo/plan.md.

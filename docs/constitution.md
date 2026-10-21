@@ -14,3 +14,6 @@
 11. Arquitectura Full-Stack Ligera: Backend FastAPI en Python estándar + SQLite (`sqlite3`) embebido para control de inventario y estado persistente de compras sin depender de servicios externos costosos.
 12. Carga y Gestión Dinámica de Medios: El sistema permite subir nuevas fotografías a `dist/photos/` y registrarlas en base de datos manteniendo compatibilidad con el pipeline estático.
 13. Despliegue Zero-Friction: Compatible con plataformas de un solo contenedor/servicio como Render.com (`uvicorn server.main:app --host 0.0.0.0 --port $PORT`), sirviendo frontend y backend unificados.
+
+## Actualización aprobada 21/10/2026
+Tema claro/oscuro y paleta #60328A. Autenticación en servidor sin PIN público. Condiciones de anticipo configurables pendientes de aprobar; no imponer 50%. Tasa BCV real fechada o pendiente. Persistencia durable remota, sin fallback de escritura silencioso. Ver specs/estudio-interactivo/spec.md.

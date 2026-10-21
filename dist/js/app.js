@@ -1,1885 +1,1210 @@
-/**
- * BOLETA CLOTHING — OFFICIAL APPLICATION LOGIC
- * High-performance editorial showcase, drag-and-drop order drawer,
- * WhatsApp checkout, In-Browser Live Editor, Drag-to-Merge, photo upload & SQLite API.
- */
-
-(function () {
-  'use strict';
-
-  // Configuración de contactos y reglas de encargo
-  const CONFIG = {
-    whatsappPhone: "584245314215", // Teléfono oficial para pedidos de items (B2C)
-    b2bPhone: "573224734848",      // Teléfono oficial para desarrollo web (B2B)
-    initialDepositPercent: 50
+// BOLETA: small vanilla modules, no third-party code before a visitor asks for it.
+export const $ = (id) => document.getElementById(id);
+export const esc = (value) =>
+  String(value ?? "").replace(
+    /[&<>"']/g,
+    (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        c
+      ],
+  );
+export function safeUrl(value, fallback = "") {
+  try {
+    const u = new URL(value, location.origin);
+    return u.origin === location.origin
+      ? u.pathname + u.search + u.hash
+      : u.protocol === "https:"
+        ? u.href
+        : fallback;
+  } catch {
+    return fallback;
+  }
+}
+export const norm = (value) =>
+  String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+export function readLocal(key, fallback) {
+  try {
+    return JSON.parse(localStorage.getItem(key)) ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+export function writeLocal(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    /* storage may be unavailable */
+  }
+}
+export async function api(path, options = {}) {
+  const res = await fetch(path, {
+    credentials: "same-origin",
+    ...options,
+    headers: {
+      ...(options.body && !(options.body instanceof FormData)
+        ? { "Content-Type": "application/json" }
+        : {}),
+      ...options.headers,
+    },
+  });
+  let data;
+  try {
+    data = await res.json();
+  } catch {
+    data = {};
+  }
+  if (!res.ok)
+    throw new Error(
+      typeof data.detail === "string"
+        ? data.detail
+        : "No pudimos completar la operación. Intenta de nuevo.",
+    );
+  return data;
+}
+export function toast(text) {
+  $("toast").textContent = text;
+  $("toast").classList.add("visible");
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => $("toast").classList.remove("visible"), 3500);
+}
+export function openDialog(id) {
+  const el = typeof id === "string" ? $(id) : id;
+  if (!el.open) el.showModal();
+  document.body.style.overflow = "hidden";
+}
+export function closeDialog(el) {
+  el.close();
+  if (!document.querySelector("dialog[open]"))
+    document.body.style.overflow = "";
+}
+export function wireDialog(el) {
+  el.addEventListener("click", (e) => {
+    if (e.target === el || e.target.closest(".close-dialog")) closeDialog(el);
+  });
+  el.addEventListener("close", () => {
+    if (!document.querySelector("dialog[open]"))
+      document.body.style.overflow = "";
+  });
+}
+export const defaults = {
+  brand: {
+    name: "BOLETA",
+    accent: "#60328A",
+    logo: "/images/boleta-logo.webp",
+  },
+  hero: {
+    eyebrow: "ARCHIVO 001 / EST. 2022",
+    title: "FUERA DE\nLO COMÚN.",
+    description: "Piezas para los que tienen su propia forma de ver las cosas.",
+    cta: "Explorar el archivo",
+    image: "/images/hero-glasses.webp",
+    secondary_image: "/images/hero-ring.webp",
+  },
+  fonts: { heading: "Barlow Condensed", body: "Manrope" },
+  logistics: {
+    label: "Por encargo",
+    estimated_arrival: "2026-12-15",
+    note: "Llegada estimada, sujeta a logística.",
+  },
+  contacts: { store_whatsapp: "584245314215", studio_whatsapp: "573215885381" },
+  radio: {
+    playlist_url: "https://open.spotify.com/playlist/7JwsCKwcOZGfaWoJu8guQn",
+  },
+  studio: {
+    title: "TU NEGOCIO.\nOTRA DIMENSIÓN.",
+    description:
+      "Webs, automatización y experiencias digitales por Digital Solution.",
+    cta: "Hablemos de tu proyecto",
+    url: "https://digital-solution-page.vercel.app",
+  },
+  faq: [
+    {
+      question: "¿Cómo encargar?",
+      answer:
+        "Arma tu selección y consulta disponibilidad y condiciones por WhatsApp.",
+    },
+    {
+      question: "¿Cuándo llega?",
+      answer:
+        "Llegada estimada el 15 de diciembre de 2026, sujeta a logística.",
+    },
+    {
+      question: "¿Cómo elijo mi talla?",
+      answer:
+        "Consulta las medidas y confírmalas por WhatsApp antes de encargar.",
+    },
+  ],
+  payment: { deposit_percent: null, bcv_rate: null, bcv_date: "" },
+  rewards: { enabled: false, terms: "", prizes: [] },
+};
+defaults.copy = {
+  radio_title: "BOLETA RADIO",
+  radio_description: "SONIDOS PARA UN MUNDO DIFERENTE.",
+  how_eyebrow: "SIN VUELTAS / ASÍ FUNCIONA",
+  how_title: "TU ESTILO.\nTU SELECCIÓN.",
+  how_step1_title: "Encuentra tu pieza",
+  how_step1_text: "Explora el archivo y revisa las fotos y variantes.",
+  how_step2_title: "Arma tu selección",
+  how_step2_text: "Escoge talla o variante y añade lo que va contigo.",
+  how_step3_title: "Conversemos",
+  how_step3_text:
+    "Confirma disponibilidad, entrega y condiciones por WhatsApp antes de pagar.",
+  community_eyebrow: "NO TE PIERDAS EL SIGUIENTE ARCHIVO.",
+  community_title: "QUÉDATE EN\nLA FRECUENCIA.",
+  community_description:
+    "Déjanos tu contacto para responder tu consulta. Tú decides si también quieres novedades.",
+  archive_title: "TU PRÓXIMA\nPIEZA.",
+  archive_description:
+    "Encuentra lo que va contigo. Arma tu selección y hablamos.",
+};
+defaults.site_sections = {
+  order: [
+    "radio",
+    "categories",
+    "studio",
+    "catalog",
+    "how",
+    "faq",
+    "rewards",
+    "community",
+  ],
+  hidden: [],
+};
+export const state = {
+  settings: structuredClone(defaults),
+  products: [],
+  cart: readLocal("boleta-selection-v2", []),
+  category: "Todo",
+  query: "",
+  sort: "featured",
+  limit: 24,
+  editor: false,
+  product: null,
+  variant: null,
+  quantity: 1,
+  image: 0,
+};
+if (!Array.isArray(state.cart)) state.cart = [];
+export function dateLabel(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value || "")) return "Por confirmar";
+  return new Intl.DateTimeFormat("es-VE", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(value + "T12:00:00Z"));
+}
+export function arrivalText() {
+  return `${state.settings.logistics.label || "Por encargo"} · Llegada estimada: ${dateLabel(state.settings.logistics.estimated_arrival)}`;
+}
+export function priceNumber(p) {
+  const v = p.numeric_usd ?? p.price;
+  return v !== null && v !== "" && Number.isFinite(Number(v)) && Number(v) > 0
+    ? Number(v)
+    : null;
+}
+export function priceLabel(p) {
+  const n = priceNumber(p);
+  return n === null
+    ? "Precio por confirmar"
+    : new Intl.NumberFormat("es-VE", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 2,
+      }).format(n);
+}
+export function categoryOf(p) {
+  const s = norm((p.title || p.name || "") + " " + p.category);
+  if (/lente|gafa|eyewear|glasses/.test(s)) return "Lentes";
+  if (/anillo|ring/.test(s)) return "Anillos";
+  if (/camisa|hoodie|pantal|ropa|short|bermud|chaqueta|sudader|franela/.test(s))
+    return "Ropa";
+  return p.category || "Accesorios";
+}
+// Only local catalogue photos use the fixed-size cached thumbnail endpoint.
+// Product detail keeps the original image; external media URLs stay unchanged.
+export function thumbnail(source) {
+  const src =
+    typeof source === "string"
+      ? source
+      : source?.thumb || source?.image || source?.image_url;
+  const url = safeUrl(src, "/images/boleta-logo.webp");
+  if (url.startsWith("/photos/"))
+    return "/api/thumbnail?src=" + encodeURIComponent(url.slice(1));
+  return url;
+}
+export function gallery(p) {
+  let values = p.gallery;
+  if (typeof values === "string") {
+    try {
+      values = JSON.parse(values);
+    } catch {
+      values = [];
+    }
+  }
+  return [
+    ...new Set(
+      [p.image || p.image_url, ...(Array.isArray(values) ? values : [])].filter(
+        Boolean,
+      ),
+    ),
+  ]
+    .map((x) => safeUrl(x))
+    .filter(Boolean);
+}
+export function variants(p) {
+  let v = p.variants;
+  if (typeof v === "string") {
+    try {
+      v = JSON.parse(v);
+    } catch {
+      v = [];
+    }
+  }
+  if (Array.isArray(v) && v.length)
+    return v.map((x, i) =>
+      typeof x === "string"
+        ? { id: String(i), label: x }
+        : {
+            ...x,
+            id: String(x.id ?? i),
+            stock: x.quantity ?? x.stock,
+            available:
+              p.in_stock !== false &&
+              p.available !== false &&
+              x.available !== false,
+            label:
+              x.label ||
+              [x.size, x.color].filter(Boolean).join(" / ") ||
+              x.name ||
+              "Variante",
+          },
+    );
+  let sizes = p.sizes;
+  if (typeof sizes === "string") {
+    try {
+      sizes = JSON.parse(sizes);
+    } catch {
+      sizes = sizes.split(",");
+    }
+  }
+  return (Array.isArray(sizes) && sizes.length ? sizes : ["Única"]).map(
+    (x, i) => ({
+      id: "size:" + String(x),
+      label: String(x),
+      available: p.in_stock !== false && p.available !== false,
+    }),
+  );
+}
+export function whatsapp(text, studio = false) {
+  const phone = String(
+    studio
+      ? state.settings.contacts.studio_whatsapp
+      : state.settings.contacts.store_whatsapp,
+  ).replace(/\D/g, "");
+  return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+}
+export function goWhatsApp(text, studio = false, targetWindow = null) {
+  track(studio ? "studio_contact_click" : "whatsapp_click");
+  const url = whatsapp(text, studio);
+  if (targetWindow) {
+    targetWindow.location.replace(url);
+  } else if (arguments.length >= 3) {
+    location.assign(url);
+  } else window.open(url, "_blank", "noopener,noreferrer");
+}
+export function track(event, properties = {}) {
+  if (readLocal("boleta-analytics", false) !== true) return;
+  fetch("/api/events", {
+    method: "POST",
+    credentials: "same-origin",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      event,
+      ...(properties.product_id ? { product_id: properties.product_id } : {}),
+    }),
+  }).catch(() => {});
+}
+function mergeSettings(input) {
+  const result = structuredClone(defaults);
+  for (const key of Object.keys(result)) {
+    if (Array.isArray(result[key]))
+      result[key] = Array.isArray(input?.[key]) ? input[key] : result[key];
+    else result[key] = { ...result[key], ...(input?.[key] || {}) };
+  }
+  return result;
+}
+export function applySettings(input) {
+  state.settings = mergeSettings(input);
+  const s = state.settings;
+  document.documentElement.style.setProperty(
+    "--accent",
+    /^#[0-9a-f]{6}$/i.test(s.brand.accent) ? s.brand.accent : "#60328A",
+  );
+  const fonts = [
+    "Barlow Condensed",
+    "Manrope",
+    "Arial Black",
+    "Arial",
+    "Georgia",
+    "Courier New",
+    "Impact",
+    "Helvetica",
+    "Verdana",
+    "Trebuchet MS",
+    "system-ui",
+    "DM Mono",
+  ];
+  document.documentElement.style.setProperty(
+    "--heading",
+    `"${fonts.includes(s.fonts.heading) ? s.fonts.heading : "Barlow Condensed"}",sans-serif`,
+  );
+  document.documentElement.style.setProperty(
+    "--body",
+    `"${fonts.includes(s.fonts.body) ? s.fonts.body : "Manrope"}",sans-serif`,
+  );
+  $("heroTitle").textContent = s.hero.title;
+  $("heroEyebrow").textContent = s.hero.eyebrow;
+  $("heroDescription").textContent = s.hero.description;
+  $("heroCta").textContent = s.hero.cta + " ↗";
+  $("heroGlasses").src = safeUrl(s.hero.image, defaults.hero.image);
+  $("heroRing").src = safeUrl(
+    s.hero.secondary_image,
+    defaults.hero.secondary_image,
+  );
+  document
+    .querySelectorAll(".brand img,.footer>img")
+    .forEach((x) => (x.src = safeUrl(s.brand.logo, defaults.brand.logo)));
+  $("logisticsSummary").textContent = `${arrivalText()} · ${s.logistics.note}`;
+  $("studioTitle").textContent = s.studio.title;
+  $("studioDescription").textContent = s.studio.description;
+  $("studioButton").textContent = s.studio.cta + " ↗";
+  $("footerWhatsApp").href = whatsapp("Hola BOLETA, tengo una consulta.");
+  renderFaq();
+  $("rewardSection").hidden = !(
+    s.rewards.enabled &&
+    s.rewards.terms &&
+    s.rewards.prizes?.length
+  );
+  $("rewardTerms").textContent = s.rewards.terms || "";
+  $("rewardPeek").hidden = $("rewardSection").hidden;
+  renderRewardWheel();
+  applyCopyAndSections();
+  if (state.products.length) renderProducts();
+}
+let lastSectionOrder = "";
+export const sectionIds = {
+  radio: "radio",
+  categories: "categoryCards",
+  studio: "estudio",
+  catalog: "catalogo",
+  how: "como-encargar",
+  faq: "preguntas",
+  rewards: "rewardSection",
+  community: "comunidad",
+};
+function applyCopyAndSections() {
+  const c = state.settings.copy;
+  const set = (selector, key) => {
+    const el = document.querySelector(selector);
+    if (el) el.textContent = c[key];
   };
-
-  // Helper de normalización para búsqueda insensible a acentos/tildes y mayúsculas
-  function normalizeStr(str) {
-    if (!str) return '';
-    return str
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .toLowerCase()
-      .trim();
+  set("#radio h2", "radio_title");
+  set("#radio .radio-copy p", "radio_description");
+  set("#como-encargar>.micro", "how_eyebrow");
+  set("#como-encargar h2", "how_title");
+  for (let i = 1; i <= 3; i++) {
+    set(
+      "#como-encargar li:nth-child(" + i + ") strong",
+      "how_step" + i + "_title",
+    );
+    set("#como-encargar li:nth-child(" + i + ") p", "how_step" + i + "_text");
   }
-
-  // Helper para escapar strings HTML
-  function escapeHtml(str) {
-    if (!str) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-  }
-
-  // Estado global de la aplicación
-  const state = {
-    products: [],
-    filteredProducts: [],
-    activeCategory: 'TODOS',
-    searchQuery: '',
-    sortBy: 'featured',
-    cart: [], // Array de { id, size, quantity }
-    activeModalProduct: null,
-    activeModalImgIndex: 0,
-    selectedModalSize: null,
-    selectedModalColor: 'Blanco',
-
-    // Estado del Modo Editor
-    isEditorMode: false,
-    discardedIds: new Set(),
-    editingProductId: null,
-    mergePending: null, // { sourceId, targetId }
-    selectedNewProductFiles: []
-  };
-
-  // Referencias a elementos del DOM
-  const dom = {
-    productGrid: document.getElementById('productGrid'),
-    productCount: document.getElementById('productCount'),
-    categoryTabs: document.getElementById('categoryTabs'),
-    searchInput: document.getElementById('searchInput'),
-    searchClear: document.getElementById('searchClear'),
-    sortSelect: document.getElementById('sortSelect'),
-    headerSearchBtn: document.getElementById('headerSearchBtn'),
-    navToggle: document.getElementById('navToggle'),
-    siteNav: document.getElementById('siteNav'),
-
-    // Carrito / Mi Pedido
-    headerCartBtn: document.getElementById('headerCartBtn'),
-    floatingCartBtn: document.getElementById('floatingCartBtn'),
-    cartCountBadge: document.getElementById('cartCountBadge'),
-    floatingCartCount: document.getElementById('floatingCartCount'),
-    drawerCount: document.getElementById('drawerCount'),
-    cartDrawer: document.getElementById('cartDrawer'),
-    cartDrawerOverlay: document.getElementById('cartDrawerOverlay'),
-    cartDrawerClose: document.getElementById('cartDrawerClose'),
-    cartDrawerBody: document.getElementById('cartDrawerBody'),
-    cartTotalUsd: document.getElementById('cartTotalUsd'),
-    cartTotalBcv: document.getElementById('cartTotalBcv'),
-    cartDepositUsd: document.getElementById('cartDepositUsd'),
-    cartDepositBcv: document.getElementById('cartDepositBcv'),
-    cartRemainingUsd: document.getElementById('cartRemainingUsd'),
-    cartRemainingBcv: document.getElementById('cartRemainingBcv'),
-    checkoutBtn: document.getElementById('checkoutBtn'),
-
-    // Quick View Modal
-    productModal: document.getElementById('productModal'),
-    modalCloseBtn: document.getElementById('modalCloseBtn'),
-    modalThumbs: document.getElementById('modalThumbs'),
-    modalImage: document.getElementById('modalImage'),
-    modalPrevImg: document.getElementById('modalPrevImg'),
-    modalNextImg: document.getElementById('modalNextImg'),
-    modalImgCounter: document.getElementById('modalImgCounter'),
-    modalTag: document.getElementById('modalTag'),
-    modalCode: document.getElementById('modalCode'),
-    modalTitle: document.getElementById('modalTitle'),
-    modalBrand: document.getElementById('modalBrand'),
-    modalCategory: document.getElementById('modalCategory'),
-    modalPriceUsd: document.getElementById('modalPriceUsd'),
-    modalPriceBcv: document.getElementById('modalPriceBcv'),
-    modalDesc: document.getElementById('modalDesc'),
-    modalVariantPills: document.getElementById('modalVariantPills'),
-    modalColorBlock: document.getElementById('modalColorBlock'),
-    modalColorName: document.getElementById('modalColorName'),
-    modalColorDots: document.getElementById('modalColorDots'),
-    modalMaterial: document.getElementById('modalMaterial'),
-    modalAddCartBtn: document.getElementById('modalAddCartBtn'),
-    modalWhatsappBtn: document.getElementById('modalWhatsappBtn'),
-    toastContainer: document.getElementById('toastContainer'),
-
-    // Toolbar de Modo Editor
-    editorToolbar: document.getElementById('editorToolbar'),
-    editorStatsBadge: document.getElementById('editorStatsBadge'),
-    editorNewItemBtn: document.getElementById('editorNewItemBtn'),
-    editorExportBtn: document.getElementById('editorExportBtn'),
-    editorResetBtn: document.getElementById('editorResetBtn'),
-    editorExitBtn: document.getElementById('editorExitBtn'),
-    footerEditorToggle: document.getElementById('footerEditorToggle'),
-
-    // Modal de Edición de Producto
-    productEditModal: document.getElementById('productEditModal'),
-    editModalCloseBtn: document.getElementById('editModalCloseBtn'),
-    productEditForm: document.getElementById('productEditForm'),
-    editModalImg: document.getElementById('editModalImg'),
-    editModalCode: document.getElementById('editModalCode'),
-    editGalleryStrip: document.getElementById('editGalleryStrip'),
-    editPhotoDropZone: document.getElementById('editPhotoDropZone'),
-    editPhotoInput: document.getElementById('editPhotoInput'),
-    editMainPhotoBtn: document.getElementById('editMainPhotoBtn'),
-    editMainPhotoInput: document.getElementById('editMainPhotoInput'),
-    editFieldPurchased: document.getElementById('editFieldPurchased'),
-    editFieldTitle: document.getElementById('editFieldTitle'),
-    editFieldCategory: document.getElementById('editFieldCategory'),
-    editFieldBrand: document.getElementById('editFieldBrand'),
-    editFieldPriceUsd: document.getElementById('editFieldPriceUsd'),
-    editFieldPriceBcv: document.getElementById('editFieldPriceBcv'),
-    editFieldMaterial: document.getElementById('editFieldMaterial'),
-    editFieldSizes: document.getElementById('editFieldSizes'),
-
-    // Modal de Fusión (Drag-to-Merge)
-    mergeConfirmModal: document.getElementById('mergeConfirmModal'),
-    mergeModalCloseBtn: document.getElementById('mergeModalCloseBtn'),
-    mergeCancelBtn: document.getElementById('mergeCancelBtn'),
-    mergeConfirmBtn: document.getElementById('mergeConfirmBtn'),
-    mergeSourceTitle: document.getElementById('mergeSourceTitle'),
-    mergeTargetTitle: document.getElementById('mergeTargetTitle'),
-    mergeSourceImg: document.getElementById('mergeSourceImg'),
-    mergeTargetImg: document.getElementById('mergeTargetImg'),
-
-    // Modal de Añadir Nuevo Producto
-    addProductModal: document.getElementById('addProductModal'),
-    addProductCloseBtn: document.getElementById('addProductCloseBtn'),
-    addProductForm: document.getElementById('addProductForm'),
-    uploadDropZone: document.getElementById('uploadDropZone'),
-    newProductFileInput: document.getElementById('newProductFileInput'),
-    uploadPlaceholder: document.getElementById('uploadPlaceholder'),
-    uploadPreviewBox: document.getElementById('uploadPreviewBox'),
-    uploadPreviewStrip: document.getElementById('uploadPreviewStrip'),
-    removeUploadImgBtn: document.getElementById('removeUploadImgBtn'),
-    newFieldTitle: document.getElementById('newFieldTitle'),
-    newFieldCategory: document.getElementById('newFieldCategory'),
-    newFieldBrand: document.getElementById('newFieldBrand'),
-    newFieldPriceUsd: document.getElementById('newFieldPriceUsd'),
-    newFieldPriceBcv: document.getElementById('newFieldPriceBcv'),
-    newFieldMaterial: document.getElementById('newFieldMaterial'),
-    newFieldSizes: document.getElementById('newFieldSizes'),
-    newFieldPurchased: document.getElementById('newFieldPurchased'),
-    newProductSubmitBtn: document.getElementById('newProductSubmitBtn'),
-
-    // Modal PIN Gate de Seguridad
-    pinGateModal: document.getElementById('pinGateModal'),
-    pinInput: document.getElementById('pinInput'),
-    pinSubmitBtn: document.getElementById('pinSubmitBtn'),
-    pinCancelBtn: document.getElementById('pinCancelBtn'),
-    pinError: document.getElementById('pinError')
-  };
-
-  // Inicialización
-  function init() {
-    loadCartFromStorage();
-    loadCatalogData();
-    setupEventListeners();
-    checkInitialEditorState();
-  }
-
-  function checkInitialEditorState() {
-    if (sessionStorage.getItem('boleta_admin_auth') === 'true' && (localStorage.getItem('boleta_editor_active') === '1' || localStorage.getItem('bdv_editor_active') === '1')) {
-      toggleEditorMode(true);
-    }
-  }
-
-  // Carga de productos (con soporte de SQLite API, localStorage y fallback estático)
-  function loadCatalogData() {
-    const savedDiscarded = localStorage.getItem('boleta_discarded_ids') || localStorage.getItem('bdv_discarded_ids');
-    if (savedDiscarded) {
-      try {
-        state.discardedIds = new Set(JSON.parse(savedDiscarded));
-      } catch (e) {
-        state.discardedIds = new Set();
+  set("#comunidad>.micro", "community_eyebrow");
+  set("#comunidad>h2", "community_title");
+  set("#comunidad>p:not(.micro):not(.privacy)", "community_description");
+  set("#archiveTitle", "archive_title");
+  set(".archive-intro", "archive_description");
+  const sections = state.settings.site_sections;
+  const order = sections.order.filter((id) => sectionIds[id]);
+  const signature = JSON.stringify(order);
+  if (lastSectionOrder !== signature) {
+    const main = document.querySelector("main.shell"),
+      footer = main.querySelector(".footer");
+    for (const key of order) {
+      const node = $(sectionIds[key]);
+      main.insertBefore(node, footer);
+      if (key === "radio") {
+        main.insertBefore($("radioEmbed"), footer);
+        main.insertBefore($("rewardPeek"), footer);
       }
     }
-
-    // Intentar primero desde el backend FastAPI (/api/products)
-    fetch('/api/products')
-      .then(res => {
-        if (!res.ok) throw new Error('API no disponible');
-        return res.json();
-      })
-      .then(apiProducts => {
-        if (Array.isArray(apiProducts) && apiProducts.length > 0) {
-          state.products = apiProducts.map(sanitizeProduct);
-          applyFilters();
-          renderCategoryTabs();
-          updateEditorStats();
-          return;
-        }
-        fallbackLoad();
-      })
-      .catch(() => {
-        fallbackLoad();
-      });
-
-    function fallbackLoad() {
-      const savedCustom = localStorage.getItem('boleta_custom_catalog') || localStorage.getItem('bdv_custom_catalog');
-      if (savedCustom) {
-        try {
-          const parsed = JSON.parse(savedCustom);
-          state.products = parsed.map(sanitizeProduct);
-          applyFilters();
-          renderCategoryTabs();
-          updateEditorStats();
-          return;
-        } catch (e) {
-          console.warn("Error parseando catálogo personalizado de localStorage:", e);
-        }
-      }
-
-      if (window.BOLETA_CATALOG && Array.isArray(window.BOLETA_CATALOG)) {
-        state.products = JSON.parse(JSON.stringify(window.BOLETA_CATALOG)).map(sanitizeProduct);
-        applyFilters();
-        renderCategoryTabs();
-        updateEditorStats();
-      } else {
-        fetch('data/products.json')
-          .then(res => res.json())
-          .then(data => {
-            state.products = data.map(sanitizeProduct);
-            applyFilters();
-            renderCategoryTabs();
-            updateEditorStats();
-          })
-          .catch(err => {
-            console.error("Error al cargar products.json:", err);
-          });
-      }
-    }
+    lastSectionOrder = signature;
   }
-
-  // Cabeceras de autenticación para operaciones de escritura del Modo Editor
-  function getAuthHeaders() {
-    return {
-      'X-Admin-PIN': '2026',
-      'X-Editor-Auth': 'true',
-      'Authorization': 'Bearer 2026'
-    };
+  for (const [key, id] of Object.entries(sectionIds)) {
+    if (key === "rewards")
+      $(id).hidden =
+        sections.hidden.includes(key) ||
+        !(
+          state.settings.rewards.enabled &&
+          state.settings.rewards.terms &&
+          state.settings.rewards.prizes.length
+        );
+    else $(id).hidden = sections.hidden.includes(key);
   }
-
-  function sanitizeProduct(p) {
-    if (!p) return {};
-    // Interoperabilidad de campos Supabase (name, description, image_url, price, available) y frontend (title, material, image, numeric_usd, in_stock)
-    if (!p.title && p.name) p.title = p.name;
-    if (!p.name && p.title) p.name = p.title;
-    if (!p.material && p.description) p.material = p.description;
-    if (!p.description && p.material) p.description = p.material;
-    if (!p.image && p.image_url) p.image = p.image_url;
-    if (!p.image_url && p.image) p.image_url = p.image;
-    if (!p.thumb && p.image) p.thumb = p.image;
-    if (!p.gallery) p.gallery = [];
-    if (!p.currentImgIndex) p.currentImgIndex = 0;
-    if (p.numeric_usd === undefined || p.numeric_usd === null) {
-      if (p.price !== undefined && p.price !== null) {
-        p.numeric_usd = Number(p.price);
-      } else {
-        const matchUsd = String(p.price_usd || '').match(/(\d+)/);
-        p.numeric_usd = matchUsd ? parseInt(matchUsd[1]) : 0;
-      }
-    }
-    if (p.price === undefined || p.price === null) {
-      p.price = p.numeric_usd;
-    }
-    if (!p.price_usd) {
-      p.price_usd = `$${Math.round(p.numeric_usd)} USD`;
-    }
-    if (!p.numeric_bcv) {
-      const match = String(p.price_bcv || '').match(/(\d+)/);
-      p.numeric_bcv = match ? parseInt(match[1]) : Math.round(p.numeric_usd * 1.15);
-    }
-    if (!p.price_bcv) {
-      p.price_bcv = `${Math.round(p.numeric_bcv)}$ BCV`;
-    }
-    if (p.in_stock === undefined && p.available !== undefined) {
-      p.in_stock = Boolean(p.available);
-    }
-    if (p.available === undefined && p.in_stock !== undefined) {
-      p.available = Boolean(p.in_stock);
-    }
-    p.is_purchased = Boolean(p.is_purchased);
-    return p;
-  }
-
-  // Pestañas de categorías dinámicas
-  function renderCategoryTabs() {
-    if (!dom.categoryTabs) return;
-
-    const categories = ['TODOS', 'Joyería', 'Lentes', 'Shorts', 'Prendas', 'Accesorios', 'Objects'];
-    const activeProducts = state.products.filter(p => !state.discardedIds.has(String(p.id)) && p.status !== 'descartado');
-
-    dom.categoryTabs.innerHTML = categories.map(cat => {
-      const count = cat === 'TODOS'
-        ? activeProducts.length
-        : activeProducts.filter(p => normalizeStr(p.category) === normalizeStr(cat)).length;
-
-      const isActive = state.activeCategory === cat ? 'active' : '';
-      return `
-        <button class="category-chip ${isActive}" data-category="${cat}">
-          ${cat} <span class="category-chip-count">(${count})</span>
-        </button>
-      `;
-    }).join('');
-
-    dom.categoryTabs.querySelectorAll('.category-chip').forEach(chip => {
-      chip.addEventListener('click', () => {
-        state.activeCategory = chip.getAttribute('data-category');
-        dom.categoryTabs.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        applyFilters();
-      });
-    });
-  }
-
-  // Filtrado y búsqueda multi-token
-  function applyFilters() {
-    let list = state.products.filter(p => !state.discardedIds.has(String(p.id)) && p.status !== 'descartado');
-
-    // Filtro por categoría
-    if (state.activeCategory !== 'TODOS') {
-      const targetCat = normalizeStr(state.activeCategory);
-      list = list.filter(p => normalizeStr(p.category) === targetCat);
-    }
-
-    // Búsqueda multi-token
-    if (state.searchQuery) {
-      const tokens = normalizeStr(state.searchQuery).split(/\s+/).filter(Boolean);
-      list = list.filter(p => {
-        const searchable = normalizeStr([
-          p.title,
-          p.code,
-          p.category,
-          p.brand,
-          p.material,
-          (p.sizes || []).join(' ')
-        ].join(' '));
-
-        return tokens.every(token => searchable.includes(token));
-      });
-    }
-
-    // Ordenación
-    if (state.sortBy === 'price-asc') {
-      list.sort((a, b) => (a.numeric_usd || 0) - (b.numeric_usd || 0));
-    } else if (state.sortBy === 'price-desc') {
-      list.sort((a, b) => (b.numeric_usd || 0) - (a.numeric_usd || 0));
-    }
-
-    state.filteredProducts = list;
-    renderGrid();
-
-    if (dom.productCount) {
-      const totalActive = state.products.filter(p => !state.discardedIds.has(String(p.id)) && p.status !== 'descartado').length;
-      dom.productCount.textContent = `${list.length} de ${totalActive} piezas`;
-    }
-  }
-
-  // Renderizado de tarjetas en grilla
-  function renderGrid() {
-    if (!dom.productGrid) return;
-
-    if (state.filteredProducts.length === 0) {
-      dom.productGrid.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted);">
-          <div style="font-size: 2.2rem; margin-bottom: 12px; color: var(--purple);">✦ BOLETA</div>
-          <h3 style="color: var(--text-primary); margin-bottom: 8px;">No se encontraron artículos</h3>
-          <p style="font-size: 0.82rem;">Prueba buscando otras palabras clave o cambia de categoría.</p>
-        </div>
-      `;
-      return;
-    }
-
-    dom.productGrid.innerHTML = state.filteredProducts.map(p => {
-      const allPhotos = [p.image].concat(p.gallery || []);
-      const currentIdx = p.currentImgIndex || 0;
-      const displayImg = allPhotos[currentIdx] || p.image;
-      const hasMultiplePhotos = allPhotos.length > 1;
-
-      return `
-        <article class="product-card" id="card-${p.id}" draggable="true" data-id="${p.id}">
-          <div class="card-editor-overlay">
-            <button class="btn-card-action btn-card-edit" data-id="${p.id}" title="Editar este producto">✏️</button>
-            <button class="btn-card-action btn-card-discard" data-id="${p.id}" title="Descartar este producto">🗑️</button>
-          </div>
-          <div class="card-image-wrap" data-id="${p.id}">
-            <span class="card-tag-order">● ${p.tag || 'POR ENCARGO'}</span>
-            <span class="card-code">${p.code || `#BOL-${p.id}`}</span>
-            ${p.is_purchased ? `<span class="card-purchased-badge">EN TRÁNSITO / BARQUISIMETO</span>` : ''}
-            <img class="card-image" id="img-${p.id}" src="${displayImg}" alt="${p.title}" loading="lazy">
-
-            ${hasMultiplePhotos ? `
-              <button class="card-gallery-btn prev" data-id="${p.id}" title="Foto anterior">‹</button>
-              <button class="card-gallery-btn next" data-id="${p.id}" title="Siguiente foto">›</button>
-              <div class="card-gallery-dots">
-                ${allPhotos.map((_, i) => `<span class="gallery-dot ${i === currentIdx ? 'active' : ''}" data-id="${p.id}" data-idx="${i}"></span>`).join('')}
-              </div>
-              <span class="card-gallery-badge">📷 ${allPhotos.length} fotos</span>
-            ` : ''}
-          </div>
-          <div class="card-body">
-            <div>
-              <div class="card-brand">${p.brand || 'BOLETA'}</div>
-              <h3 class="card-title" title="${p.title}">${p.title}</h3>
-              <div class="card-specs">${p.material || 'Material garantizado'}</div>
-            </div>
-            <div>
-              <div class="card-prices">
-                <span class="price-usd">${p.price_usd}</span>
-                <span class="price-bcv">${p.price_bcv}</span>
-              </div>
-              <div class="card-actions">
-                <button class="btn-add-cart" data-id="${p.id}">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 5v14M5 12h14"/></svg>
-                  AÑADIR
-                </button>
-                <button class="btn-quick-view" data-id="${p.id}" title="Ver detalle completo">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </article>
-      `;
-    }).join('');
-
-    attachCardEvents();
-  }
-
-  // Eventos de tarjetas (Click, Modal, Drag & Drop, Galería, Drag-to-Merge)
-  function attachCardEvents() {
-    const cards = dom.productGrid.querySelectorAll('.product-card');
-
-    cards.forEach(card => {
-      const id = card.getAttribute('data-id');
-
-      // 1. Iniciar arrastre de tarjeta
-      card.addEventListener('dragstart', (e) => {
-        e.dataTransfer.setData('text/plain', id);
-        e.dataTransfer.effectAllowed = 'copyMove';
-        card.classList.add('is-dragging');
-        if (dom.floatingCartBtn) dom.floatingCartBtn.classList.add('pulse-drag');
-      });
-
-      card.addEventListener('dragend', () => {
-        card.classList.remove('is-dragging');
-        if (dom.floatingCartBtn) dom.floatingCartBtn.classList.remove('pulse-drag');
-      });
-
-      // 2. Drag-to-Merge (arrastrar tarjeta sobre otra para unir fotos y borrar duplicado)
-      card.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        e.dataTransfer.dropEffect = 'move';
-        card.classList.add('card-drag-target');
-      });
-
-      card.addEventListener('dragleave', () => {
-        card.classList.remove('card-drag-target');
-      });
-
-      card.addEventListener('drop', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        card.classList.remove('card-drag-target');
-
-        const sourceId = e.dataTransfer.getData('text/plain');
-        const targetId = id;
-
-        if (sourceId && sourceId !== targetId) {
-          triggerMergePrompt(sourceId, targetId);
-        }
-      });
-    });
-
-    // 3. Mini-galería de tarjeta (flechas y dots)
-    dom.productGrid.querySelectorAll('.card-gallery-btn.prev').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        navigateCardGallery(btn.getAttribute('data-id'), -1);
-      });
-    });
-
-    dom.productGrid.querySelectorAll('.card-gallery-btn.next').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        navigateCardGallery(btn.getAttribute('data-id'), 1);
-      });
-    });
-
-    dom.productGrid.querySelectorAll('.gallery-dot').forEach(dot => {
-      dot.addEventListener('click', (e) => {
-        e.stopPropagation();
-        setCardGalleryIndex(dot.getAttribute('data-id'), parseInt(dot.getAttribute('data-idx')));
-      });
-    });
-
-    // 4. Botón de añadir al pedido
-    dom.productGrid.querySelectorAll('.btn-add-cart').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const id = btn.getAttribute('data-id');
-        const card = document.getElementById(`card-${id}`);
-        const img = card ? card.querySelector('.card-image') : null;
-        triggerFlyToCart(img);
-        addToCart(id);
-      });
-    });
-
-    // 5. Ver detalle / Quick View
-    dom.productGrid.querySelectorAll('.btn-quick-view, .card-image-wrap').forEach(el => {
-      el.addEventListener('click', (e) => {
-        if (e.target.closest('.card-editor-overlay') || e.target.closest('.card-gallery-btn') || e.target.closest('.card-gallery-dots')) {
-          return;
-        }
-        openProductModal(el.getAttribute('data-id'));
-      });
-    });
-
-    // 6. Botones del Modo Editor
-    dom.productGrid.querySelectorAll('.btn-card-discard').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        discardProduct(btn.getAttribute('data-id'));
-      });
-    });
-
-    dom.productGrid.querySelectorAll('.btn-card-edit').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        openProductEditModal(btn.getAttribute('data-id'));
-      });
-    });
-  }
-
-  function navigateCardGallery(productId, delta) {
-    const p = state.products.find(item => String(item.id) === String(productId));
-    if (!p) return;
-
-    const allPhotos = [p.image].concat(p.gallery || []);
-    if (allPhotos.length <= 1) return;
-
-    let current = p.currentImgIndex || 0;
-    current = (current + delta + allPhotos.length) % allPhotos.length;
-    p.currentImgIndex = current;
-    updateCardImageDisplay(p);
-  }
-
-  function setCardGalleryIndex(productId, index) {
-    const p = state.products.find(item => String(item.id) === String(productId));
-    if (!p) return;
-
-    const allPhotos = [p.image].concat(p.gallery || []);
-    if (index >= 0 && index < allPhotos.length) {
-      p.currentImgIndex = index;
-      updateCardImageDisplay(p);
-    }
-  }
-
-  function updateCardImageDisplay(p) {
-    const allPhotos = [p.image].concat(p.gallery || []);
-    const imgEl = document.getElementById(`img-${p.id}`);
-    if (imgEl) {
-      imgEl.src = allPhotos[p.currentImgIndex] || p.image;
-    }
-
-    const card = document.getElementById(`card-${p.id}`);
-    if (card) {
-      card.querySelectorAll('.gallery-dot').forEach((dot, idx) => {
-        dot.classList.toggle('active', idx === p.currentImgIndex);
-      });
-    }
-  }
-
-  // Fusión Drag-to-Merge
-  function triggerMergePrompt(sourceId, targetId) {
-    const sourceProd = state.products.find(p => String(p.id) === String(sourceId));
-    const targetProd = state.products.find(p => String(p.id) === String(targetId));
-    if (!sourceProd || !targetProd) return;
-
-    state.mergePending = { sourceId, targetId };
-
-    if (dom.mergeSourceTitle) dom.mergeSourceTitle.textContent = `${sourceProd.title} (${sourceProd.code || '#' + sourceProd.id})`;
-    if (dom.mergeTargetTitle) dom.mergeTargetTitle.textContent = `${targetProd.title} (${targetProd.code || '#' + targetProd.id})`;
-    if (dom.mergeSourceImg) dom.mergeSourceImg.src = sourceProd.image;
-    if (dom.mergeTargetImg) dom.mergeTargetImg.src = targetProd.image;
-
-    if (dom.mergeConfirmModal) dom.mergeConfirmModal.classList.add('active');
-  }
-
-  async function executeCardMerge() {
-    if (!state.mergePending) return;
-    const { sourceId, targetId } = state.mergePending;
-
-    const sourceProd = state.products.find(p => String(p.id) === String(sourceId));
-    const targetProd = state.products.find(p => String(p.id) === String(targetId));
-
-    if (sourceProd && targetProd) {
-      const photosToTransfer = [sourceProd.image].concat(sourceProd.gallery || []);
-      if (!targetProd.gallery) targetProd.gallery = [];
-
-      photosToTransfer.forEach(photo => {
-        if (photo && photo !== targetProd.image && !targetProd.gallery.includes(photo)) {
-          targetProd.gallery.push(photo);
-        }
-      });
-
-      state.discardedIds.add(String(sourceId));
-
-      // Sincronizar con API si está disponible
-      try {
-        fetch('/api/products/merge', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ source_id: String(sourceId), target_id: String(targetId) })
-        }).catch(() => {});
-      } catch (e) {}
-
-      saveEditorState();
-      applyFilters();
-      renderCategoryTabs();
-      showToast(`✓ Foto fusionada en ${targetProd.title}. Duplicado descartado.`);
-    }
-
-    closeMergeModal();
-  }
-
-  function closeMergeModal() {
-    if (dom.mergeConfirmModal) dom.mergeConfirmModal.classList.remove('active');
-    state.mergePending = null;
-  }
-
-  // Animación de partícula volando al carrito
-  function triggerFlyToCart(originImg) {
-    if (!originImg || (!dom.floatingCartBtn && !dom.headerCartBtn)) return;
-    const targetBtn = dom.floatingCartBtn || dom.headerCartBtn;
-
-    const originRect = originImg.getBoundingClientRect();
-    const targetRect = targetBtn.getBoundingClientRect();
-
-    const particle = document.createElement('img');
-    particle.src = originImg.src;
-    particle.className = 'flying-particle';
-    particle.style.top = `${originRect.top + originRect.height / 2 - 25}px`;
-    particle.style.left = `${originRect.left + originRect.width / 2 - 25}px`;
-
-    document.body.appendChild(particle);
-
-    requestAnimationFrame(() => {
-      particle.style.transform = `translate(${targetRect.left - originRect.left}px, ${targetRect.top - originRect.top}px) scale(0.2)`;
-      particle.style.opacity = '0.2';
-    });
-
-    setTimeout(() => particle.remove(), 650);
-  }
-
-  // Quick View Modal
-  function openProductModal(productId) {
-    const product = state.products.find(p => String(p.id) === String(productId));
-    if (!product) return;
-
-    state.activeModalProduct = product;
-    state.activeModalImgIndex = 0;
-    state.selectedModalSize = product.sizes && product.sizes.length > 0 ? product.sizes[0] : 'Única';
-    state.selectedModalColor = 'Blanco';
-
-    const allPhotos = [product.image].concat(product.gallery || []);
-
-    if (dom.modalImage) dom.modalImage.src = allPhotos[0] || product.image;
-    if (dom.modalTag) dom.modalTag.textContent = product.is_purchased ? '● EN TRÁNSITO' : '● POR ENCARGO';
-    if (dom.modalCode) dom.modalCode.textContent = product.code || `#BOL-${product.id}`;
-    if (dom.modalTitle) dom.modalTitle.textContent = product.title;
-    if (dom.modalBrand) dom.modalBrand.textContent = product.brand || 'BOLETA';
-    if (dom.modalCategory) dom.modalCategory.textContent = product.category || 'Accesorios';
-    if (dom.modalPriceUsd) dom.modalPriceUsd.textContent = product.price_usd;
-    if (dom.modalPriceBcv) dom.modalPriceBcv.textContent = product.price_bcv;
-    if (dom.modalMaterial) dom.modalMaterial.textContent = product.material || 'Material garantizado';
-    if (dom.modalDesc) dom.modalDesc.textContent = `Pieza editorial de catálogo por encargo. Se reserva con 50% de abono inicial y el restante al recibir en Barquisimeto.`;
-
-    updateModalImgCounter(allPhotos.length);
-
-    // Miniaturas en la galería izquierda
-    if (dom.modalThumbs) {
-      if (allPhotos.length > 1) {
-        dom.modalThumbs.style.display = 'flex';
-        dom.modalThumbs.innerHTML = allPhotos.map((img, idx) => `
-          <img src="${img}" class="qv-thumb ${idx === 0 ? 'active' : ''}" data-idx="${idx}" alt="Miniatura">
-        `).join('');
-
-        dom.modalThumbs.querySelectorAll('.qv-thumb').forEach(th => {
-          th.addEventListener('click', () => {
-            setModalImageIndex(parseInt(th.getAttribute('data-idx')));
-          });
-        });
-      } else {
-        dom.modalThumbs.style.display = 'none';
-      }
-    }
-
-    // Variantes / Tallas
-    if (dom.modalVariantPills) {
-      if (product.sizes && product.sizes.length > 0) {
-        dom.modalVariantPills.innerHTML = product.sizes.map((s, idx) => `
-          <button class="variant-pill ${idx === 0 ? 'active' : ''}" data-size="${s}">${s}</button>
-        `).join('');
-
-        dom.modalVariantPills.querySelectorAll('.variant-pill').forEach(pill => {
-          pill.addEventListener('click', () => {
-            dom.modalVariantPills.querySelectorAll('.variant-pill').forEach(p => p.classList.remove('active'));
-            pill.classList.add('active');
-            state.selectedModalSize = pill.getAttribute('data-size');
-          });
-        });
-      } else {
-        dom.modalVariantPills.innerHTML = `<span class="variant-pill active">Talla Única</span>`;
-      }
-    }
-
-    // Puntos de color
-    if (dom.modalColorDots) {
-      const colors = [
-        { name: 'Blanco', color: '#F0F0F0' },
-        { name: 'Negro', color: '#101010' },
-        { name: 'Plata', color: '#B0B0B0' }
-      ];
-      dom.modalColorDots.innerHTML = colors.map((c, idx) => `
-        <span class="color-dot ${idx === 0 ? 'active' : ''}" style="background: ${c.color};" data-color="${c.name}" title="${c.name}"></span>
-      `).join('');
-
-      dom.modalColorDots.querySelectorAll('.color-dot').forEach(dot => {
-        dot.addEventListener('click', () => {
-          dom.modalColorDots.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
-          dot.classList.add('active');
-          state.selectedModalColor = dot.getAttribute('data-color');
-          if (dom.modalColorName) dom.modalColorName.textContent = state.selectedModalColor;
-        });
-      });
-    }
-
-    if (dom.productModal) dom.productModal.classList.add('active');
-  }
-
-  function setModalImageIndex(index) {
-    if (!state.activeModalProduct) return;
-    const allPhotos = [state.activeModalProduct.image].concat(state.activeModalProduct.gallery || []);
-    if (index >= 0 && index < allPhotos.length) {
-      state.activeModalImgIndex = index;
-      if (dom.modalImage) dom.modalImage.src = allPhotos[index];
-      if (dom.modalThumbs) {
-        dom.modalThumbs.querySelectorAll('.qv-thumb').forEach((th, i) => {
-          th.classList.toggle('active', i === index);
-        });
-      }
-      updateModalImgCounter(allPhotos.length);
-    }
-  }
-
-  function updateModalImgCounter(total) {
-    if (dom.modalImgCounter) {
-      dom.modalImgCounter.textContent = `${state.activeModalImgIndex + 1}/${total}`;
-    }
-  }
-
-  function closeProductModal() {
-    if (dom.productModal) dom.productModal.classList.remove('active');
-    state.activeModalProduct = null;
-  }
-
-  // Gestión de Carrito ("MI PEDIDO")
-  function addToCart(productId, sizeOverride = null) {
-    const product = state.products.find(p => String(p.id) === String(productId));
-    if (!product) return;
-
-    const size = sizeOverride || (product.sizes && product.sizes.length > 0 ? product.sizes[0] : 'Única');
-    const existingIndex = state.cart.findIndex(item => String(item.id) === String(productId) && item.size === size);
-
-    if (existingIndex > -1) {
-      state.cart[existingIndex].quantity += 1;
-    } else {
-      state.cart.push({
-        id: String(productId),
-        size: size,
-        quantity: 1
-      });
-    }
-
-    saveCartToStorage();
-    updateCartUI();
-    showToast(`✓ "${product.title}" añadido al pedido`);
-  }
-
-  function removeFromCart(productId, size) {
-    state.cart = state.cart.filter(item => !(String(item.id) === String(productId) && item.size === size));
-    saveCartToStorage();
-    updateCartUI();
-  }
-
-  function updateQuantity(productId, size, delta) {
-    const item = state.cart.find(i => String(i.id) === String(productId) && i.size === size);
-    if (!item) return;
-
-    item.quantity += delta;
-    if (item.quantity <= 0) {
-      removeFromCart(productId, size);
-      return;
-    }
-
-    saveCartToStorage();
-    updateCartUI();
-  }
-
-  // Cálculo dual independiente (USD y BCV) y UI del Drawer
-  function updateCartUI() {
-    const totalCount = state.cart.reduce((sum, item) => sum + item.quantity, 0);
-
-    if (dom.cartCountBadge) dom.cartCountBadge.textContent = totalCount;
-    if (dom.floatingCartCount) dom.floatingCartCount.textContent = totalCount;
-    if (dom.drawerCount) dom.drawerCount.textContent = `(${totalCount})`;
-
-    if (!dom.cartDrawerBody) return;
-
-    if (state.cart.length === 0) {
-      dom.cartDrawerBody.innerHTML = `
-        <div class="cart-empty">
-          <div class="cart-empty-icon">✦ BOLETA</div>
-          <div class="cart-empty-text">Tu pedido está vacío</div>
-          <button class="cart-empty-btn" id="startBrowsingBtn">Explorar Catálogo</button>
-        </div>
-      `;
-      const btn = document.getElementById('startBrowsingBtn');
-      if (btn) btn.addEventListener('click', closeCartDrawer);
-
-      if (dom.cartTotalUsd) dom.cartTotalUsd.textContent = "$0 USD";
-      if (dom.cartTotalBcv) dom.cartTotalBcv.textContent = "0$ BCV";
-      if (dom.cartDepositUsd) dom.cartDepositUsd.textContent = "$0 USD";
-      if (dom.cartDepositBcv) dom.cartDepositBcv.textContent = "0$ BCV";
-      if (dom.cartRemainingUsd) dom.cartRemainingUsd.textContent = "$0 USD";
-      if (dom.cartRemainingBcv) dom.cartRemainingBcv.textContent = "0$ BCV";
-
-      if (dom.checkoutBtn) {
-        dom.checkoutBtn.style.opacity = "0.45";
-        dom.checkoutBtn.style.pointerEvents = "none";
-      }
-      return;
-    }
-
-    let totalUsd = 0;
-    let totalBcv = 0;
-
-    dom.cartDrawerBody.innerHTML = state.cart.map(item => {
-      const prod = state.products.find(p => String(p.id) === String(item.id));
-      if (!prod) return '';
-
-      const usdSub = (prod.numeric_usd || 0) * item.quantity;
-      const bcvUnit = prod.numeric_bcv || parseInt(prod.price_bcv) || 25;
-      const bcvSub = bcvUnit * item.quantity;
-
-      totalUsd += usdSub;
-      totalBcv += bcvSub;
-
-      return `
-        <div class="cart-item">
-          <img class="cart-item-img" src="${prod.image}" alt="${prod.title}">
-          <div class="cart-item-info">
-            <div class="cart-item-title">${prod.title}</div>
-            <div class="cart-item-variant">Talla/Opción: ${item.size}</div>
-            <div class="cart-item-prices">
-              <span>$${usdSub} USD</span>
-              <span class="bcv">(${bcvSub}$ BCV)</span>
-            </div>
-          </div>
-          <div class="cart-item-controls">
-            <div class="cart-qty-group">
-              <button class="qty-btn btn-qty-dec" data-id="${item.id}" data-size="${item.size}">−</button>
-              <span class="qty-number">${item.quantity}</span>
-              <button class="qty-btn btn-qty-inc" data-id="${item.id}" data-size="${item.size}">+</button>
-            </div>
-            <button class="cart-item-remove" data-id="${item.id}" data-size="${item.size}">Eliminar</button>
-          </div>
-        </div>
-      `;
-    }).join('');
-
-    const depositUsd = Math.round(totalUsd * 0.5);
-    const depositBcv = Math.round(totalBcv * 0.5);
-    const remainingUsd = totalUsd - depositUsd;
-    const remainingBcv = totalBcv - depositBcv;
-
-    if (dom.cartTotalUsd) dom.cartTotalUsd.textContent = `$${totalUsd} USD`;
-    if (dom.cartTotalBcv) dom.cartTotalBcv.textContent = `${totalBcv}$ BCV`;
-    if (dom.cartDepositUsd) dom.cartDepositUsd.textContent = `$${depositUsd} USD`;
-    if (dom.cartDepositBcv) dom.cartDepositBcv.textContent = `${depositBcv}$ BCV`;
-    if (dom.cartRemainingUsd) dom.cartRemainingUsd.textContent = `$${remainingUsd} USD`;
-    if (dom.cartRemainingBcv) dom.cartRemainingBcv.textContent = `${remainingBcv}$ BCV`;
-
-    if (dom.checkoutBtn) {
-      dom.checkoutBtn.style.opacity = "1";
-      dom.checkoutBtn.style.pointerEvents = "auto";
-    }
-
-    // Eventos dentro del drawer
-    dom.cartDrawerBody.querySelectorAll('.btn-qty-inc').forEach(btn => {
-      btn.addEventListener('click', () => {
-        updateQuantity(btn.getAttribute('data-id'), btn.getAttribute('data-size'), 1);
-      });
-    });
-
-    dom.cartDrawerBody.querySelectorAll('.btn-qty-dec').forEach(btn => {
-      btn.addEventListener('click', () => {
-        updateQuantity(btn.getAttribute('data-id'), btn.getAttribute('data-size'), -1);
-      });
-    });
-
-    dom.cartDrawerBody.querySelectorAll('.cart-item-remove').forEach(btn => {
-      btn.addEventListener('click', () => {
-        removeFromCart(btn.getAttribute('data-id'), btn.getAttribute('data-size'));
-      });
-    });
-  }
-
-  // Checkout vía WhatsApp estructurado
-  function checkoutViaWhatsApp() {
-    if (state.cart.length === 0) return;
-
-    let totalUsd = 0;
-    let totalBcv = 0;
-    const itemsLines = [];
-
-    state.cart.forEach((item, index) => {
-      const prod = state.products.find(p => String(p.id) === String(item.id));
-      if (prod) {
-        const usdSub = (prod.numeric_usd || 0) * item.quantity;
-        const bcvUnit = prod.numeric_bcv || parseInt(prod.price_bcv) || 25;
-        const bcvSub = bcvUnit * item.quantity;
-
-        totalUsd += usdSub;
-        totalBcv += bcvSub;
-
-        itemsLines.push(`${index + 1}. [${prod.code || '#' + prod.id}] ${prod.title}\n   • Talla/Opción: ${item.size}\n   • Cantidad: ${item.quantity}\n   • Precio: $${usdSub} USD (${bcvSub}$ BCV)`);
-      }
-    });
-
-    const depositUsd = Math.round(totalUsd * 0.5);
-    const depositBcv = Math.round(totalBcv * 0.5);
-    const remainingUsd = totalUsd - depositUsd;
-    const remainingBcv = totalBcv - depositBcv;
-
-    const message =
-`🛒 *SOLICITUD DE ENCARGO — BOLETA CLOTHING* 🛒
-
-Hola BOLETA, deseo apartar las siguientes piezas exclusivas:
-
-${itemsLines.join('\n\n')}
-
-━━━━━━━━━━━━━━━━━━━━
-💰 *Total:* $${totalUsd} USD (${totalBcv}$ BCV)
-💳 *Abono Inicial (50%):* $${depositUsd} USD (${depositBcv}$ BCV)
-📍 *Saldo restante (50%):* Se cancela al llegar a Barquisimeto ($${remainingUsd} USD / ${remainingBcv}$ BCV)
-━━━━━━━━━━━━━━━━━━━━
-
-_Deseo confirmar disponibilidad, tallas y coordinar fotos al privado._`;
-
-    const encoded = encodeURIComponent(message);
-    const phone = CONFIG.whatsappPhone ? CONFIG.whatsappPhone.replace(/[^0-9]/g, '') : '584245314215';
-    const whatsappUrl = `https://wa.me/${phone}?text=${encoded}`;
-
-    window.open(whatsappUrl, '_blank');
-  }
-
-  function openCartDrawer() {
-    if (dom.cartDrawer && dom.cartDrawerOverlay) {
-      dom.cartDrawer.classList.add('active');
-      dom.cartDrawerOverlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-  }
-
-  function closeCartDrawer() {
-    if (dom.cartDrawer && dom.cartDrawerOverlay) {
-      dom.cartDrawer.classList.remove('active');
-      dom.cartDrawerOverlay.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-  }
-
-  function saveCartToStorage() {
-    try {
-      localStorage.setItem('boleta_cart', JSON.stringify(state.cart));
-    } catch (e) {}
-  }
-
-  function loadCartFromStorage() {
-    try {
-      const saved = localStorage.getItem('boleta_cart') || localStorage.getItem('bdv_cart');
-      if (saved) {
-        state.cart = JSON.parse(saved);
-        updateCartUI();
-      }
-    } catch (e) {
-      state.cart = [];
-    }
-  }
-
-  // =========================================================================
-  // MODO EDITOR & ADMIN CON PIN GATE DE SEGURIDAD (PIN: 2026)
-  // =========================================================================
-
-  function openPinGateModal() {
-    if (!dom.pinGateModal) {
-      const enteredPin = prompt("Ingrese PIN de seguridad para acceder al Modo Editor:");
-      if (enteredPin === '2026') {
-        sessionStorage.setItem('boleta_admin_auth', 'true');
-        toggleEditorMode(true);
-      } else if (enteredPin !== null) {
-        alert("PIN incorrecto");
-      }
-      return;
-    }
-
-    if (dom.pinInput) dom.pinInput.value = '';
-    if (dom.pinError) dom.pinError.textContent = '';
-    dom.pinGateModal.classList.add('active');
-    setTimeout(() => {
-      if (dom.pinInput) dom.pinInput.focus();
-    }, 80);
-  }
-
-  function closePinGateModal() {
-    if (dom.pinGateModal) dom.pinGateModal.classList.remove('active');
-    if (dom.pinInput) dom.pinInput.value = '';
-    if (dom.pinError) dom.pinError.textContent = '';
-  }
-
-  function handlePinSubmit() {
-    const pin = dom.pinInput ? dom.pinInput.value.trim() : '';
-    if (pin === '2026') {
-      sessionStorage.setItem('boleta_admin_auth', 'true');
-      closePinGateModal();
-      toggleEditorMode(true);
-      showToast('🔓 Modo Editor activado');
-    } else {
-      if (dom.pinError) {
-        dom.pinError.textContent = 'PIN incorrecto';
-      }
-      alert('PIN incorrecto');
-      if (dom.pinInput) {
-        dom.pinInput.value = '';
-        dom.pinInput.focus();
-      }
-    }
-  }
-
-  function toggleEditMode(forceActive = null) {
-    if (forceActive === false || (forceActive === null && state.isEditorMode)) {
-      toggleEditorMode(false);
-      return;
-    }
-
-    if (sessionStorage.getItem('boleta_admin_auth') === 'true') {
-      toggleEditorMode(true);
-    } else {
-      openPinGateModal();
-    }
-  }
-
-  function toggleEditorMode(forceActive = null) {
-    if (forceActive !== null) {
-      state.isEditorMode = forceActive;
-    } else {
-      state.isEditorMode = !state.isEditorMode;
-    }
-
-    if (state.isEditorMode) {
-      document.body.classList.add('editor-mode-active');
-      if (dom.editorToolbar) dom.editorToolbar.style.display = 'block';
-      localStorage.setItem('boleta_editor_active', '1');
-      updateEditorStats();
-      showToast('⚙️ Modo Edición ACTIVADO (Arrastra posts para fusionar)');
-    } else {
-      document.body.classList.remove('editor-mode-active');
-      if (dom.editorToolbar) dom.editorToolbar.style.display = 'none';
-      localStorage.removeItem('boleta_editor_active');
-      showToast('Modo Edición desactivado');
-    }
-  }
-
-  function updateEditorStats() {
-    if (!dom.editorStatsBadge) return;
-    const totalActive = state.products.filter(p => !state.discardedIds.has(String(p.id)) && p.status !== 'descartado').length;
-    const totalDiscarded = state.discardedIds.size;
-    dom.editorStatsBadge.textContent = `${totalActive} Activos • ${totalDiscarded} Descartados`;
-  }
-
-  function saveEditorState() {
-    try {
-      localStorage.setItem('boleta_custom_catalog', JSON.stringify(state.products));
-      localStorage.setItem('boleta_discarded_ids', JSON.stringify(Array.from(state.discardedIds)));
-    } catch (e) {}
-    updateEditorStats();
-  }
-
-  function discardProduct(productId) {
-    const card = document.getElementById(`card-${productId}`);
-    if (card) {
-      card.style.transition = 'all 0.3s ease';
-      card.style.opacity = '0';
-      card.style.transform = 'scale(0.85)';
-    }
-
-    setTimeout(() => {
-      state.discardedIds.add(String(productId));
-
-      // Sincronizar borrado con DELETE /api/products/{id}
-      try {
-        fetch(`/api/products/${productId}`, {
-          method: 'DELETE',
-          headers: getAuthHeaders()
-        }).catch((err) => {
-          console.warn("Aviso en DELETE /api/products:", err);
-        });
-      } catch (e) {}
-
-      saveEditorState();
-      applyFilters();
-      renderCategoryTabs();
-      showToast(`🗑️ Producto #${productId} descartado`);
-    }, 280);
-  }
-
-  // Modal de edición de producto existente
-  function openProductEditModal(productId) {
-    const p = state.products.find(item => String(item.id) === String(productId));
-    if (!p) return;
-
-    state.editingProductId = productId;
-
-    if (dom.editFieldTitle) dom.editFieldTitle.value = p.title || '';
-    if (dom.editFieldCategory) dom.editFieldCategory.value = p.category || 'Joyería';
-    if (dom.editFieldBrand) dom.editFieldBrand.value = p.brand || 'BOLETA';
-    if (dom.editFieldPriceUsd) dom.editFieldPriceUsd.value = p.numeric_usd || 0;
-    if (dom.editFieldPriceBcv) dom.editFieldPriceBcv.value = p.price_bcv || '';
-    if (dom.editFieldMaterial) dom.editFieldMaterial.value = p.material || '';
-    if (dom.editFieldSizes) dom.editFieldSizes.value = (p.sizes || []).join(', ');
-    if (dom.editFieldPurchased) dom.editFieldPurchased.checked = Boolean(p.is_purchased);
-    if (dom.editModalImg) dom.editModalImg.src = p.image;
-    if (dom.editModalCode) dom.editModalCode.textContent = p.code || `#BOL-${p.id}`;
-
-    renderEditGalleryStrip(p);
-
-    if (dom.productEditModal) dom.productEditModal.classList.add('active');
-  }
-
-  function renderEditGalleryStrip(p) {
-    if (!dom.editGalleryStrip) return;
-    const allPhotos = [p.image].concat(p.gallery || []);
-
-    dom.editGalleryStrip.innerHTML = allPhotos.map((img, idx) => `
-      <div style="position: relative; display: inline-block;">
-        <img src="${img}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 4px; border: 1px solid rgba(139,77,255,0.4);" alt="Foto">
-        ${idx > 0 ? `
-          <button type="button" class="btn-remove-gallery-photo" data-idx="${idx - 1}" style="position: absolute; top: -6px; right: -6px; width: 18px; height: 18px; border-radius: 50%; background: #FF5E7E; color: #FFF; border: none; font-size: 10px; cursor: pointer;">✕</button>
-        ` : ''}
-      </div>
-    `).join('');
-
-    dom.editGalleryStrip.querySelectorAll('.btn-remove-gallery-photo').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const removeIdx = parseInt(btn.getAttribute('data-idx'));
-        if (p.gallery && p.gallery.length > removeIdx) {
-          p.gallery.splice(removeIdx, 1);
-          renderEditGalleryStrip(p);
-          saveEditorState();
-          applyFilters();
-        }
-      });
-    });
-  }
-
-  function closeProductEditModal() {
-    if (dom.productEditModal) dom.productEditModal.classList.remove('active');
-    state.editingProductId = null;
-  }
-
-  async function handleEditFormSubmit(e) {
-    e.preventDefault();
-    if (!state.editingProductId) return;
-
-    const p = state.products.find(item => String(item.id) === String(state.editingProductId));
-    if (!p) return;
-
-    p.title = dom.editFieldTitle.value.trim();
-    p.category = dom.editFieldCategory.value;
-    p.brand = dom.editFieldBrand.value.trim() || 'BOLETA';
-    p.numeric_usd = Number(dom.editFieldPriceUsd.value) || p.numeric_usd;
-    p.price_usd = `$${p.numeric_usd} USD`;
-    p.price_bcv = dom.editFieldPriceBcv.value.trim() || `${Math.round(p.numeric_usd * 1.15)}$ BCV`;
-
-    const matchBcv = p.price_bcv.match(/(\d+)/);
-    p.numeric_bcv = matchBcv ? parseInt(matchBcv[1]) : Math.round(p.numeric_usd * 1.15);
-
-    p.material = dom.editFieldMaterial.value.trim();
-    p.sizes = dom.editFieldSizes.value.split(',').map(s => s.trim()).filter(Boolean);
-    p.is_purchased = dom.editFieldPurchased ? dom.editFieldPurchased.checked : p.is_purchased;
-
-    // Sincronizar cambios con API Supabase / SQLite
-    try {
-      fetch(`/api/products/${p.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeaders()
-        },
-        body: JSON.stringify({
-          id: p.id,
-          name: p.title,
-          title: p.title,
-          category: p.category,
-          brand: p.brand,
-          price: p.numeric_usd,
-          numeric_usd: p.numeric_usd,
-          numeric_bcv: p.numeric_bcv,
-          price_usd: p.price_usd,
-          price_bcv: p.price_bcv,
-          description: p.material,
-          material: p.material,
-          sizes: p.sizes,
-          is_purchased: p.is_purchased,
-          available: p.in_stock,
-          in_stock: p.in_stock,
-          gallery: p.gallery
-        })
-      }).catch((err) => {
-        console.warn("Aviso en PUT /api/products:", err);
-      });
-    } catch (err) {}
-
-    saveEditorState();
-    applyFilters();
-    renderCategoryTabs();
-    closeProductEditModal();
-    showToast(`✓ Cambios guardados para #${p.id}`);
-  }
-
-  // Subida de fotos desde PC para producto en edición
-  async function handleEditPhotoUpload(files) {
-    if (!state.editingProductId || !files || files.length === 0) return;
-    const p = state.products.find(item => String(item.id) === String(state.editingProductId));
-    if (!p) return;
-
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      if (!file.type.startsWith('image/')) continue;
-
-      try {
-        const formData = new FormData();
-        formData.append('file', file);
-        const res = await fetch('/api/upload', {
-          method: 'POST',
-          headers: getAuthHeaders(),
-          body: formData
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (!p.gallery) p.gallery = [];
-          p.gallery.push(data.url);
-        } else {
-          throw new Error('Upload failed');
-        }
-      } catch (err) {
-        // Fallback FileReader local
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          if (!p.gallery) p.gallery = [];
-          p.gallery.push(e.target.result);
-          renderEditGalleryStrip(p);
-          saveEditorState();
-          applyFilters();
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-
-    renderEditGalleryStrip(p);
-    saveEditorState();
-    applyFilters();
-    showToast(`✓ Fotos añadidas a la galería de #${p.id}`);
-  }
-
-  // Cambiar foto principal (POST /api/products/{id}/image)
-  async function handleEditMainPhoto(file) {
-    if (!state.editingProductId || !file || !file.type.startsWith('image/')) return;
-    const p = state.products.find(item => String(item.id) === String(state.editingProductId));
-    if (!p) return;
-
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      const res = await fetch(`/api/products/${p.id}/image`, {
-        method: 'POST',
-        headers: getAuthHeaders(),
-        body: formData
-      });
-      if (res.ok) {
-        const data = await res.json();
-        const uploadedUrl = data.image_url || data.url;
-        p.image = uploadedUrl;
-        p.image_url = uploadedUrl;
-        p.thumb = uploadedUrl;
-        if (dom.editModalImg) dom.editModalImg.src = p.image;
-        saveEditorState();
-        applyFilters();
-        showToast(`✓ Foto principal actualizada en Supabase para #${p.id}`);
-        return;
-      } else {
-        throw new Error('API image endpoint error: ' + res.status);
-      }
-    } catch (err) {
-      console.warn("Fallo subiendo imagen a /api/products/{id}/image, usando fallback local:", err);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        p.image = e.target.result;
-        p.thumb = e.target.result;
-        if (dom.editModalImg) dom.editModalImg.src = p.image;
-        saveEditorState();
-        applyFilters();
-      };
-      reader.readAsDataURL(file);
-      showToast(`✓ Foto guardada localmente para #${p.id}`);
-      return;
-    }
-
-    if (dom.editModalImg) dom.editModalImg.src = p.image;
-    saveEditorState();
-    applyFilters();
-    showToast(`✓ Foto principal actualizada para #${p.id}`);
-  }
-
-  // Modal Añadir Nuevo Producto (Admin)
-  function openAddProductModal() {
-    if (dom.addProductModal) {
-      dom.addProductModal.classList.add('active');
-      if (dom.newFieldTitle) dom.newFieldTitle.focus();
-    }
-  }
-
-  function closeAddProductModal() {
-    if (dom.addProductModal) {
-      dom.addProductModal.classList.remove('active');
-      if (dom.addProductForm) dom.addProductForm.reset();
-      clearNewProductImages();
-    }
-  }
-
-  function clearNewProductImages() {
-    state.selectedNewProductFiles = [];
-    if (dom.newProductFileInput) dom.newProductFileInput.value = '';
-    if (dom.uploadPreviewBox) dom.uploadPreviewBox.style.display = 'none';
-    if (dom.uploadPlaceholder) dom.uploadPlaceholder.style.display = 'block';
-    if (dom.removeUploadImgBtn) dom.removeUploadImgBtn.style.display = 'none';
-    if (dom.uploadPreviewStrip) dom.uploadPreviewStrip.innerHTML = '';
-  }
-
-  function handleNewProductFiles(files) {
-    if (!files || files.length === 0) return;
-    state.selectedNewProductFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
-
-    if (state.selectedNewProductFiles.length === 0) {
-      showToast('⚠️ Por favor selecciona archivos de imagen válidos');
-      return;
-    }
-
-    if (dom.uploadPlaceholder) dom.uploadPlaceholder.style.display = 'none';
-    if (dom.uploadPreviewBox) dom.uploadPreviewBox.style.display = 'flex';
-    if (dom.removeUploadImgBtn) dom.removeUploadImgBtn.style.display = 'inline-block';
-
-    if (dom.uploadPreviewStrip) {
-      dom.uploadPreviewStrip.innerHTML = '';
-      state.selectedNewProductFiles.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const img = document.createElement('img');
-          img.src = e.target.result;
-          img.className = 'upload-preview-item';
-          dom.uploadPreviewStrip.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-  }
-
-  async function handleAddProductSubmit(e) {
-    e.preventDefault();
-    const title = dom.newFieldTitle.value.trim();
-    if (!title) return;
-
-    const category = dom.newFieldCategory.value;
-    const brand = dom.newFieldBrand.value.trim() || 'BOLETA';
-    const numUsd = parseFloat(dom.newFieldPriceUsd.value) || 0;
-    const priceBcvVal = dom.newFieldPriceBcv.value.trim();
-    const numBcv = priceBcvVal ? (parseInt(priceBcvVal.match(/\d+/)?.[0]) || Math.round(numUsd * 1.15)) : Math.round(numUsd * 1.15);
-    const material = dom.newFieldMaterial.value.trim();
-    const sizes = dom.newFieldSizes.value.trim() || 'Única';
-    const isPurchased = dom.newFieldPurchased ? dom.newFieldPurchased.checked : false;
-
-    if (dom.newProductSubmitBtn) {
-      dom.newProductSubmitBtn.disabled = true;
-      dom.newProductSubmitBtn.textContent = '⏳ Publicando producto…';
-    }
-
-    try {
-      const formData = new FormData();
-      formData.append('title', title);
-      formData.append('name', title);
-      formData.append('category', category);
-      formData.append('brand', brand);
-      formData.append('numeric_usd', numUsd);
-      formData.append('price', numUsd);
-      formData.append('numeric_bcv', numBcv);
-      formData.append('material', material);
-      formData.append('description', material);
-      formData.append('sizes', sizes);
-      formData.append('tag', 'POR ENCARGO');
-      formData.append('available', isPurchased ? 'false' : 'true');
-
-      if (state.selectedNewProductFiles.length > 0) {
-        formData.append('image_file', state.selectedNewProductFiles[0]);
-      }
-
-      const res = await fetch('/api/products', {
-        method: 'POST',
-        headers: getAuthHeaders(),
-        body: formData
-      });
-
-      if (res.ok) {
-        const created = await res.json();
-        created.is_purchased = isPurchased;
-
-        // Subir fotos adicionales si las hay
-        if (state.selectedNewProductFiles.length > 1) {
-          for (let i = 1; i < state.selectedNewProductFiles.length; i++) {
-            const addForm = new FormData();
-            addForm.append('file', state.selectedNewProductFiles[i]);
-            const addRes = await fetch('/api/upload', {
-              method: 'POST',
-              headers: getAuthHeaders(),
-              body: addForm
-            });
-            if (addRes.ok) {
-              const addData = await addRes.json();
-              if (!created.gallery) created.gallery = [];
-              created.gallery.push(addData.url);
-            }
+  if (sections.hidden.includes("radio")) $("radioEmbed").hidden = true;
+  $("rewardPeek").hidden = $("rewardSection").hidden;
+}
+function setTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  $("themeToggle").setAttribute(
+    "aria-label",
+    theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro",
+  );
+  $("themeToggle").firstChild.textContent = theme === "dark" ? "☾ " : "☼ ";
+  document.querySelector('meta[name="theme-color"]').content =
+    theme === "dark" ? "#0b090f" : "#f4f1eb";
+}
+const savedTheme = readLocal("boleta-theme", null);
+setTheme(
+  savedTheme ||
+    (window.matchMedia?.("(prefers-color-scheme: light)").matches
+      ? "light"
+      : "dark"),
+);
+$("themeToggle").onclick = () => {
+  const theme =
+    document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  setTheme(theme);
+  writeLocal("boleta-theme", theme);
+};
+export function renderProducts() {
+  const query = norm(state.query).split(/\s+/).filter(Boolean);
+  const list = state.products.filter(
+    (p) =>
+      p.status !== "descartado" &&
+      p.status !== "archivado" &&
+      (state.category === "Todo" || categoryOf(p) === state.category) &&
+      query.every((q) =>
+        norm(
+          [p.title, p.name, p.brand, p.code, p.category, p.material].join(" "),
+        ).includes(q),
+      ),
+  );
+  if (state.sort === "low")
+    list.sort(
+      (a, b) => (priceNumber(a) ?? Infinity) - (priceNumber(b) ?? Infinity),
+    );
+  if (state.sort === "high")
+    list.sort((a, b) => (priceNumber(b) ?? -1) - (priceNumber(a) ?? -1));
+  if (state.sort === "name")
+    list.sort((a, b) =>
+      (a.title || a.name || "").localeCompare(b.title || b.name || ""),
+    );
+  $("productCount").textContent = `${list.length} piezas en el archivo`;
+  $("productGrid").innerHTML = list.length
+    ? list
+        .slice(0, state.limit)
+        .map(
+          (p, i) =>
+            `<article class="product-card" data-id="${esc(p.id)}"><button class="product-open" data-open="${esc(p.id)}" aria-label="Ver ${esc(p.title || p.name)}"><div class="product-photo"><img src="${esc(thumbnail(p))}" alt="${esc(p.title || p.name)}" width="400" height="450" loading="lazy" decoding="async"><span class="product-index">${String(i + 1).padStart(2, "0")} / ${esc(p.code || p.id)}</span><span class="card-arrow" aria-hidden="true">↗</span></div><div class="product-info"><p class="micro">${esc(categoryOf(p))} / ${esc(p.brand || "BOLETA")}</p><h3>${esc(p.title || p.name)}</h3><span class="price">${esc(priceLabel(p))}</span></div></button>${state.editor ? `<button class="product-edit-button" data-edit="${esc(p.id)}">✎ Editar esta pieza</button>` : ""}</article>`,
+        )
+        .join("")
+    : '<p class="empty">No hay piezas con esos filtros. Prueba otra búsqueda.</p>';
+  $("loadMore").hidden = list.length <= state.limit;
+  const cats = ["Todo", ...new Set(state.products.map(categoryOf))];
+  $("categoryTabs").innerHTML = cats
+    .map(
+      (x) =>
+        `<button class="${state.category === x ? "active" : ""}" data-filter="${esc(x)}" aria-pressed="${state.category === x}">${esc(x)}</button>`,
+    )
+    .join("");
+}
+export async function loadProducts() {
+  state.products = await api("/api/products");
+  if (!Array.isArray(state.products))
+    throw new Error("El archivo no está disponible.");
+  renderProducts();
+  updateCart();
+}
+$("productGrid").onclick = (e) => {
+  const open = e.target.closest("[data-open]");
+  if (open) openProduct(open.dataset.open);
+  const edit = e.target.closest("[data-edit]");
+  if (edit)
+    document.dispatchEvent(
+      new CustomEvent("boleta-edit-product", { detail: edit.dataset.edit }),
+    );
+};
+$("categoryTabs").onclick = (e) => {
+  const b = e.target.closest("[data-filter]");
+  if (!b) return;
+  state.category = b.dataset.filter;
+  state.limit = 24;
+  renderProducts();
+};
+$("categoryCards").onclick = (e) => {
+  const b = e.target.closest("[data-category]");
+  if (!b) return;
+  state.category = b.dataset.category;
+  state.limit = 24;
+  renderProducts();
+  $("catalogo").scrollIntoView();
+  $("searchInput").focus({ preventScroll: true });
+};
+$("searchInput").oninput = (e) => {
+  state.query = e.target.value;
+  state.limit = 24;
+  renderProducts();
+};
+$("sortSelect").onchange = (e) => {
+  state.sort = e.target.value;
+  renderProducts();
+};
+$("loadMore").onclick = () => {
+  state.limit += 24;
+  renderProducts();
+};
+export function openProduct(id) {
+  const p = state.products.find((x) => String(x.id) === String(id));
+  if (!p) return;
+  state.product = p;
+  state.variant = null;
+  state.quantity = 1;
+  state.image = 0;
+  renderProductDialog();
+  openDialog("productDialog");
+  track("view_product", { product_id: String(p.id) });
+}
+function renderProductDialog() {
+  const p = state.product,
+    photos = gallery(p),
+    vs = variants(p),
+    priced =
+      state.variant && Number(state.variant.price) > 0
+        ? {
+            ...p,
+            numeric_usd: Number(state.variant.price),
+            price: Number(state.variant.price),
           }
-        }
-
-        state.products.unshift(sanitizeProduct(created));
-        saveEditorState();
-        applyFilters();
-        renderCategoryTabs();
-        closeAddProductModal();
-        showToast(`✓ "${title}" publicado en la vitrina`);
-      } else {
-        throw new Error('Servidor retornó ' + res.status);
-      }
-    } catch (err) {
-      console.warn("API POST no disponible, agregando localmente:", err);
-      const newId = String(Date.now());
-      const previewImgs = dom.uploadPreviewStrip.querySelectorAll('img');
-      const firstImg = previewImgs.length > 0 ? previewImgs[0].src : 'images/logo.png';
-      const gallery = [];
-      for (let i = 1; i < previewImgs.length; i++) {
-        gallery.push(previewImgs[i].src);
-      }
-
-      const localProd = sanitizeProduct({
-        id: newId,
-        code: `#BOL-${newId.slice(-4)}`,
-        title: title,
-        category: category,
-        brand: brand,
-        numeric_usd: numUsd,
-        numeric_bcv: numBcv,
-        price_usd: `$${numUsd} USD`,
-        price_bcv: `${numBcv}$ BCV`,
-        image: firstImg,
-        thumb: firstImg,
-        gallery: gallery,
-        sizes: sizes.split(',').map(s => s.trim()).filter(Boolean),
-        material: material,
-        tag: 'POR ENCARGO',
-        is_purchased: isPurchased,
-        in_stock: true,
-        status: 'aprobado'
-      });
-
-      state.products.unshift(localProd);
-      saveEditorState();
-      applyFilters();
-      renderCategoryTabs();
-      closeAddProductModal();
-      showToast(`✓ "${title}" añadido al catálogo local`);
-    } finally {
-      if (dom.newProductSubmitBtn) {
-        dom.newProductSubmitBtn.disabled = false;
-        dom.newProductSubmitBtn.textContent = '⚡ Publicar Producto en la Vitrina';
-      }
-    }
+        : p;
+  $("productContent").innerHTML =
+    `<div class="product-layout"><button class="icon-btn product-close close-dialog" aria-label="Cerrar producto">×</button><div class="product-gallery"><div class="product-main-image"><img id="detailImage" src="${esc(photos[state.image] || "/images/boleta-logo.webp")}" alt="${esc(p.title || p.name)} — foto ${state.image + 1}" width="650" height="650">${photos.length > 1 ? `<div class="gallery-controls"><button data-gallery-prev aria-label="Foto anterior">←</button><span>${state.image + 1} / ${photos.length}</span><button data-gallery-next aria-label="Foto siguiente">→</button></div>` : ""}</div><div class="gallery-thumbs">${photos.map((src, i) => `<button data-photo="${i}" class="${i === state.image ? "active" : ""}" aria-label="Ver foto ${i + 1}" aria-pressed="${i === state.image}"><img src="${esc(thumbnail(src))}" alt="" width="62" height="62" loading="lazy"></button>`).join("")}</div></div><div class="product-detail"><p class="micro">${esc(p.code || p.id)} / ${esc(p.brand || "BOLETA")}</p><h2 id="productTitle">${esc(p.title || p.name)}</h2><p class="detail-price">${esc(priceLabel(priced))}</p>${bcvPrice(priced) ? `<p class="privacy">${esc(bcvPrice(priced))}</p>` : ""}<p class="product-description">${esc(p.description || p.material || "El detalle hace la diferencia. Consulta las medidas y disponibilidad antes de encargar.")}</p><p class="field-label" id="variantLabel">Elige tu variante</p><div class="variant-pills" role="group" aria-labelledby="variantLabel">${vs.map((v) => `<button data-variant="${esc(v.id)}" class="${state.variant?.id === v.id ? "active" : ""}" aria-pressed="${state.variant?.id === v.id}" ${v.available === false || v.stock === 0 ? "disabled" : ""}>${esc(v.label)}</button>`).join("")}</div><div class="quantity-row"><span>Cantidad</span><button data-qty="-1" aria-label="Reducir cantidad">−</button><input id="detailQuantity" type="number" min="1" max="99" value="${state.quantity}" aria-label="Cantidad"><button data-qty="1" aria-label="Aumentar cantidad">+</button></div><div class="logistics-note">${esc(arrivalText())}<br>${esc(state.settings.logistics.note)}</div><button id="addSelection" class="button primary" ${!state.variant ? "disabled" : ""}>${state.variant ? "Añadir a mi selección ↗" : "Primero elige tu variante"}</button><p class="privacy">Consulta por WhatsApp antes de pagar. Añadir una pieza no confirma una reserva.</p></div></div>`;
+}
+function bcvPrice(p) {
+  const { bcv_rate, bcv_date } = state.settings.payment || {};
+  return priceNumber(p) &&
+    Number(bcv_rate) > 0 &&
+    /^\d{4}-\d{2}-\d{2}$/.test(bcv_date || "")
+    ? `Bs. ${(priceNumber(p) * Number(bcv_rate)).toLocaleString("es-VE", { maximumFractionDigits: 2 })} · tasa ${dateLabel(bcv_date)}`
+    : "";
+}
+$("productContent").onclick = (e) => {
+  if (
+    e.target.closest("[data-gallery-prev]") ||
+    e.target.closest("[data-gallery-next]")
+  ) {
+    const len = gallery(state.product).length;
+    state.image =
+      (state.image + (e.target.closest("[data-gallery-next]") ? 1 : -1) + len) %
+      len;
+    renderProductDialog();
   }
-
-  // Exportar catalog.json saneado
-  function exportCleanCatalog() {
-    const cleanProducts = state.products
-      .filter(p => !state.discardedIds.has(String(p.id)) && p.status !== 'descartado')
-      .map(p => ({
-        ...p,
-        status: 'aprobado'
-      }));
-
-    const jsonString = JSON.stringify(cleanProducts, null, 2);
-    const blob = new Blob([jsonString], { type: 'application/json;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'catalog.json';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-
-    showToast(`💾 catalog.json descargado con éxito (${cleanProducts.length} productos activos)`);
+  const photo = e.target.closest("[data-photo]");
+  if (photo) {
+    state.image = Number(photo.dataset.photo);
+    renderProductDialog();
+    $("productContent")
+      .querySelector('[data-photo="' + state.image + '"]')
+      ?.focus({ preventScroll: true });
   }
-
-  function resetToOriginalCatalog() {
-    if (!confirm('¿Deseas restaurar el catálogo al estado original y cancelar todos los descartes?')) {
+  const v = e.target.closest("[data-variant]");
+  if (v) {
+    state.variant = variants(state.product).find(
+      (x) => x.id === v.dataset.variant,
+    );
+    renderProductDialog();
+    Array.from($("productContent").querySelectorAll("[data-variant]"))
+      .find((b) => b.dataset.variant === state.variant.id)
+      ?.focus({ preventScroll: true });
+    track("select_variant", {
+      product_id: String(state.product.id),
+      variant: state.variant.id,
+    });
+  }
+  const qty = e.target.closest("[data-qty]");
+  if (qty) {
+    state.quantity = Math.min(
+      99,
+      Math.max(1, state.quantity + Number(qty.dataset.qty)),
+    );
+    $("detailQuantity").value = state.quantity;
+  }
+  if (e.target.closest("#addSelection")) addToCart();
+};
+$("productContent").onchange = (e) => {
+  if (e.target.id === "detailQuantity")
+    state.quantity = Math.min(
+      99,
+      Math.max(1, Math.floor(Number(e.target.value) || 1)),
+    );
+  if (e.target.id === "detailQuantity") e.target.value = state.quantity;
+};
+function addToCart() {
+  if (!state.product || !state.variant) return;
+  const p = state.product,
+    v = state.variant;
+  const stock =
+    Number.isFinite(Number(v.stock)) && v.stock !== null
+      ? Number(v.stock)
+      : null;
+  const item = state.cart.find(
+    (x) => String(x.id) === String(p.id) && x.variant_id === v.id,
+  );
+  if (stock !== null && (item?.quantity || 0) + state.quantity > stock) {
+    toast("Esa cantidad supera la disponibilidad de esta variante.");
+    return;
+  }
+  if (item) item.quantity = Math.min(99, item.quantity + state.quantity);
+  else
+    state.cart.push({
+      id: String(p.id),
+      variant_id: v.id,
+      variant: v.label,
+      quantity: state.quantity,
+    });
+  updateCart();
+  track("add_to_selection", {
+    product_id: String(p.id),
+    variant: v.id,
+    quantity: state.quantity,
+  });
+  toast("Pieza añadida a tu selección.");
+  closeDialog($("productDialog"));
+}
+export function updateCart() {
+  state.cart = state.cart
+    .filter(
+      (x) =>
+        x &&
+        typeof x.id === "string" &&
+        typeof x.variant_id === "string" &&
+        x.quantity > 0,
+    )
+    .map((x) => ({ ...x, quantity: Math.min(99, Math.floor(x.quantity)) }));
+  writeLocal("boleta-selection-v2", state.cart);
+  const count = state.cart.reduce((s, x) => s + x.quantity, 0);
+  $("cartBadge").textContent = count;
+  $("floatingCount").textContent = count;
+  $("floatingCart").hidden = count === 0;
+  document.body.classList.toggle("has-selection", count > 0);
+  if ($("selectionDialog").open) renderSelection();
+}
+function selectionRows() {
+  return state.cart.map((x) => {
+    const p = state.products.find((p) => String(p.id) === x.id),
+      v = p ? variants(p).find((v) => v.id === x.variant_id) : null;
+    return {
+      item: x,
+      p:
+        p && v && Number(v.price) > 0
+          ? { ...p, numeric_usd: Number(v.price), price: Number(v.price) }
+          : p,
+      v,
+    };
+  });
+}
+function paymentText(total, pending) {
+  const p = state.settings.payment || {};
+  let result = "";
+  const dated =
+    Number(p.bcv_rate) > 0 && /^\d{4}-\d{2}-\d{2}$/.test(p.bcv_date || "");
+  if (dated)
+    result =
+      (pending ? "Subtotal conocido" : "Total de referencia") +
+      " en Bs. " +
+      (total * Number(p.bcv_rate)).toLocaleString("es-VE", {
+        maximumFractionDigits: 2,
+      }) +
+      " · tasa configurada " +
+      Number(p.bcv_rate) +
+      " Bs./USD del " +
+      dateLabel(p.bcv_date) +
+      ".";
+  if (Number(p.deposit_percent) > 0 && !pending)
+    result +=
+      " Anticipo configurado " +
+      Number(p.deposit_percent) +
+      "%: USD " +
+      ((total * Number(p.deposit_percent)) / 100).toFixed(2) +
+      (dated
+        ? " / Bs. " +
+          (
+            (total * Number(p.bcv_rate) * Number(p.deposit_percent)) /
+            100
+          ).toLocaleString("es-VE", { maximumFractionDigits: 2 })
+        : "") +
+      ". Confirma condiciones antes de pagar.";
+  return result;
+}
+function selectionSummary() {
+  let total = 0,
+    pending = false;
+  for (const { item, p, v } of selectionRows()) {
+    if (
+      !p ||
+      !v ||
+      v.available === false ||
+      v.stock === 0 ||
+      (v.stock !== null &&
+        v.stock !== undefined &&
+        item.quantity > Number(v.stock)) ||
+      priceNumber(p) === null
+    )
+      pending = true;
+    else total += priceNumber(p) * item.quantity;
+  }
+  return { total, pending };
+}
+export function renderSelection() {
+  const { total, pending } = selectionSummary();
+  $("selectionContent").innerHTML = state.cart.length
+    ? `<div class="selection-items">${selectionRows()
+        .map(
+          ({ item: x, p, v }, i) =>
+            `<div class="selection-item"><img src="${esc(thumbnail(p))}" alt="" width="75" height="90"><div><h3>${esc(p?.title || p?.name || "Producto pendiente de confirmar")}</h3><p>${esc(x.variant)} · ${p ? esc(priceLabel(p)) : "Precio por confirmar"}${!v || v.available === false || v.stock === 0 || (v.stock !== undefined && v.stock !== null && x.quantity > Number(v.stock)) ? " · DISPONIBILIDAD POR CONFIRMAR" : ""}</p><div class="quantity-row"><button data-cart-qty="${i}" data-delta="-1" aria-label="Reducir cantidad">−</button><span>${x.quantity}</span><button data-cart-qty="${i}" data-delta="1" aria-label="Aumentar cantidad">+</button><button data-remove="${i}" class="selection-remove">Quitar</button></div></div></div>`,
+        )
+        .join(
+          "",
+        )}</div><div class="selection-bottom"><div class="selection-total"><span>${pending ? "Subtotal conocido" : "Total de referencia"}</span><span>${total.toLocaleString("es-VE", { style: "currency", currency: "USD" })}</span></div>${pending ? "<p>Hay precios o disponibilidad por confirmar. Solicita la cotización completa.</p>" : ""}${paymentText(total, pending) ? `<p>${esc(paymentText(total, pending))}</p>` : ""}<p>${esc(arrivalText())}. ${esc(state.settings.logistics.note)} Consultar no confirma reserva ni pago.</p><button id="checkoutButton" class="button primary">Consultar por WhatsApp ↗</button></div>`
+    : '<div class="empty"><p>Tu selección empieza con una pieza.</p><button class="small-button" id="continueShopping">Explorar el archivo ↗</button></div>';
+}
+function openSelection() {
+  renderSelection();
+  openDialog("selectionDialog");
+}
+$("cartButton").onclick = openSelection;
+$("floatingCart").onclick = openSelection;
+$("selectionContent").onclick = async (e) => {
+  const q = e.target.closest("[data-cart-qty]");
+  if (q) {
+    const x = state.cart[Number(q.dataset.cartQty)];
+    const p = state.products.find((p) => String(p.id) === x.id),
+      v = p ? variants(p).find((v) => v.id === x.variant_id) : null;
+    const next = Math.min(
+      99,
+      Math.max(1, x.quantity + Number(q.dataset.delta)),
+    );
+    if (v?.stock !== undefined && v.stock !== null && next > Number(v.stock)) {
+      toast("Esa cantidad supera la disponibilidad de esta variante.");
       return;
     }
-
-    localStorage.removeItem('boleta_custom_catalog');
-    localStorage.removeItem('boleta_discarded_ids');
-    localStorage.removeItem('bdv_custom_catalog');
-    localStorage.removeItem('bdv_discarded_ids');
-    state.discardedIds = new Set();
-
-    if (window.BOLETA_CATALOG) {
-      state.products = JSON.parse(JSON.stringify(window.BOLETA_CATALOG)).map(sanitizeProduct);
-    }
-    applyFilters();
-    renderCategoryTabs();
-    updateEditorStats();
-    showToast('🔄 Catálogo restaurado al estado original');
+    x.quantity = next;
+    updateCart();
   }
-
-  function showToast(text) {
-    if (!dom.toastContainer) return;
-
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.innerHTML = `<span>⚡</span><span>${text}</span>`;
-    dom.toastContainer.appendChild(toast);
-
-    setTimeout(() => {
-      toast.classList.add('fade-out');
-      setTimeout(() => toast.remove(), 300);
-    }, 2800);
+  const r = e.target.closest("[data-remove]");
+  if (r) {
+    state.cart.splice(Number(r.dataset.remove), 1);
+    updateCart();
   }
-
-  // Configuración de escuchas globales
-  function setupEventListeners() {
-    // Buscador
-    if (dom.searchInput) {
-      dom.searchInput.addEventListener('input', (e) => {
-        state.searchQuery = e.target.value;
-        if (dom.searchClear) {
-          dom.searchClear.classList.toggle('visible', Boolean(state.searchQuery));
-        }
-        applyFilters();
-      });
+  if (e.target.closest("#continueShopping")) {
+    closeDialog($("selectionDialog"));
+    $("catalogo").scrollIntoView();
+  }
+  if (e.target.closest("#checkoutButton")) {
+    const checkoutWindow = window.open("about:blank", "_blank");
+    if (checkoutWindow) checkoutWindow.opener = null;
+    try {
+      await loadProducts();
+    } catch {
+      checkoutWindow?.close();
+      toast("No pudimos verificar el catálogo actual. Intenta nuevamente.");
+      return;
     }
-
-    if (dom.searchClear) {
-      dom.searchClear.addEventListener('click', () => {
-        dom.searchInput.value = '';
-        state.searchQuery = '';
-        dom.searchClear.classList.remove('visible');
-        applyFilters();
-      });
+    const { total, pending } = selectionSummary();
+    const lines = selectionRows().map(
+      ({ item: x, p, v }) =>
+        `• ${p?.code || x.id} ${p?.title || p?.name || "Producto por confirmar"} | ${x.variant} | Cantidad: ${x.quantity} | ${p ? priceLabel(p) : "por confirmar"}${!v || v.available === false || v.stock === 0 || (v.stock !== undefined && v.stock !== null && x.quantity > Number(v.stock)) ? " | DISPONIBILIDAD POR CONFIRMAR" : ""}`,
+    );
+    goWhatsApp(
+      `Hola BOLETA, quiero consultar esta selección:\n\n${lines.join("\n")}\n\n${pending ? "Subtotal conocido" : "Total de referencia"}: $${total.toFixed(2)}${pending ? " + precios pendientes" : ""}.\n${arrivalText()}.\n${paymentText(total, pending)}\nPor favor confirma disponibilidad, medidas, precio final, anticipo y condiciones de entrega. Entiendo que este mensaje no confirma una reserva.`,
+      false,
+      checkoutWindow,
+    );
+  }
+};
+function renderFaq() {
+  $("faqList").innerHTML = state.settings.faq
+    .map(
+      (f, i) =>
+        `<details data-faq="${i}"><summary>${esc(f.question)}</summary><p>${esc(f.answer)}</p></details>`,
+    )
+    .join("");
+  $("guideFaq").innerHTML = state.settings.faq
+    .map(
+      (f, i) =>
+        `<button class="guide-option" data-guide-faq="${i}" aria-expanded="false">${esc(f.question)} <span>+</span></button><p class="guide-answer" id="guideAnswer${i}" hidden>${esc(f.answer)}</p>`,
+    )
+    .join("");
+}
+$("faqList").addEventListener(
+  "toggle",
+  (e) => {
+    if (e.target.open)
+      track("faq_open", { question_index: Number(e.target.dataset.faq) });
+  },
+  true,
+);
+$("guideFaq").onclick = (e) => {
+  const b = e.target.closest("[data-guide-faq]");
+  if (!b) return;
+  const a = $("guideAnswer" + b.dataset.guideFaq);
+  a.hidden = !a.hidden;
+  b.setAttribute("aria-expanded", String(!a.hidden));
+  track("faq_open", { question_index: Number(b.dataset.guideFaq) });
+};
+function dismissInvite() {
+  $("guideInvite").hidden = true;
+  writeLocal("boleta-guide-dismissed", true);
+}
+function openGuide() {
+  dismissInvite();
+  openDialog("guideDialog");
+}
+$("guideCard").onclick = openGuide;
+$("guideLauncher").onclick = openGuide;
+$("dismissGuideInvite").onclick = dismissInvite;
+$("guideInviteButton").onclick = () => {
+  dismissInvite();
+  startTutorial();
+};
+$("guideHuman").onclick = () =>
+  goWhatsApp("Hola BOLETA, tengo una duda sobre el catálogo.");
+let tourIndex = 0,
+  tourFocus = null;
+const steps = [
+  {
+    target: "categoryCards",
+    title: "Encuentra tu frecuencia.",
+    text: "Lentes y anillos a un toque. También puedes explorar todas las piezas en el archivo.",
+  },
+  {
+    target: "catalogControls",
+    title: "Ve directo a tu pieza.",
+    text: "Busca por nombre, marca o código y usa las categorías para filtrar.",
+  },
+  {
+    target: "productGrid",
+    title: "Mira los detalles.",
+    text: "Abre una pieza para ver las fotos, elegir su variante y añadir la cantidad a tu selección.",
+  },
+  {
+    target: "floatingCart",
+    title: "Tu selección, a tu ritmo.",
+    text: "Aquí verás las piezas que añadas. Puedes ajustar cantidades o quitar cualquiera.",
+  },
+  {
+    target: "como-encargar",
+    title: "Confirmamos por WhatsApp.",
+    text: "Desde tu selección, pulsa Consultar. Confirmaremos disponibilidad, precio y condiciones contigo antes de pagar.",
+  },
+];
+function drawTour() {
+  tourFocus?.classList.remove("tutorial-focus");
+  const step = steps[tourIndex];
+  let target = $(step.target);
+  if (step.target === "productGrid")
+    target = $("productGrid").querySelector(".product-card") || target;
+  if (target.hidden)
+    target = $("cartButton").offsetParent
+      ? $("cartButton")
+      : $("como-encargar");
+  tourFocus = target;
+  target.classList.add("tutorial-focus");
+  target.scrollIntoView({
+    block: "center",
+    behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "instant"
+      : "smooth",
+  });
+  $("tutorialStep").textContent =
+    `GUÍA BOLETA / ${tourIndex + 1} DE ${steps.length}`;
+  $("tutorialTitle").textContent = step.title;
+  $("tutorialText").textContent = step.text;
+  $("tutorialPrev").disabled = tourIndex === 0;
+  $("tutorialNext").textContent =
+    tourIndex === steps.length - 1 ? "Listo, a explorar ↗" : "Siguiente ↗";
+  $("tutorial").hidden = false;
+  $("tutorialNext").focus({ preventScroll: true });
+}
+function startTutorial() {
+  document.querySelectorAll("dialog[open]").forEach(closeDialog);
+  $("siteMenu").hidden = true;
+  $("menuButton").setAttribute("aria-expanded", "false");
+  tourIndex = 0;
+  drawTour();
+}
+function endTutorial() {
+  tourFocus?.classList.remove("tutorial-focus");
+  $("tutorial").hidden = true;
+  $("guideLauncher").focus({ preventScroll: true });
+}
+$("tutorialButton").onclick = startTutorial;
+$("startTutorial").onclick = startTutorial;
+$("guideTutorial").onclick = startTutorial;
+$("tutorialNext").onclick = () => {
+  if (++tourIndex >= steps.length) endTutorial();
+  else drawTour();
+};
+$("tutorialPrev").onclick = () => {
+  if (tourIndex > 0) {
+    tourIndex--;
+    drawTour();
+  }
+};
+$("tutorialClose").onclick = endTutorial;
+$("menuButton").onclick = () => {
+  $("siteMenu").hidden = !$("siteMenu").hidden;
+  $("menuButton").setAttribute("aria-expanded", String(!$("siteMenu").hidden));
+};
+$("siteMenu").addEventListener("click", (e) => {
+  if (e.target.closest("a")) {
+    $("siteMenu").hidden = true;
+    $("menuButton").setAttribute("aria-expanded", "false");
+  }
+});
+$("radioButton").onclick = () => {
+  if (!$("radioEmbed").hidden) {
+    $("radioEmbed").hidden = true;
+    $("radioEmbed").replaceChildren();
+    $("radioButton").textContent = "▷ Escuchar playlist";
+    return;
+  }
+  const u = new URL(
+    safeUrl(state.settings.radio.playlist_url, defaults.radio.playlist_url),
+  );
+  const match = u.pathname.match(/(?:embed\/)?playlist\/([A-Za-z0-9]+)/);
+  if (u.hostname !== "open.spotify.com" || !match) {
+    toast("La playlist aún no está configurada.");
+    return;
+  }
+  const frame = document.createElement("iframe");
+  frame.src = `https://open.spotify.com/embed/playlist/${match[1]}?utm_source=generator`;
+  frame.title = "BOLETA Radio — Spotify";
+  frame.allow =
+    "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+  frame.loading = "lazy";
+  $("radioEmbed").append(frame);
+  $("radioEmbed").hidden = false;
+  $("radioButton").textContent = "Cerrar reproductor ×";
+  track("radio_open");
+};
+$("studioButton").onclick = () =>
+  goWhatsApp(
+    "Hola Digital Solution, vi la experiencia BOLETA y quiero una vitrina web para mi negocio. Me interesa conversar sobre mi proyecto.",
+    true,
+  );
+$("leadForm").onsubmit = async (e) => {
+  e.preventDefault();
+  const form = e.currentTarget,
+    b = form.querySelector("button[type=submit]"),
+    f = new FormData(form);
+  b.disabled = true;
+  $("leadStatus").textContent = "Enviando…";
+  try {
+    const r = await api("/api/leads", {
+      method: "POST",
+      body: JSON.stringify({
+        name: f.get("name"),
+        whatsapp: f.get("whatsapp"),
+        consent: f.get("consent") === "on",
+        marketing_consent: f.get("marketing") === "on",
+        consent_version: "2026-10",
+        website: f.get("website"),
+      }),
+    });
+    if (!r.success)
+      throw new Error("No recibimos confirmación. Intenta otra vez.");
+    $("leadStatus").textContent =
+      "Recibimos tu contacto. Gracias por conectar con BOLETA.";
+    form.reset();
+  } catch (err) {
+    $("leadStatus").textContent = err.message;
+  } finally {
+    b.disabled = false;
+  }
+};
+function renderRewardWheel() {
+  const prizes = state.settings.rewards.prizes || [];
+  if (!prizes.length) return;
+  let stage = $("rewardWheelStage");
+  if (!stage) {
+    stage = document.createElement("div");
+    stage.id = "rewardWheelStage";
+    stage.className = "reward-wheel-stage";
+    $("rewardTerms").after(stage);
+  }
+  const n = prizes.length,
+    colors = ["#60328A", "#2d183f", "#9764c3", "#463052"];
+  stage.innerHTML =
+    '<div class="wheel-pointer" aria-hidden="true">▼</div><div id="rewardWheel" class="reward-wheel" aria-hidden="true"><span>BOLETA</span></div><div class="wheel-legend"></div>';
+  const wheel = $("rewardWheel");
+  wheel.style.background =
+    "conic-gradient(" +
+    prizes
+      .map(
+        (p, i) =>
+          colors[i % colors.length] +
+          " " +
+          (i * 360) / n +
+          "deg " +
+          ((i + 1) * 360) / n +
+          "deg",
+      )
+      .join(",") +
+    ")";
+  prizes.forEach((p, i) => {
+    const label = document.createElement("b");
+    label.textContent = String(i + 1).padStart(2, "0");
+    label.style.transform =
+      "rotate(" +
+      ((i + 0.5) * 360) / n +
+      "deg) translateY(-78px) rotate(-" +
+      ((i + 0.5) * 360) / n +
+      "deg)";
+    wheel.append(label);
+  });
+  stage.querySelector(".wheel-legend").innerHTML = prizes
+    .map(
+      (p, i) =>
+        "<span>" +
+        String(i + 1).padStart(2, "0") +
+        " / " +
+        esc(p.label) +
+        "</span>",
+    )
+    .join("");
+}
+let wheelRotation = 0;
+$("spinButton").onclick = async () => {
+  const b = $("spinButton");
+  b.disabled = true;
+  $("rewardResult").textContent = "Abriendo tu detalle…";
+  try {
+    const r = await api("/api/rewards/spin", { method: "POST", body: "{}" });
+    const prizes = state.settings.rewards.prizes || [],
+      idx = prizes.findIndex((p) => p.id === r.prize.id);
+    if (idx >= 0 && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const target = 360 - ((idx + 0.5) * 360) / prizes.length;
+      wheelRotation = Math.ceil(wheelRotation / 360) * 360 + 1440 + target;
+      $("rewardWheel").style.transform = "rotate(" + wheelRotation + "deg)";
+      await new Promise((resolve) => setTimeout(resolve, 2200));
     }
-
-    if (dom.headerSearchBtn) {
-      dom.headerSearchBtn.addEventListener('click', () => {
-        const catSection = document.getElementById('catalogo');
-        if (catSection) catSection.scrollIntoView({ behavior: 'smooth' });
-        if (dom.searchInput) dom.searchInput.focus();
-      });
-    }
-
-    // Ordenación
-    if (dom.sortSelect) {
-      dom.sortSelect.addEventListener('change', (e) => {
-        state.sortBy = e.target.value;
-        applyFilters();
-      });
-    }
-
-    // Mobile nav toggle
-    if (dom.navToggle && dom.siteNav) {
-      dom.navToggle.addEventListener('click', () => {
-        const isOpen = dom.siteNav.style.display === 'flex';
-        dom.siteNav.style.display = isOpen ? 'none' : 'flex';
-        if (!isOpen) {
-          dom.siteNav.style.flexDirection = 'column';
-          dom.siteNav.style.position = 'absolute';
-          dom.siteNav.style.top = '100%';
-          dom.siteNav.style.left = '0';
-          dom.siteNav.style.right = '0';
-          dom.siteNav.style.background = 'rgba(8, 6, 13, 0.98)';
-          dom.siteNav.style.padding = '20px';
-          dom.siteNav.style.borderBottom = '1px solid rgba(139, 77, 255, 0.2)';
-        }
-      });
-    }
-
-    // Botones de Carrito
-    if (dom.headerCartBtn) dom.headerCartBtn.addEventListener('click', openCartDrawer);
-    if (dom.floatingCartBtn) dom.floatingCartBtn.addEventListener('click', openCartDrawer);
-    if (dom.cartDrawerClose) dom.cartDrawerClose.addEventListener('click', closeCartDrawer);
-    if (dom.cartDrawerOverlay) dom.cartDrawerOverlay.addEventListener('click', closeCartDrawer);
-    if (dom.checkoutBtn) dom.checkoutBtn.addEventListener('click', checkoutViaWhatsApp);
-
-    // Modal Quick View
-    if (dom.modalCloseBtn) dom.modalCloseBtn.addEventListener('click', closeProductModal);
-    if (dom.productModal) {
-      dom.productModal.addEventListener('click', (e) => {
-        if (e.target === dom.productModal) closeProductModal();
-      });
-    }
-
-    if (dom.modalPrevImg) {
-      dom.modalPrevImg.addEventListener('click', () => {
-        if (!state.activeModalProduct) return;
-        const total = 1 + (state.activeModalProduct.gallery || []).length;
-        setModalImageIndex((state.activeModalImgIndex - 1 + total) % total);
-      });
-    }
-
-    if (dom.modalNextImg) {
-      dom.modalNextImg.addEventListener('click', () => {
-        if (!state.activeModalProduct) return;
-        const total = 1 + (state.activeModalProduct.gallery || []).length;
-        setModalImageIndex((state.activeModalImgIndex + 1) % total);
-      });
-    }
-
-    if (dom.modalAddCartBtn) {
-      dom.modalAddCartBtn.addEventListener('click', () => {
-        if (state.activeModalProduct) {
-          addToCart(state.activeModalProduct.id, state.selectedModalSize);
-          closeProductModal();
-        }
-      });
-    }
-
-    if (dom.modalWhatsappBtn) {
-      dom.modalWhatsappBtn.addEventListener('click', () => {
-        if (state.activeModalProduct) {
-          const p = state.activeModalProduct;
-          const msg = encodeURIComponent(`Hola BOLETA, me interesa encargar la siguiente pieza:\n• [${p.code || '#' + p.id}] ${p.title}\n• Talla: ${state.selectedModalSize || 'Única'}\n• Precio: ${p.price_usd} (${p.price_bcv})\n\n¿Tienes disponibilidad para Barquisimeto?`);
-          const phone = CONFIG.whatsappPhone ? CONFIG.whatsappPhone.replace(/[^0-9]/g, '') : '584245314215';
-          window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
-        }
-      });
-    }
-
-    // Live Editor Toolbar
-    if (dom.editorNewItemBtn) dom.editorNewItemBtn.addEventListener('click', openAddProductModal);
-    if (dom.editorExportBtn) dom.editorExportBtn.addEventListener('click', exportCleanCatalog);
-    if (dom.editorResetBtn) dom.editorResetBtn.addEventListener('click', resetToOriginalCatalog);
-    if (dom.editorExitBtn) dom.editorExitBtn.addEventListener('click', () => toggleEditorMode(false));
-    if (dom.footerEditorToggle) {
-      dom.footerEditorToggle.addEventListener('click', (e) => {
-        e.preventDefault();
-        toggleEditMode();
-      });
-    }
-
-    // Modal de Edición de Producto
-    if (dom.editModalCloseBtn) dom.editModalCloseBtn.addEventListener('click', closeProductEditModal);
-    if (dom.productEditModal) {
-      dom.productEditModal.addEventListener('click', (e) => {
-        if (e.target === dom.productEditModal) closeProductEditModal();
-      });
-    }
-    if (dom.productEditForm) dom.productEditForm.addEventListener('submit', handleEditFormSubmit);
-
-    // Subida de fotos dentro del modal de edición
-    if (dom.editPhotoDropZone) {
-      dom.editPhotoDropZone.addEventListener('click', () => {
-        if (dom.editPhotoInput) dom.editPhotoInput.click();
-      });
-      dom.editPhotoDropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dom.editPhotoDropZone.style.borderColor = 'var(--purple)';
-      });
-      dom.editPhotoDropZone.addEventListener('dragleave', () => {
-        dom.editPhotoDropZone.style.borderColor = 'rgba(139, 77, 255, 0.5)';
-      });
-      dom.editPhotoDropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dom.editPhotoDropZone.style.borderColor = 'rgba(139, 77, 255, 0.5)';
-        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-          handleEditPhotoUpload(e.dataTransfer.files);
-        }
-      });
-    }
-
-    if (dom.editPhotoInput) {
-      dom.editPhotoInput.addEventListener('change', (e) => {
-        if (e.target.files && e.target.files.length > 0) {
-          handleEditPhotoUpload(e.target.files);
-        }
-      });
-    }
-
-    if (dom.editMainPhotoBtn) {
-      dom.editMainPhotoBtn.addEventListener('click', () => {
-        if (dom.editMainPhotoInput) dom.editMainPhotoInput.click();
-      });
-    }
-
-    if (dom.editMainPhotoInput) {
-      dom.editMainPhotoInput.addEventListener('change', (e) => {
-        if (e.target.files && e.target.files[0]) {
-          handleEditMainPhoto(e.target.files[0]);
-        }
-      });
-    }
-
-    // Modal de Fusión (Drag-to-Merge)
-    if (dom.mergeModalCloseBtn) dom.mergeModalCloseBtn.addEventListener('click', closeMergeModal);
-    if (dom.mergeCancelBtn) dom.mergeCancelBtn.addEventListener('click', closeMergeModal);
-    if (dom.mergeConfirmBtn) dom.mergeConfirmBtn.addEventListener('click', executeCardMerge);
-    if (dom.mergeConfirmModal) {
-      dom.mergeConfirmModal.addEventListener('click', (e) => {
-        if (e.target === dom.mergeConfirmModal) closeMergeModal();
-      });
-    }
-
-    // Modal de Añadir Nuevo Producto
-    if (dom.addProductCloseBtn) dom.addProductCloseBtn.addEventListener('click', closeAddProductModal);
-    if (dom.addProductModal) {
-      dom.addProductModal.addEventListener('click', (e) => {
-        if (e.target === dom.addProductModal) closeAddProductModal();
-      });
-    }
-    if (dom.addProductForm) dom.addProductForm.addEventListener('submit', handleAddProductSubmit);
-
-    // Drop zone para nuevo producto
-    if (dom.uploadDropZone) {
-      dom.uploadDropZone.addEventListener('click', (e) => {
-        if (e.target !== dom.removeUploadImgBtn && dom.newProductFileInput) {
-          dom.newProductFileInput.click();
-        }
-      });
-
-      dom.uploadDropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dom.uploadDropZone.classList.add('dragover');
-      });
-
-      dom.uploadDropZone.addEventListener('dragleave', () => {
-        dom.uploadDropZone.classList.remove('dragover');
-      });
-
-      dom.uploadDropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dom.uploadDropZone.classList.remove('dragover');
-        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-          handleNewProductFiles(e.dataTransfer.files);
-        }
-      });
-    }
-
-    if (dom.newProductFileInput) {
-      dom.newProductFileInput.addEventListener('change', (e) => {
-        if (e.target.files && e.target.files.length > 0) {
-          handleNewProductFiles(e.target.files);
-        }
-      });
-    }
-
-    if (dom.removeUploadImgBtn) {
-      dom.removeUploadImgBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        clearNewProductImages();
-      });
-    }
-
-    // Atajos de teclado (Ctrl + Shift + E, Esc, Enter)
-    document.addEventListener('keydown', (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'E' || e.key === 'e')) {
-        e.preventDefault();
-        toggleEditMode();
-      } else if (e.key === 'Escape') {
-        closeProductModal();
-        closeProductEditModal();
-        closeMergeModal();
-        closeAddProductModal();
-        closeCartDrawer();
-        closePinGateModal();
-      } else if (e.key === 'Enter' && dom.mergeConfirmModal && dom.mergeConfirmModal.classList.contains('active')) {
-        e.preventDefault();
-        executeCardMerge();
+    $("rewardResult").textContent =
+      `${r.already_spun ? "Tu detalle guardado" : "Tu detalle"}: ${r.prize.label}. ${r.prize.description || ""}${r.claim_code ? " Código: " + r.claim_code : ""}`;
+    if (r.prize.kind === "wallpaper") {
+      let dl = $("wallpaperDownload");
+      if (!dl) {
+        dl = document.createElement("button");
+        dl.id = "wallpaperDownload";
+        dl.className = "button secondary";
+        $("rewardResult").after(dl);
       }
-    });
-
-    // Eventos del PIN Gate Modal
-    if (dom.pinSubmitBtn) dom.pinSubmitBtn.addEventListener('click', handlePinSubmit);
-    if (dom.pinCancelBtn) dom.pinCancelBtn.addEventListener('click', closePinGateModal);
-    if (dom.pinInput) {
-      dom.pinInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          handlePinSubmit();
+      dl.textContent = "Descargar mi fondo BOLETA ↓";
+      dl.onclick = async () => {
+        try {
+          const { downloadWallpaper } = await import("./wallpaper.js");
+          await downloadWallpaper(r.prize.design);
+        } catch {
+          toast("No pudimos preparar la descarga. Intenta nuevamente.");
         }
-      });
+      };
     }
-    if (dom.pinGateModal) {
-      dom.pinGateModal.addEventListener('click', (e) => {
-        if (e.target === dom.pinGateModal) closePinGateModal();
-      });
-    }
-
-    // Enlaces B2B a WhatsApp (+57 322 4734848)
-    document.querySelectorAll('.b2b-link').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const b2bMsg = encodeURIComponent("Hola Cristian, vi la vitrina de Boleta y me interesa una web para mi negocio");
-        const phone = CONFIG.b2bPhone ? CONFIG.b2bPhone.replace(/[^0-9]/g, '') : '573224734848';
-        window.open(`https://wa.me/${phone}?text=${b2bMsg}`, '_blank');
-      });
-    });
+  } catch (err) {
+    $("rewardResult").textContent = err.message;
+  } finally {
+    b.disabled = false;
   }
-
-  // Exponer API global para pruebas y consola
-  window.toggleEditMode = toggleEditMode;
-  window.toggleEditorMode = toggleEditMode;
-
-  // Ejecución al cargar DOM
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
+};
+$("privacyButton").onclick = () => {
+  $("noticeTitle").textContent = "TUS DATOS, EN CLARO.";
+  $("noticeContent").innerHTML =
+    `<p>Usamos el nombre y WhatsApp que compartas para responder tu consulta. Solo enviamos novedades si marcas la casilla opcional.</p><p>Puedes pedir acceso, corrección o eliminación y darte de baja escribiendo BAJA a nuestro WhatsApp.</p><a class="button secondary" href="${esc(whatsapp("BAJA. Quiero retirar mi consentimiento y eliminar mis datos de contacto."))}" target="_blank" rel="noopener">Solicitar baja por WhatsApp ↗</a><p>Las métricas opcionales cuentan navegación sin incluir nombre ni teléfono. Un clic en WhatsApp no se considera una venta.</p><label class="checkbox"><input type="checkbox" id="analyticsConsent" ${readLocal("boleta-analytics", false) ? "checked" : ""}><span>Permito métricas de navegación anónimas para mejorar la experiencia.</span></label>`;
+  openDialog("noticeDialog");
+  $("analyticsConsent").onchange = (e) => {
+    writeLocal("boleta-analytics", e.target.checked);
+    if (e.target.checked) track("page_view");
+  };
+};
+const scrollMarks = new Set();
+window.addEventListener(
+  "scroll",
+  () => {
+    const total = document.documentElement.scrollHeight - innerHeight;
+    if (total <= 0) return;
+    const percent = Math.round((scrollY / total) * 100);
+    for (const n of [25, 50, 75, 100])
+      if (percent >= n && !scrollMarks.has(n)) {
+        scrollMarks.add(n);
+        track("scroll_" + n);
+      }
+  },
+  { passive: true },
+);
+$("year").textContent = new Date().getFullYear();
+document.querySelectorAll("dialog").forEach(wireDialog);
+$("editorButton").onclick = () =>
+  import("./editor.js")
+    .then((m) => m.openEditor())
+    .catch(() => toast("No pudimos abrir el editor. Recarga la página."));
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !$("tutorial").hidden) endTutorial();
+  if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "e") {
+    e.preventDefault();
+    $("editorButton").click();
   }
-
-})();
+});
+async function init() {
+  track("page_view");
+  try {
+    applySettings(await api("/api/site-settings"));
+  } catch {
+    applySettings(defaults);
+  }
+  try {
+    await loadProducts();
+  } catch (err) {
+    $("productCount").textContent = "Archivo no disponible temporalmente";
+    $("productGrid").innerHTML =
+      `<div class="empty"><p>${esc(err.message)}</p><button id="retryProducts" class="small-button">Intentar de nuevo</button></div>`;
+    $("retryProducts").onclick = () =>
+      loadProducts().catch((e) => toast(e.message));
+  }
+  if (
+    "IntersectionObserver" in window &&
+    !matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    document.body.classList.add("motion-ready");
+    const observer = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("visible");
+            observer.unobserve(e.target);
+          }
+        }),
+      { threshold: 0.08 },
+    );
+    document.querySelectorAll(".reveal").forEach((x) => observer.observe(x));
+  }
+  if (!readLocal("boleta-guide-dismissed", false))
+    setTimeout(() => {
+      $("guideInvite").hidden = false;
+    }, 1800);
+  if (new URLSearchParams(location.search).has("editor"))
+    $("editorButton").click();
+}
+init();
