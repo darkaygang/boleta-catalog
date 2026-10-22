@@ -36,3 +36,5 @@ Elegida opción C con guía A. Implementación autorizada. URL https://boleta-ca
 Ruleta retirada por usuario. Intro1→100 >=1s, guía completa y logo Digital Solution editable. Sin planeta. Tres propuestas por videos: Archivo de Calle/Vitrina Cromada/Portal del Drop, pendientes de elección. No publicar materiales ni variantes inventadas desde mockups.
 
 Decisión definitiva22/10: Vitrina Cromada elegida. Hero con composición especial y catálogo debajo con fotos QC actuales. Publicación autorizada; contraseña administrativa solo en Render, nunca Git. Supabase migración privada aplicada y verificada120productos originales.
+
+Producciónverificada22/10: Vitrina Cromada publicada, PR1merged/deployLIVE. Supabaseeditor privado durable verificado. Clave soloenv, no repetir ni incrustar. MEMORY.md prevalece sobre checkpoints anteriores que indicaban pendiente de elección/despliegue.

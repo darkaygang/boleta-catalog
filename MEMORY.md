@@ -1,54 +1,35 @@
-# BOLETA — checkpoint 22/10/2026
-## Confirmado
-Cristian eligió diseño C con cuadro guía A, autorizó construcción y agentes. URL producción https://boleta-catalog.onrender.com.
-Base auditada main 7fbff1011d00f915b8d964e366ef201c74a05580. Se preservaron datos/fotos originales.
-Se construyó en rama codex/boleta-estudio-interactivo. No se ha desplegado rediseño todavía.
+# BOLETA · producción verificada22/10/2026
 
-## Implementado y verificado localmente
-- Frontend ligero vanilla + CSS: opción C, temas, intro1→100 (1200ms +100ms cierre), hero con lentes/anillo del catálogo, fuentes locales.
-- Guía/FAQ/tutorial y encargo reescrito, variante/cantidad/precios con revalidación WhatsApp.
-- Guía tattoo único bajo ojo izquierdo; hoja actualizada entregada al propietario. Assets optimizados.
-- Editor visual autenticado: contenidos/fuentes/color/medios/FAQ/orden/visibilidad/piezas, borrador/publicación/historial.
-- Auth cookie HttpOnly+CSRF, sin PIN público. ADMIN_PASSWORD>=10 requerido.
-- Estado durable privado Supabase JSONB+CAS, migración aditiva docs/supabase-redesign.sql; originales legacy conservados.
-- Leads sin cuenta con consentimientos separados, export/eliminación admin; no envía mensajes.
-- Métricas agregadas opt-in; clic no prueba conversación o pago.
-- Ruleta retirada explícitamente22/10: UI y editor sin premios; endpoint legado410. Históricos privados conservados sin otorgar premios nuevos.
-- Spotify solo al pulsar; no audio/video ni iframe inicial. Digital Solution separado.
-- Miniaturas cacheadas480px, originales intactos.
-- 23/23 tests unittest aislados PASAN. Node syntax tres módulos PASA.
-- Browser Chrome local: 10 recorridos/grupos funcionales PASAN, sin errores JS ni recursos fallidos; sin overflow 360/390/430/1440.
-- Medición local sin throttling: LCP612ms, CLS0.0037, recursos559163 bytes antes de interacción,16requests,0iframes Spotify. No son métricas de campo.
+## Estado actual
+Vitrina Cromada elegida por Cristian y publicada en https://boleta-catalog.onrender.com.
+Código desplegado b13840c6f5bd30135f1e985088a65191403950e4; PR1 fusionado. Render deploy dep-dbd8r315efls73aisr50 LIVE desde22:29:19UTC22/10. Los commits posteriores de documentación usan [skip render]; no requieren redeploy.
+WorkspaceRender tea-d1vr5n2li9vc73fq65bg confirmado por propietario. Servicio existente srv-db3e4b5g1s2s73a2ucfg, rama main/autodeploy, PythonFreeOregon,1instancia. No se crearon servicios ni se cambiaron planes/costos.
 
-## Preparación de producción pendiente
-1. Backup integral de Supabase/medios real por propietario (backup local tarea solo público + repo).
-2. Ejecutar SQL aditivo y configurar ADMIN_PASSWORD, SUPABASE_URL/service key y BOLETA_PUBLIC_ORIGIN.
-3. Revisar PR/preview, desplegar con un worker y verificar persistencia. No habilitar disco efímero como almacenamiento.
-No hay acceso SQL/variables Render disponible en esta sesión. No afirmar despliegue.
-Sin migración, lectura snapshot disponible pero writes503, correctamente sin falso éxito.
-Sesiones/rate limits por proceso; login de nuevo tras restart.
-Guías: docs/editar-boleta.md y docs/activar-render.md. Specs: specs/estudio-interactivo/.
+## Diseño y funcionamiento
+- Hero cromado con fondo originalWebP128KB +cutouts de lentes/anillo reales; debajo catálogo con fotosQC originales,120productos por carga progresiva. No inferir autenticidad/materiales desde títulos heredados.
+- Morado#60328A/negro/claro, fuente hero independiente editable, fondo/medios/textos/logoagencia editables.
+- Guía Track+Flares serio, negro/morado, tattoo único bajo ojoizquierdo, cuerpo completo contain. Tutorial y FAQ editables, no aprendizaje inventado.
+- Introcontador1→1001200ms+100ms cierre; animación editorial, no porcentaje realdedescarga; fallbackCSSy reducedmotion.
+- Encargo con variante obligatoria, cantidad, revalidación, precio pendiente/confirmado y mensajeWhatsApp. No reserva/pago automático. B2C584245314215/B2B573215885381.
+- Ruleta yplaneta retirados explícitamente. Endpointlegado410. No cuenta obligatoria ni falsa prueba social.
+- RadioSpotify7JwsCKwcOZGfaWoJu8guQn soloalclick, sin iframe/audioinicial.
+- Contactos opt-in separados, no campañasautomáticas. Métricas opt-in privadas; clic noequivale venta.
 
-## Comercial pendiente
-Pedido nuevo/fotos/unidades vendibles, variantes reales, precios faltantes, materiales/autenticidad, anticipo/cancelaciones y tasa BCV fechada.
-15/12/2026 estimado, no garantizado. No inferir originalidad Chrome Hearts de títulos históricos. Banners posteriores cuando usuario los pida.
+## Editor y persistencia remotos verificados
+Entrada /?editor o pie Editar página. Contraseña elegida porpropietario configurada SOLOenvRenderADMIN_PASSWORD (mínimo10caracteres por solicitudexpresa), no guardada en Git ni navegador. CookieHttpOnly/Secure, CSRF, sesión8h/unproceso, login denuevo trasrestart.
+Supabase zvwcwbkkmtojvolgxbda. Migración boleta_private_visual_editor_state aplicada: tabla boleta_state yRPCcompare-swap; RLStrue ysin permisos anon/authenticated; RPCsolo service_role. Aviso INFO no-policy esperado porque tabla privada backend-only. Tabla public.products120filas y objetos existentes intactos.
+Stateadoptado120productos/revision2/settingsv2 después de verificación. Fusión conserva portada, descripción y galerías legacyimagesJSONB/seed sin duplicados. No fallbackwrite efímero. BOLETA_ALLOW_LOCAL_STORAGE=0, BOLETA_ENVproduction, BOLETA_PUBLIC_ORIGIN ySUPABASE_URL configurados, secretosprevios preservados sinleerlos.
+Portada subida porAPIeditor a SupabaseStorage product-images ypublicada; sesión nueva confirmóURLycontenido. Guardarborrador no cambiópúblico; publicación preservóhistorial; logout invalidósesión. No se crearon leads/contactos ficticios ni se enviaronmensajes.
 
-## Corrección y propuestas 22/10
-- Usuario rechazó planeta/ruleta, pidió contador >=1s, guía completa, logo agencia y tres nuevos bocetos según MP4.
-- Agentes frontend/backend/revisión colaboraron; sin cambios en datos ni producción.
-- Intro1→1001200ms+100ms, también reduced-motion. Prueba browser desde documento hasta ocultar2161ms (incluye tiempo previo a inicioJS); no representa porcentaje real de descarga. CSS fallback1600ms si noJS.
-- Guía fullbody contain en418x678. Logo Digital Solution proporcionado, WebP600x60029.3KB, editable con studio.logo, borradores antiguos compatibles.
-- Removidos planeta y ruleta. Compatibilidad de settings/historial, endpoint410 sin mutación. Espacios compactados moderadamente.
-- 23/23 unittest y JS app/editor syntax pasan. Nueve grupos de regresión navegador pasan, sin erroresJS/recursos, carrito→WhatsApp/tallas/qty/tema/guía/radio/form/editorpublicarrestaurar. QA adicionalsin overflow360/390/418/430/1440, intro/guía/logo/410.
-- Tres MP4 decodificados9fotogramas cadauno: collage rap18.5s; espejoornamental8.93s; marco cromado floral con escena6.03s. Contact sheets locales work/video-reference-22oct.
-- Tres bocetos: Archivo de Calle (recomendado identidad rap), Vitrina Cromada, Portal del Drop. Generated con imagegen y referencias de productos/mascota. Son propuestas, NO diseño seleccionado ni materiales/variantes certificados. No cuenta obligatoria.
-- Próximo paso: propietario elige dirección o combinación; implementar hero/flujo compacto definitivo. Conserva editor visual.
-- PR existente https://github.com/darkaygang/boleta-catalog/pull/1 rama codex/boleta-estudio-interactivo. Preparación Render/Supabase sigue pendiente, sin despliegue en esta sesión.
+## Evidencia
+-26/26unittest aisladosPASS; sintaxisapp/editorPASS.
+-CI head5201f1e PASS run39864831092.
+-9gruposbrowserlocalPASS.
+-APIproducción16checksPASS: authcookie/privacidad/IDs/gallery/live/noFallback/uploadStorage/draft/publicación/historial/logout/persistenciafreshsession.
+-BrowserpúblicoPASS:120tarjetas, variantes/carrito/WhatsAppsimulado(sinenvío), guía,tema,editorreal/fontshero/logout. Sin erroresJS/recursos inesperados ysin overflow360/390/418/430/1440.
+-Un recorrido combinado de estrés120piezas+navegación editor agotó el tiempo del selector; repetido con nueva pestaña de editor completó sin errores. No afirmar rendimiento bajo cualquier carga ni ausencia absoluta de defectos.
+-Backup previo120productos: work/backup-22oct/supabase-products-before.json fuera delrepo. FotosQCoriginales verificadas localmente. Entregables/evidenciavisual en outputs/ delworkspacepadre.
 
-## Vitrina Cromada confirmada y preparación remota22/10
-Usuario eligió02, pidió catálogoQC debajo, contraseña específica soloenv y publicar; agentes autorizados.
-- Nuevohero cromado original128.4KB+cutoutsreales; catálogo inmediato con fotosQC contain. Fonts.hero yhero.backdrop editables. MicroanimacionesCSS/movimientoreducido.
-- Adopción combina imagesJSONB/galleryremotos/seed sinperder portada/descripciónvigentes.
--26/26unittest y9gruposregresiónbrowser pasan, sinerroresJS/recursos. Revisiónindependiente sinbloqueadores.
-- Supabaseproyecto zvwcwbkkmtojvolgxbda único catálogo120. BackupJSON privado work/backup-22oct/supabase-products-before.json. Migración boleta_private_visual_editor_state aplicada; boleta_state nuevaRLS denypublic/RPCsolo service_role,120legacyintactos. Revision0 hasta primera mutación.
-- Render tea-d1vr5n2li9vc73fq65bg confirmado por propietario; servicio srv-db3e4b5g1s2s73a2ucfg,main,autodeploycommit,singlefreePython. EnvmergedADMIN_PASSWORD/BOLETA_ENV/ORIGIN/ALLOW_LOCAL_STORAGE0/SUPABASE_URL, secretos anteriores no leídos. Publicación y QAremotos pendientes durante estecheckpoint.
+## Próximo trabajo comercial
+Cristian organiza compra real: piezas/variantes/unidades/precios/fotosQC; no marcar todo el catálogo como comprado. Llegada15/12/2026 es estimación sujeta a logística. Anticipo/cancelaciones yBCVfechado pendientes de decisionesreales. No imponer50%. Banners futuros solo cuando los pida.
+Guíaoperativa docs/operar-boleta.md. Evitar reimportarTelegram o tocardatosproductivos para tests. Mantener FastAPI/frontendvanilla ligero salvojustificación.

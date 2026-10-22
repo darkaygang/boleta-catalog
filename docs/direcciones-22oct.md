@@ -23,3 +23,6 @@ Los bocetos son ilustraciones de diseño. Nombres de variantes, textos técnicos
 
 ## Cambios concretos realizados ahora
 Intro con contador1→100, duración programada1200ms y100ms mostrando100. Fallback CSS1600ms sin JS. Guía object-fit contain para mostrar todo el cuerpo; logo de agencia WebP600px editable. Retirados planeta y ruleta de storefront/editor; endpoint antiguo devuelve410 sin modificar históricos. Espacios compactados moderadamente. La estructura completa del hero queda pendiente de elección.
+
+## Resolución
+Cristian eligióVitrinaCromada y pidió mantenerQCdebajo. Implementada y desplegada22/10, verMEMORY.md. Las otrasdos direcciones son exploraciones anteriores.

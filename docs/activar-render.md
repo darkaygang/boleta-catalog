@@ -1,5 +1,5 @@
 # Activar el rediseño en Render
-La preview fue construida y probada localmente. No confundir PR con despliegue público.
+Estado22/10: publicado y verificado en https://boleta-catalog.onrender.com. Migración y entorno ya configurados; los pasos siguientes sirven como referencia para futuras instalaciones. No repetirlos sobre producción sin necesidad.
 
 ## Antes del cambio
 1. Exportar/resguardar public.products y objetos de product-images del proyecto real. El respaldo local de esta tarea solo conserva la versión pública; no contiene pedidos privados ni equivale a un backup integral de producción.

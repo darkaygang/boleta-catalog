@@ -18,3 +18,5 @@ Lee [contexto](references/contexto.md) al retomar y [ejecución](references/ejec
 - Si la orquestación está autorizada, dividir datos/admin, UI/temas y QA; acordar propiedad de archivos, usar modelos heredados e integrar secuencialmente. No delegar decisiones comerciales pendientes.
 
 Decisión definitiva22/10: Vitrina Cromada elegida. Hero con composición especial y catálogo debajo con fotos QC actuales. Publicación autorizada; contraseña administrativa solo en Render, nunca Git. Supabase migración privada aplicada y verificada120productos originales.
+
+Producciónverificada22/10: Vitrina Cromada publicada, PR1merged/deployLIVE. Supabaseeditor privado durable verificado. Clave soloenv, no repetir ni incrustar. MEMORY.md prevalece sobre checkpoints anteriores que indicaban pendiente de elección/despliegue.

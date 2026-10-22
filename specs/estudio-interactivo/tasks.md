@@ -9,11 +9,17 @@
 - [x] Editor borrador/publicación/reversión (RF-25), prueba visual.
 - [x] Stats/opt-in y ruleta desactivada sin términos (RF-23/24/29).
 - [x] Integración Digital Solution (RF-30).
-- [ ] PR, documentación y entrega verificable.
+- [x] PR1 fusionado, despliegue LIVE y documentación.
 
 ## 22/10
 - [x] Correcciones intro/guía/retirada planeta y ruleta, logo editable.
 - [x] Tres MP4 decodificados y contact sheets inspeccionados.
 - [x] Tres bocetos visuales y comparación de funciones: docs/direcciones-22oct.md.
 - [x] QA final:23unittest,9gruposregresiónbrowser+checks específicos.
-- [ ] Actualizar PR1 y entrega (sin desplegar).
+- [x] Actualizar PR1 y entrega; usuario autorizó despliegue posterior.
+
+- [x] Vitrina Cromada elegida e implementada.
+- [x] Migración Supabase aplicada y verificada sinpérdida120productos.
+- [x] Contraseña soloenv y configuración Render.
+- [x] CI26testsPASS, mergePR1 y deployLIVE b13840c.
+- [x] QAAPI+browser reales, uploadStorage/borrador/publicación/historial/logout.
