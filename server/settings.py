@@ -1,8 +1,8 @@
 """Editable site defaults. Commercial terms remain explicit, never fabricated."""
 DEFAULT_SETTINGS = {
     "brand": {"name": "BOLETA", "accent": "#60328A", "logo": "/images/boleta-logo.webp"},
-    "hero": {"eyebrow": "ARCHIVO 001 / EST. 2022", "title": "FUERA DE LO COMÚN.", "description": "Piezas para los que tienen su propia forma de ver las cosas.", "cta": "Explorar el archivo", "image": "/images/hero-glasses.webp", "secondary_image": "/images/hero-ring.webp"},
-    "fonts": {"heading": "Barlow Condensed", "body": "Manrope"},
+    "hero": {"eyebrow": "ARCHIVO 001 / EST. 2022", "title": "PIEZAS CON CARÁCTER.", "description": "Accesorios reales para una generación propia.", "cta": "Ver piezas", "image": "/images/hero-glasses.webp", "secondary_image": "/images/hero-ring.webp", "backdrop": "/images/hero-chrome-backdrop.webp"},
+    "fonts": {"heading": "Barlow Condensed", "body": "Manrope", "hero": "Georgia"},
     "copy": {
         "radio_title": "BOLETA RADIO", "radio_description": "SONIDOS PARA UN MUNDO DIFERENTE.",
         "how_eyebrow": "SIN VUELTAS / ASÍ FUNCIONA", "how_title": "TU ESTILO.\nTU SELECCIÓN.",
@@ -13,7 +13,7 @@ DEFAULT_SETTINGS = {
         "community_description": "Déjanos tu contacto para responder tu consulta. Tú decides si también quieres novedades.",
         "archive_title": "TU PRÓXIMA\nPIEZA.", "archive_description": "Encuentra lo que va contigo. Arma tu selección y hablamos.",
     },
-    "site_sections": {"order": ["radio", "categories", "studio", "catalog", "how", "faq", "community"], "hidden": []},
+    "site_sections": {"order": ["catalog", "radio", "categories", "studio", "how", "faq", "community"], "hidden": []},
     "logistics": {"label": "Por encargo", "estimated_arrival": "2026-12-15", "note": "Llegada estimada, sujeta a logística."},
     "contacts": {"store_whatsapp": "584245314215", "studio_whatsapp": "573215885381"},
     "radio": {"playlist_url": "https://open.spotify.com/playlist/7JwsCKwcOZGfaWoJu8guQn"},

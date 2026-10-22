@@ -97,13 +97,14 @@ export const defaults = {
   },
   hero: {
     eyebrow: "ARCHIVO 001 / EST. 2022",
-    title: "FUERA DE\nLO COMÚN.",
-    description: "Piezas para los que tienen su propia forma de ver las cosas.",
-    cta: "Explorar el archivo",
+    title: "PIEZAS CON CARÁCTER.",
+    description: "Accesorios reales para una generación propia.",
+    cta: "Ver piezas",
+    backdrop: "/images/hero-chrome-backdrop.webp",
     image: "/images/hero-glasses.webp",
     secondary_image: "/images/hero-ring.webp",
   },
-  fonts: { heading: "Barlow Condensed", body: "Manrope" },
+  fonts: { heading: "Barlow Condensed", body: "Manrope", hero: "Georgia" },
   logistics: {
     label: "Por encargo",
     estimated_arrival: "2026-12-15",
@@ -163,10 +164,10 @@ defaults.copy = {
 };
 defaults.site_sections = {
   order: [
+    "catalog",
     "radio",
     "categories",
     "studio",
-    "catalog",
     "how",
     "faq",
     "community",
@@ -366,10 +367,15 @@ export function applySettings(input) {
     "--body",
     `"${fonts.includes(s.fonts.body) ? s.fonts.body : "Manrope"}",sans-serif`,
   );
+  document.documentElement.style.setProperty(
+    "--hero-heading",
+    `"${fonts.includes(s.fonts.hero) ? s.fonts.hero : "Georgia"}"`,
+  );
   $("heroTitle").textContent = s.hero.title;
   $("heroEyebrow").textContent = s.hero.eyebrow;
   $("heroDescription").textContent = s.hero.description;
   $("heroCta").textContent = s.hero.cta + " ↗";
+  $("heroBackdrop").src = safeUrl(s.hero.backdrop, defaults.hero.backdrop);
   $("heroGlasses").src = safeUrl(s.hero.image, defaults.hero.image);
   $("heroRing").src = safeUrl(
     s.hero.secondary_image,
@@ -670,6 +676,9 @@ function addToCart() {
     quantity: state.quantity,
   });
   toast("Pieza añadida a tu selección.");
+  $("floatingCart").classList.remove("selection-added");
+  void $("floatingCart").offsetWidth;
+  $("floatingCart").classList.add("selection-added");
   closeDialog($("productDialog"));
 }
 export function updateCart() {

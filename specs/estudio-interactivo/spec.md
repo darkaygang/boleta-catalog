@@ -16,3 +16,5 @@ RF-31: El catálogo debe ser usable a 360/390/430px, teclado/foco/alt, targets >
 RF-32: El diseño original del guía debe preservarse; solo se añade un tattoo pequeño bajo su ojo izquierdo.
 
 RF-33: Guía de cuerpo completo sin recorte en popup móvil; logo Digital Solution proporcionado y editable; sin planeta hero. Tres bocetos móviles basados en videos proporcionados para escoger próxima dirección visual, manteniendo catálogo y encargo prioritarios.
+
+RF-34 (aprobado22/10): Implementar Vitrina Cromada: hero con marco/luces y productos originales como cutouts; catálogo inmediatamente debajo con fotos QC intactas. Todas las piezas disponibles por carga progresiva. Editor conserva fondo y fuente hero editables. Desplegar sobre servicio existente; autenticación administrativa desde secreto Render mínimo10caracteres según solicitud expresa, sin literal en repo.

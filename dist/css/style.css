@@ -2657,3 +2657,494 @@ html[data-theme="light"] {
   opacity: 1;
   visibility: visible;
 }
+/* VITRINA CROMADA — the special set belongs only to the hero. Catalogue
+   photography below is the existing product imagery, without generated scenes. */
+.chrome-hero {
+  height: 610px;
+  border: 1px solid #b8a6cb;
+  border-radius: 17px;
+  background: #09070c;
+  box-shadow:
+    inset 0 0 0 3px #151019,
+    inset 0 0 0 5px #a79aaf66,
+    0 8px 30px #0004;
+  color: #f7f2fa;
+  isolation: isolate;
+}
+.hero-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.9;
+  z-index: -2;
+}
+.chrome-hero:after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 2px solid #b7adb9;
+  border-radius: 12px;
+  box-shadow:
+    inset 1px 1px 0 #fffd,
+    inset -2px -2px 0 #1c132a,
+    0 0 0 2px #27202d;
+  pointer-events: none;
+  z-index: 7;
+}
+.chrome-hero .hero-grid,
+.chrome-hero > .cross,
+.chrome-hero .hero-margin {
+  display: none;
+}
+.chrome-hero .hero-stage {
+  background: none;
+}
+.chrome-hero .hero-stage:after {
+  display: none;
+}
+.chrome-hero .hero-copy {
+  position: absolute;
+  inset: auto 38px 115px;
+  max-width: none;
+  padding: 0;
+  text-align: center;
+  z-index: 5;
+  text-shadow: 0 2px 14px #000;
+}
+.chrome-hero .hero-copy .micro {
+  position: absolute;
+  top: -330px;
+  right: 0;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: #d8bfeb;
+  text-align: right;
+  max-width: 100px;
+  margin: 0;
+}
+.chrome-hero h1 {
+  font-family: var(--hero-heading, Georgia), "Times New Roman", serif;
+  max-width: none;
+  font-size: clamp(35px, 5vw, 62px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.055em;
+  white-space: normal;
+}
+.chrome-hero .hero-copy > p:last-child {
+  max-width: none;
+  font: 11px/1.6 monospace;
+  margin-top: 10px;
+  color: #e1d5e8;
+}
+.chrome-hero .hero-glasses {
+  top: 24px;
+  bottom: auto;
+  right: 8%;
+  width: 84%;
+  height: 61%;
+  transform: rotate(-7deg);
+  filter: drop-shadow(0 18px 12px #000b);
+}
+.chrome-hero .hero-ring {
+  right: 20%;
+  bottom: 166px;
+  width: 24%;
+  height: 32%;
+  transform: rotate(8deg);
+  filter: drop-shadow(0 12px 12px #000c);
+}
+.chrome-hero .hero-cta {
+  left: 50%;
+  bottom: 62px;
+  transform: translateX(-50%);
+  min-width: 165px;
+  min-height: 45px;
+  border-radius: 8px;
+  background: linear-gradient(100deg, var(--accent), #8c43b5);
+  box-shadow:
+    inset 0 1px 0 #fff3,
+    0 6px 25px #60328a55;
+  font-family: var(--body);
+  font-size: 13px;
+}
+.chrome-hero .hero-cta:hover {
+  transform: translateX(-50%) translateY(-2px);
+}
+.chrome-hero .hero-bottom {
+  min-height: 37px;
+  background: #09070cd9;
+  color: #e5d9ed;
+  border-color: #a99ab555;
+  padding: 8px 17px;
+  bottom: 7px;
+  left: 7px;
+  right: 7px;
+  border-radius: 0 0 8px 8px;
+  font-size: 10px;
+}
+.chrome-nodes {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+}
+.chrome-nodes i {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 2px solid #dfd5e4;
+  background: radial-gradient(
+    circle at 35% 30%,
+    #fff,
+    #c59ce4 22%,
+    #60328a 55%,
+    #1b1026 70%
+  );
+  box-shadow:
+    0 0 10px #b875f788,
+    0 0 0 3px #17101e;
+  animation: node-enter 0.6s ease-out both;
+  animation-delay: 1.25s;
+}
+.chrome-nodes i:nth-child(1) {
+  left: 3px;
+  top: 3px;
+}
+.chrome-nodes i:nth-child(2) {
+  right: 3px;
+  top: 3px;
+}
+.chrome-nodes i:nth-child(3) {
+  left: 3px;
+  bottom: 3px;
+}
+.chrome-nodes i:nth-child(4) {
+  right: 3px;
+  bottom: 3px;
+}
+.hero-sheen {
+  position: absolute;
+  inset: -15%;
+  background: linear-gradient(
+    110deg,
+    transparent 40%,
+    #efe5ff16 48%,
+    #fff3 50%,
+    transparent 59%
+  );
+  pointer-events: none;
+  transform: translateX(-110%);
+  animation: chrome-reflection 1.1s ease-in-out 1.3s both;
+  z-index: 6;
+}
+.archive {
+  padding-top: 27px;
+}
+.archive .section-top {
+  align-items: flex-end;
+}
+.archive .section-top h2 {
+  font-size: 45px;
+  line-height: 0.95;
+}
+.archive-mark {
+  font-size: 55px;
+}
+.archive .section-top .micro {
+  font-size: 9px;
+  margin-bottom: 7px;
+}
+.archive-intro {
+  font-size: 12px;
+  max-width: 520px;
+  margin: 10px 0 16px;
+}
+.catalog-controls {
+  position: relative;
+}
+.product-card {
+  transition:
+    border-color 0.2s,
+    transform 0.4s cubic-bezier(0.2, 1.5, 0.3, 1),
+    box-shadow 0.3s;
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 9px 20px #0003;
+}
+.product-card:active {
+  transform: scale(0.985);
+  transition-duration: 0.1s;
+}
+.product-photo {
+  aspect-ratio: 1;
+}
+.product-photo > img {
+  object-fit: contain;
+  background: #111;
+}
+.product-info h3 {
+  min-height: 32px;
+}
+.product-photo .card-arrow {
+  width: 30px;
+  height: 30px;
+  background: var(--accent);
+  border-color: #c98af766;
+}
+.selection-dialog {
+  max-width: 560px;
+  background: var(--panel);
+}
+.selection-items {
+  padding: 8px 17px;
+}
+.selection-item {
+  padding: 12px 0;
+  gap: 12px;
+}
+.selection-item img {
+  width: 68px;
+  height: 78px;
+  object-fit: contain;
+  background: #111;
+}
+.selection-item .quantity-row {
+  margin-top: 6px;
+  gap: 7px;
+}
+.selection-item h3 {
+  font-size: 12px;
+}
+.selection-bottom {
+  padding: 17px;
+}
+.selection-bottom .button {
+  min-height: 46px;
+}
+.selection-added {
+  animation: cart-spring 0.5s cubic-bezier(0.2, 1.5, 0.3, 1);
+}
+@keyframes chrome-reflection {
+  from {
+    transform: translateX(-110%);
+  }
+  to {
+    transform: translateX(110%);
+  }
+}
+@keyframes node-enter {
+  from {
+    opacity: 0;
+    scale: 0.7;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+@keyframes cart-spring {
+  0% {
+    scale: 0.95;
+  }
+  55% {
+    scale: 1.025;
+  }
+  100% {
+    scale: 1;
+  }
+}
+@media (min-width: 900px) {
+  .chrome-hero {
+    height: 610px;
+  }
+  .chrome-hero .hero-glasses {
+    right: 4%;
+    width: 72%;
+    height: 72%;
+    top: -5px;
+  }
+  .chrome-hero .hero-ring {
+    right: 20%;
+    width: 23%;
+    height: 38%;
+    bottom: 156px;
+  }
+  .chrome-hero .hero-copy {
+    right: 38px;
+    left: 38px;
+  }
+  .chrome-hero .hero-copy .micro {
+    top: -345px;
+  }
+  .archive .section-top h2 {
+    font-size: 55px;
+  }
+  .radio {
+    margin-top: 28px;
+  }
+}
+@media (max-width: 600px) {
+  .header {
+    min-height: 85px;
+    padding-top: 14px;
+  }
+  .brand {
+    width: 175px;
+  }
+  .edition {
+    padding-top: 7px;
+    padding-bottom: 9px;
+  }
+  .chrome-hero {
+    height: 470px;
+    border-radius: 13px;
+  }
+  .chrome-hero:after {
+    border-radius: 9px;
+    inset: 4px;
+  }
+  .chrome-hero .hero-copy {
+    left: 17px;
+    right: 17px;
+    bottom: 117px;
+  }
+  .chrome-hero h1 {
+    font-size: clamp(23px, 6.4vw, 30px);
+    letter-spacing: -0.05em;
+    line-height: 1.15;
+  }
+  .chrome-hero .hero-copy > p:last-child {
+    font-size: 8px;
+    margin-top: 8px;
+    letter-spacing: 0.025em;
+  }
+  .chrome-hero .hero-copy .micro {
+    top: -219px;
+    right: 5px;
+    font-size: 7px;
+    max-width: 75px;
+  }
+  .chrome-hero .hero-glasses {
+    top: 28px;
+    right: 0;
+    width: 100%;
+    height: 52%;
+    transform: rotate(-6deg);
+  }
+  .chrome-hero .hero-ring {
+    right: 20%;
+    bottom: 159px;
+    width: 40%;
+    height: 29%;
+    transform: rotate(10deg);
+  }
+  .chrome-hero .hero-cta {
+    bottom: 60px;
+    min-width: 158px;
+    font-size: 12px;
+    min-height: 44px;
+    padding: 10px 20px;
+  }
+  .chrome-hero .hero-bottom {
+    font-size: 9px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    padding: 7px 9px;
+    gap: 6px;
+  }
+  .chrome-hero .hero-bottom > span:first-child {
+    font-size: 17px;
+  }
+  .chrome-nodes i {
+    width: 12px;
+    height: 12px;
+  }
+  .archive {
+    padding-top: 25px;
+  }
+  .archive .section-top h2 {
+    font-size: 32px;
+    white-space: normal;
+  }
+  .archive .section-top .micro {
+    font-size: 8px;
+  }
+  .archive-mark {
+    font-size: 42px;
+  }
+  .archive-intro {
+    font-size: 11px;
+    margin: 9px 0 12px;
+  }
+  .search-box input {
+    min-height: 46px;
+    padding-block: 11px;
+    font-size: 12px;
+  }
+  .search-box > span:first-child {
+    font-size: 26px;
+  }
+  .filter-tabs {
+    padding: 11px 0 4px;
+    gap: 6px;
+  }
+  .filter-tabs button {
+    padding: 8px 13px;
+  }
+  .result-bar {
+    padding: 5px 0 10px;
+  }
+  .product-grid {
+    gap: 13px 8px;
+  }
+  .product-info {
+    padding: 10px 9px;
+  }
+  .product-info .micro {
+    font-size: 8px;
+  }
+  .product-info h3 {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  .product-info .price {
+    font-size: 11px;
+    margin-top: 6px;
+  }
+  .radio {
+    margin-top: 25px;
+  }
+  .selection-item img {
+    width: 64px;
+    height: 72px;
+  }
+  .selection-item .quantity-row button {
+    width: 38px;
+    height: 44px;
+  }
+  .selection-item .quantity-row > span {
+    font-size: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-sheen {
+    display: none;
+  }
+  .chrome-nodes i,
+  .selection-added {
+    animation: none;
+  }
+  .chrome-hero .hero-glasses,
+  .chrome-hero .hero-ring {
+    animation: none;
+  }
+  .product-card {
+    transition: none;
+  }
+}

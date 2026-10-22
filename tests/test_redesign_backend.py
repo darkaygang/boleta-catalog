@@ -2,6 +2,7 @@
 import copy
 import io
 import os
+import secrets
 import tempfile
 import unittest
 from pathlib import Path
@@ -42,6 +43,29 @@ class BackendTests(unittest.TestCase):
         with patch.dict(os.environ, {"ADMIN_PASSWORD": "1234"}):
             c = TestClient(create_app(self.store))
             self.assertEqual(c.post("/api/auth/login", json={"password": "1234"}).status_code, 503)
+
+    def test_environment_secret_ten_characters_can_login(self):
+        secret = secrets.token_urlsafe(12)[:10]
+        with patch.dict(os.environ, {"ADMIN_PASSWORD": secret}):
+            c = TestClient(create_app(self.store))
+            self.assertEqual(c.post("/api/auth/login", json={"password": secret}).status_code, 200)
+            self.assertEqual(c.post("/api/auth/login", json={"password": secret + "wrong"}).status_code, 401)
+
+    def test_chrome_backdrop_and_custom_order_survive_editor_save(self):
+        default = self.client.get("/api/site-settings").json()
+        self.assertEqual(default["site_sections"]["order"][0], "catalog")
+        self.assertEqual(default["hero"]["backdrop"], "/images/hero-chrome-backdrop.webp")
+        admin = self.client.get("/api/admin/site-settings").json()
+        admin["draft"]["site_sections"]["order"].reverse()
+        wanted = admin["draft"]["site_sections"]["order"][:]
+        admin["draft"]["hero"]["backdrop"] = "/images/custom-backdrop.webp"
+        saved = self.client.put("/api/admin/site-settings", json={"version": admin["version"], "settings": admin["draft"]}, headers=self.headers)
+        self.assertEqual(saved.status_code, 200, saved.text)
+        self.assertEqual(saved.json()["draft"]["site_sections"]["order"], wanted)
+        self.assertEqual(saved.json()["draft"]["hero"]["backdrop"], "/images/custom-backdrop.webp")
+        bad = copy.deepcopy(saved.json()["draft"])
+        bad["hero"]["backdrop"] = "javascript:alert(1)"
+        self.assertEqual(self.client.put("/api/admin/site-settings", json={"version": saved.json()["version"], "settings": bad}, headers=self.headers).status_code, 422)
 
     def test_product_roundtrip_archive_and_restore(self):
         payload = {"id": "test-new", "title": "Anillo test", "numeric_usd": 21.5, "numeric_bcv": 999, "gallery": ["/photos/a.jpg"], "sizes": ["US 7", "US 8"], "variants": [{"id": "v1", "size": "7", "quantity": 2}], "image": "/photos/main.jpg"}

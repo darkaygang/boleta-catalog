@@ -12,3 +12,6 @@
 3. Optimizar logo agencia sin cambiar identidad; generar tres propuestas móviles distintas, pendientes de elección.
 4. Verificar intro temporizada, móvil418x678 y360/390/430, guía completa, carrito/WhatsApp, editor y retirada endpoint.
 5. Actualizar PR existente sin desplegar ni cambiar todo el hero antes de elección.
+
+## Publicación Vitrina Cromada
+Elección confirmada. Agentes separan frontend/backend/QA. Backup120productos previo, migración aditiva privada aplicada y verificada. Configurarenv porRender sin leer/exponer secretos previos; tests aislados+navegador, CI, mergePR y esperar deploylive. Verificar sesión/guardado/publicación remotos y almacenamiento; no confundir trigger con despliegue terminado.

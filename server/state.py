@@ -77,10 +77,26 @@ class StateStore:
                         merged = []
                         for row in live:
                             p = copy.deepcopy(lookup.get(str(row["id"]), {}))
+                            seed_gallery = p.get("gallery") or []
                             p.update({k: v for k, v in row.items() if v is not None})
-                            p.update({"id": str(row["id"]), "title": row.get("name") or row.get("title") or "Producto", "numeric_usd": row.get("price") if row.get("price") is not None else p.get("numeric_usd", 0), "image": row.get("image_url") or row.get("image") or "/images/boleta-logo.webp", "available": row.get("available", True), "status": "aprobado" if row.get("available", True) else "descartado"})
+                            p.update({"id": str(row["id"]), "title": row.get("name") or row.get("title") or "Producto", "numeric_usd": row.get("price") if row.get("price") is not None else p.get("numeric_usd", 0), "image": row.get("image_url") or row.get("image") or p.get("image") or "/images/boleta-logo.webp", "available": row.get("available", True), "status": "aprobado" if row.get("available", True) else "descartado"})
+                            # Legacy installations use images JSONB instead of gallery.
+                            # Merge all known photos without replacing the live cover.
+                            photos = []
+                            for group in (seed_gallery, row.get("gallery"), row.get("images")):
+                                if isinstance(group, list):
+                                    photos.extend(v for v in group if isinstance(v, str) and v.strip())
+                            p["gallery"] = [v for v in dict.fromkeys(photos) if v != p["image"]]
+                            p["name"] = p["title"]
+                            p["image_url"] = p["image"]
+                            p["thumb"] = row.get("thumb") or p["image"]
+                            p["in_stock"] = p["available"]
+                            if row.get("description") is not None:
+                                p["material"] = row["description"]
+                            elif row.get("material") is not None:
+                                p["material"] = row["material"]
+                            p["description"] = p.get("material", "")
                             p["price_usd"] = f"${float(p['numeric_usd']):g} USD"
-                            p.setdefault("gallery", [])
                             p.setdefault("sizes", ["Única"])
                             merged.append(p)
                         initial["products"] = merged

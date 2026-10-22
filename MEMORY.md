@@ -9,7 +9,7 @@ Se construyó en rama codex/boleta-estudio-interactivo. No se ha desplegado redi
 - Guía/FAQ/tutorial y encargo reescrito, variante/cantidad/precios con revalidación WhatsApp.
 - Guía tattoo único bajo ojo izquierdo; hoja actualizada entregada al propietario. Assets optimizados.
 - Editor visual autenticado: contenidos/fuentes/color/medios/FAQ/orden/visibilidad/piezas, borrador/publicación/historial.
-- Auth cookie HttpOnly+CSRF, sin PIN público. ADMIN_PASSWORD>=12 requerido.
+- Auth cookie HttpOnly+CSRF, sin PIN público. ADMIN_PASSWORD>=10 requerido.
 - Estado durable privado Supabase JSONB+CAS, migración aditiva docs/supabase-redesign.sql; originales legacy conservados.
 - Leads sin cuenta con consentimientos separados, export/eliminación admin; no envía mensajes.
 - Métricas agregadas opt-in; clic no prueba conversación o pago.
@@ -44,3 +44,11 @@ Pedido nuevo/fotos/unidades vendibles, variantes reales, precios faltantes, mate
 - Tres bocetos: Archivo de Calle (recomendado identidad rap), Vitrina Cromada, Portal del Drop. Generated con imagegen y referencias de productos/mascota. Son propuestas, NO diseño seleccionado ni materiales/variantes certificados. No cuenta obligatoria.
 - Próximo paso: propietario elige dirección o combinación; implementar hero/flujo compacto definitivo. Conserva editor visual.
 - PR existente https://github.com/darkaygang/boleta-catalog/pull/1 rama codex/boleta-estudio-interactivo. Preparación Render/Supabase sigue pendiente, sin despliegue en esta sesión.
+
+## Vitrina Cromada confirmada y preparación remota22/10
+Usuario eligió02, pidió catálogoQC debajo, contraseña específica soloenv y publicar; agentes autorizados.
+- Nuevohero cromado original128.4KB+cutoutsreales; catálogo inmediato con fotosQC contain. Fonts.hero yhero.backdrop editables. MicroanimacionesCSS/movimientoreducido.
+- Adopción combina imagesJSONB/galleryremotos/seed sinperder portada/descripciónvigentes.
+-26/26unittest y9gruposregresiónbrowser pasan, sinerroresJS/recursos. Revisiónindependiente sinbloqueadores.
+- Supabaseproyecto zvwcwbkkmtojvolgxbda único catálogo120. BackupJSON privado work/backup-22oct/supabase-products-before.json. Migración boleta_private_visual_editor_state aplicada; boleta_state nuevaRLS denypublic/RPCsolo service_role,120legacyintactos. Revision0 hasta primera mutación.
+- Render tea-d1vr5n2li9vc73fq65bg confirmado por propietario; servicio srv-db3e4b5g1s2s73a2ucfg,main,autodeploycommit,singlefreePython. EnvmergedADMIN_PASSWORD/BOLETA_ENV/ORIGIN/ALLOW_LOCAL_STORAGE0/SUPABASE_URL, secretos anteriores no leídos. Publicación y QAremotos pendientes durante estecheckpoint.

@@ -5,7 +5,7 @@ La preview fue construida y probada localmente. No confundir PR con despliegue p
 1. Exportar/resguardar public.products y objetos de product-images del proyecto real. El respaldo local de esta tarea solo conserva la versión pública; no contiene pedidos privados ni equivale a un backup integral de producción.
 2. En Supabase SQL Editor del proyecto existente, ejecutar docs/supabase-redesign.sql. Es aditivo: crea boleta_state y RPC privada, conserva tabla products y medios.
 3. Mantener SUPABASE_URL y la clave de servicio únicamente en variables del servidor. El backend reconoce SUPABASE_SECRET_KEY, SUPABASE_SERVICE_ROLE_KEY o SUPABASE_KEY; usar una clave de servicio privada, no anon.
-4. Configurar ADMIN_PASSWORD con al menos 12 caracteres; usar contraseña nueva, no el antiguo PIN. No añadirla a Git.
+4. Configurar ADMIN_PASSWORD con al menos 10 caracteres; usar contraseña nueva, no el antiguo PIN. No añadirla a Git.
 5. Configurar BOLETA_ENV=production y BOLETA_PUBLIC_ORIGIN=https://boleta-catalog.onrender.com.
 6. No activar BOLETA_ALLOW_LOCAL_STORAGE en disco efímero Render.
 7. Usar un worker de uvicorn, como el comando actual. Conservar cron/monitor existente; no sustituye la persistencia.

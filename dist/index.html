@@ -82,14 +82,31 @@
         <span>EST. 2022 · BARQUISIMETO</span
         ><span>ROPA / OBJETOS / SONIDO</span>
       </div>
-      <section class="hero framed" id="hero" aria-labelledby="heroTitle">
+      <section
+        class="hero framed chrome-hero"
+        id="hero"
+        aria-labelledby="heroTitle"
+      >
+        <img
+          id="heroBackdrop"
+          class="hero-backdrop"
+          src="/images/hero-chrome-backdrop.webp"
+          alt=""
+          width="900"
+          height="1150"
+          fetchpriority="high"
+        />
+        <div class="hero-sheen" aria-hidden="true"></div>
+        <div class="chrome-nodes" aria-hidden="true">
+          <i></i><i></i><i></i><i></i>
+        </div>
         <div class="hero-grid" aria-hidden="true"></div>
         <span class="cross" aria-hidden="true">✦</span>
         <div class="hero-copy">
           <p class="micro" id="heroEyebrow">ARCHIVO 001 / EST. 2022</p>
-          <h1 id="heroTitle">FUERA DE<br />LO COMÚN.</h1>
+          <h1 id="heroTitle">PIEZAS CON CARÁCTER.</h1>
           <p id="heroDescription">
-            Piezas para los que tienen su propia forma de ver las cosas.
+            Accesorios reales para una generación propia.
           </p>
         </div>
         <span class="hero-margin micro" aria-hidden="true"
@@ -114,7 +131,7 @@
           />
         </div>
         <a class="button primary hero-cta" id="heroCta" href="#catalogo"
-          >Explorar el archivo ↗</a
+          >Ver piezas ↗</a
         >
         <div class="hero-bottom">
           <span>✦</span
@@ -123,6 +140,59 @@
           ><span>+</span>
         </div>
       </section>
+      <section
+        class="archive"
+        id="catalogo"
+        tabindex="-1"
+        aria-labelledby="archiveTitle"
+      >
+        <div class="section-top">
+          <div>
+            <p class="micro">EL ARCHIVO / PRODUCTOS</p>
+            <h2 id="archiveTitle">TU PRÓXIMA<br />PIEZA.</h2>
+          </div>
+          <span class="archive-mark" aria-hidden="true">✳</span>
+        </div>
+        <p class="archive-intro">
+          Encuentra lo que va contigo. Arma tu selección y hablamos.
+        </p>
+        <div id="catalogControls">
+          <label class="search-box"
+            ><span aria-hidden="true">⌕</span
+            ><input
+              id="searchInput"
+              type="search"
+              placeholder="Buscar en el archivo…"
+              aria-label="Buscar productos"
+            /><span class="micro">↵</span></label
+          >
+          <div
+            id="categoryTabs"
+            class="filter-tabs"
+            role="group"
+            aria-label="Filtrar por categoría"
+          ></div>
+          <div class="result-bar">
+            <span id="productCount" role="status">Cargando archivo…</span
+            ><label
+              >Orden
+              <select id="sortSelect" aria-label="Ordenar productos">
+                <option value="featured">Selección BOLETA</option>
+                <option value="low">Menor precio</option>
+                <option value="high">Mayor precio</option>
+                <option value="name">Nombre A–Z</option>
+              </select></label
+            >
+          </div>
+        </div>
+        <div id="productGrid" class="product-grid" aria-live="polite">
+          <p class="empty">Cargando las piezas del archivo…</p>
+        </div>
+        <button id="loadMore" class="button secondary more-button" hidden>
+          Ver más piezas ↓
+        </button>
+      </section>
+
       <section class="radio framed reveal" id="radio" aria-label="BOLETA Radio">
         <div class="radio-art" aria-hidden="true">
           <span>B</span><small>VOL. 001</small>
@@ -190,58 +260,6 @@
             Hablemos de tu proyecto ↗
           </button>
         </div>
-      </section>
-      <section
-        class="archive"
-        id="catalogo"
-        tabindex="-1"
-        aria-labelledby="archiveTitle"
-      >
-        <div class="section-top">
-          <div>
-            <p class="micro">EL ARCHIVO / PRODUCTOS</p>
-            <h2 id="archiveTitle">TU PRÓXIMA<br />PIEZA.</h2>
-          </div>
-          <span class="archive-mark" aria-hidden="true">✳</span>
-        </div>
-        <p class="archive-intro">
-          Encuentra lo que va contigo. Arma tu selección y hablamos.
-        </p>
-        <div id="catalogControls">
-          <label class="search-box"
-            ><span aria-hidden="true">⌕</span
-            ><input
-              id="searchInput"
-              type="search"
-              placeholder="Buscar en el archivo…"
-              aria-label="Buscar productos"
-            /><span class="micro">↵</span></label
-          >
-          <div
-            id="categoryTabs"
-            class="filter-tabs"
-            role="group"
-            aria-label="Filtrar por categoría"
-          ></div>
-          <div class="result-bar">
-            <span id="productCount" role="status">Cargando archivo…</span
-            ><label
-              >Orden
-              <select id="sortSelect" aria-label="Ordenar productos">
-                <option value="featured">Selección BOLETA</option>
-                <option value="low">Menor precio</option>
-                <option value="high">Mayor precio</option>
-                <option value="name">Nombre A–Z</option>
-              </select></label
-            >
-          </div>
-        </div>
-        <div id="productGrid" class="product-grid" aria-live="polite">
-          <p class="empty">Cargando las piezas del archivo…</p>
-        </div>
-        <button id="loadMore" class="button secondary more-button" hidden>
-          Ver más piezas ↓
-        </button>
       </section>
       <section class="how framed reveal" id="como-encargar">
         <p class="micro">SIN VUELTAS / ASÍ FUNCIONA</p>

@@ -10,3 +10,5 @@
 - No se generaron videos; no hay reproducción simulada de Spotify.
 
 Las capturas se toman del navegador local; métricas son laboratorio local, no una promesa de velocidad en redes reales de Venezuela. Falta medir campo después del despliegue.
+
+Vitrina Cromada: hero-chrome-backdrop.webp850x1087,128.4KB, fondo original generado con imagegen a partir de dirección elegida. Ornamento y suelo solamente; productos hero permanecen cutouts anteriores y fotosQC del grid originales. Sin video/WebGL. Prompt y arte fuente en entrega local, asset consumido incluido enrepo.

@@ -99,7 +99,7 @@ def validate_settings(payload):
     for section in ("brand", "hero", "fonts", "logistics", "contacts", "radio", "studio"):
         for key, value in settings[section].items():
             text(value, 3000)
-            if key in {"image", "secondary_image", "logo", "url", "playlist_url"}:
+            if key in {"image", "secondary_image", "backdrop", "logo", "url", "playlist_url"}:
                 safe_url(value)
     for value in settings["copy"].values():
         text(value, 3000)
@@ -315,8 +315,8 @@ def create_app(store=None):
         check_origin(request)
         rate(request, "login", 8, 900)
         secret = os.environ.get("ADMIN_PASSWORD") or os.environ.get("ADMIN_PIN", "")
-        if len(secret) < 12:
-            raise HTTPException(503, "Configura una contraseña administrativa de al menos 12 caracteres en el servidor.")
+        if len(secret) < 10:
+            raise HTTPException(503, "Configura una contraseña administrativa de al menos 10 caracteres en el servidor.")
         data = await json_object(request)
         supplied = data.get("password", "") if isinstance(data, dict) else ""
         if not isinstance(supplied, str) or len(supplied) > 1024 or not hmac.compare_digest(supplied.encode(), secret.encode()):

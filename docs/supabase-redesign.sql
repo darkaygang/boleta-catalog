@@ -31,9 +31,9 @@ grant execute on function public.boleta_state_compare_swap(bigint,jsonb) to serv
 
 -- product-images must exist and be public for storefront images. Only the backend
 -- service_role may upload; keep anonymous storage INSERT/UPDATE/DELETE policies off.
--- Production env: ADMIN_PASSWORD (>=12 chars), SUPABASE_URL, service-role key,
+-- Production env: ADMIN_PASSWORD (>=10 chars), SUPABASE_URL, service-role key,
 -- BOLETA_ENV=production, BOLETA_PUBLIC_ORIGIN=https://your-actual-render-host.
--- ADMIN_PIN is accepted only as a >=12-character secret, never a short numeric PIN.
+-- ADMIN_PIN is accepted only as a >=10-character secret, never a short numeric PIN.
 -- Use one uvicorn worker for in-memory admin sessions/rate limits. PostgreSQL CAS
 -- prevents lost state updates across writers; on HTTP 409 reload and retry.
 -- Sessions expire after 8h and after process restarts (intentional re-login).
