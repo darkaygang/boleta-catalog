@@ -16,7 +16,7 @@ La preview fue construida y probada localmente. No confundir PR con despliegue p
 - Login privado, guardar un borrador, recargar y verificar persistencia; la web pública no debe cambiar hasta publicar.
 - Comprobar publicación y recuperación del historial.
 - Hacer consulta WhatsApp de prueba sin enviar mensaje, revisar texto y contactos.
-- Spotify solo tras clic; prueba premio gratuito sin suscribirse.
+- Spotify solo tras clic. Intro1→100 >=1s, guía completa y ausencia de ruleta; endpoint legado devuelve410.
 - Formulario de contacto de prueba con consentimiento, verificar admin y eliminar dato de prueba.
 - Si API responde snapshot o 503 al guardar, falta configuración/migración o falla conexión. No confirmar guardado si hay error.
 - Verificar originales y galerías, tasa fechada, condiciones reales y listado nuevo comprado antes de aceptar anticipos.

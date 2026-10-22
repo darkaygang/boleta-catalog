@@ -213,7 +213,7 @@ async function renderPanel(tab = panelTab) {
   };
   const el = $("editorFields");
   if (tab === "content")
-    el.innerHTML = `<p class="editor-note">Los textos cambian en tu vista previa al escribir. Guarda borrador y publica cuando estés listo. Las piezas se guardan directamente y lo indican antes de confirmar.</p><h3>Hero principal</h3>${field("Línea superior", "hero.eyebrow")}${field("Frase principal (puedes usar saltos de línea)", "hero.title", { area: true })}${field("Descripción", "hero.description", { area: true })}${field("Botón principal", "hero.cta")}<h3>Entrega</h3>${field("Estado visible", "logistics.label")}${field("Llegada estimada", "logistics.estimated_arrival", { type: "date" })}${field("Nota logística", "logistics.note", { area: true })}<h3>Contactos y música</h3>${field("WhatsApp tienda (solo dígitos y país)", "contacts.store_whatsapp")}${field("WhatsApp Digital Solution", "contacts.studio_whatsapp")}${field("Enlace de playlist Spotify", "radio.playlist_url", { type: "url" })}<h3>Digital Solution</h3>${field("Titular", "studio.title", { area: true })}${field("Descripción", "studio.description", { area: true })}${field("Botón", "studio.cta")}<h3>Condiciones comerciales</h3><p class="editor-note">Déjalas vacías hasta confirmar. La tasa solo aparece con fecha; nunca se calcula a partir de precios BCV antiguos.</p>${field("Anticipo (%) opcional", "payment.deposit_percent", { type: "number" })}${field("Tasa Bs. por USD (opcional)", "payment.bcv_rate", { type: "number" })}${field("Fecha de la tasa", "payment.bcv_date", { type: "date" })}<h3>Archivo, radio y comunidad</h3>${field("Titular del archivo", "copy.archive_title", { area: true })}${field("Descripción del archivo", "copy.archive_description", { area: true })}${field("Título radio", "copy.radio_title")}${field("Descripción radio", "copy.radio_description", { area: true })}${field("Línea superior cómo encargar", "copy.how_eyebrow")}${field("Título cómo encargar", "copy.how_title", { area: true })}${[1, 2, 3].map((i) => field("Paso " + i + " / título", "copy.how_step" + i + "_title") + field("Paso " + i + " / explicación", "copy.how_step" + i + "_text", { area: true })).join("")}${field("Línea superior comunidad", "copy.community_eyebrow")}${field("Título comunidad", "copy.community_title", { area: true })}${field("Descripción comunidad", "copy.community_description", { area: true })}<h3>Detalle BOLETA</h3><label class="checkbox"><input id="rewardEnabled" type="checkbox" ${draft.rewards.enabled ? "checked" : ""}><span>Mostrar detalle gratuito</span></label>${field("Términos visibles", "rewards.terms", { area: true })}<div id="rewardPrizeEditor"></div><button class="button secondary" id="addWallpaper">+ Añadir fondo digital</button><p class="editor-note">Los fondos digitales se entregan sin compra ni registro. Para cambiar premios comerciales se deben configurar existencias y reglas reales.</p>${saveButton()}`;
+    el.innerHTML = `<p class="editor-note">Los textos cambian en tu vista previa al escribir. Guarda borrador y publica cuando estés listo. Las piezas se guardan directamente y lo indican antes de confirmar.</p><h3>Hero principal</h3>${field("Línea superior", "hero.eyebrow")}${field("Frase principal (puedes usar saltos de línea)", "hero.title", { area: true })}${field("Descripción", "hero.description", { area: true })}${field("Botón principal", "hero.cta")}<h3>Entrega</h3>${field("Estado visible", "logistics.label")}${field("Llegada estimada", "logistics.estimated_arrival", { type: "date" })}${field("Nota logística", "logistics.note", { area: true })}<h3>Contactos y música</h3>${field("WhatsApp tienda (solo dígitos y país)", "contacts.store_whatsapp")}${field("WhatsApp Digital Solution", "contacts.studio_whatsapp")}${field("Enlace de playlist Spotify", "radio.playlist_url", { type: "url" })}<h3>Digital Solution</h3>${field("Titular", "studio.title", { area: true })}${field("Descripción", "studio.description", { area: true })}${field("Botón", "studio.cta")}<h3>Condiciones comerciales</h3><p class="editor-note">Déjalas vacías hasta confirmar. La tasa solo aparece con fecha; nunca se calcula a partir de precios BCV antiguos.</p>${field("Anticipo (%) opcional", "payment.deposit_percent", { type: "number" })}${field("Tasa Bs. por USD (opcional)", "payment.bcv_rate", { type: "number" })}${field("Fecha de la tasa", "payment.bcv_date", { type: "date" })}<h3>Archivo, radio y comunidad</h3>${field("Titular del archivo", "copy.archive_title", { area: true })}${field("Descripción del archivo", "copy.archive_description", { area: true })}${field("Título radio", "copy.radio_title")}${field("Descripción radio", "copy.radio_description", { area: true })}${field("Línea superior cómo encargar", "copy.how_eyebrow")}${field("Título cómo encargar", "copy.how_title", { area: true })}${[1, 2, 3].map((i) => field("Paso " + i + " / título", "copy.how_step" + i + "_title") + field("Paso " + i + " / explicación", "copy.how_step" + i + "_text", { area: true })).join("")}${field("Línea superior comunidad", "copy.community_eyebrow")}${field("Título comunidad", "copy.community_title", { area: true })}${field("Descripción comunidad", "copy.community_description", { area: true })}${saveButton()}`;
   if (tab === "style")
     el.innerHTML = `<h3>Identidad</h3>${field("Color principal", "brand.accent", { type: "color" })}${field("Fuente de titulares", "fonts.heading", { options: ["Barlow Condensed", "Arial Black", "Impact", "Georgia", "Manrope"] })}${field("Fuente de textos", "fonts.body", { options: ["Manrope", "Arial", "Georgia", "Courier New", "system-ui"] })}<h3>Vista previa</h3><div class="editor-row"><button class="button secondary" id="previewDark">☾ Oscuro</button><button class="button secondary" id="previewLight">☼ Claro</button></div><button class="button secondary" id="panelMobile">Ver en formato móvil</button><p class="editor-note">La preferencia claro/oscuro pertenece a cada visitante. Las fuentes se limitan a las opciones validadas del sitio.</p>${saveButton()}`;
   if (tab === "sections") {
@@ -223,7 +223,7 @@ async function renderPanel(tab = panelTab) {
     renderSectionsEditor();
   }
   if (tab === "photos")
-    el.innerHTML = `<h3>Imágenes de portada</h3><p class="editor-note">Para conservar el diseño usa recortes con fondo transparente en lentes y anillo.</p>${uploadField("Lentes protagonistas", "hero.image")}${uploadField("Anillo protagonista", "hero.secondary_image")}${uploadField("Logo de BOLETA", "brand.logo")}${saveButton()}`;
+    el.innerHTML = `<h3>Imágenes de portada</h3><p class="editor-note">Para conservar el diseño usa recortes con fondo transparente en lentes y anillo.</p>${uploadField("Lentes protagonistas", "hero.image")}${uploadField("Anillo protagonista", "hero.secondary_image")}${uploadField("Logo de BOLETA", "brand.logo")}${uploadField("Logo de Digital Solution", "studio.logo")}${saveButton()}`;
   if (tab === "faq") {
     el.innerHTML = `<h3>El guía responde por ti.</h3><p class="editor-note">Respuestas definidas por ti, sin inteligencia artificial ni aprendizaje automático. Se actualizan en el panel de ayuda y en preguntas frecuentes.</p><div id="faqEditor"></div><button class="button secondary" id="addFaq">+ Añadir pregunta</button>${saveButton()}`;
     renderFaqEditor();
@@ -399,27 +399,7 @@ async function renderPanel(tab = panelTab) {
       el.textContent = err.message;
     }
   }
-  if (tab === "content") {
-    renderRewardEditor();
-    $("addWallpaper").onclick = () => {
-      draft.rewards.prizes.push({
-        id: "wallpaper-" + Date.now(),
-        kind: "wallpaper",
-        design: "grid",
-        label: "Nuevo fondo BOLETA",
-        description: "Fondo digital para tu teléfono.",
-        weight: 1,
-        quantity: null,
-      });
-      dirty = true;
-      renderRewardEditor();
-      applySettings(draft);
-    };
-  }
   wireFields(el);
-  $("rewardEnabled")?.addEventListener("change", (e) =>
-    put("rewards.enabled", e.target.checked),
-  );
   $("previewDark")?.addEventListener("click", () => {
     document.documentElement.dataset.theme = "dark";
   });
@@ -440,7 +420,6 @@ function renderSectionsEditor() {
     catalog: "El archivo",
     how: "Cómo encargar",
     faq: "Preguntas frecuentes",
-    rewards: "Detalle BOLETA",
     community: "Comunidad",
   };
   el.innerHTML = draft.site_sections.order
@@ -493,71 +472,6 @@ function renderSectionsEditor() {
     );
     if (!e.target.checked) draft.site_sections.hidden.push(key);
     dirty = true;
-    applySettings(draft);
-  };
-}
-function renderRewardEditor() {
-  const el = $("rewardPrizeEditor");
-  if (!el) return;
-  el.innerHTML = draft.rewards.prizes
-    .map(
-      (p, i) =>
-        '<div class="faq-edit-row"><h3>Detalle ' +
-        (i + 1) +
-        '</h3><label>Nombre<input data-prize="' +
-        i +
-        '" data-prize-key="label" value="' +
-        esc(p.label) +
-        '"></label><label>Descripción<textarea data-prize="' +
-        i +
-        '" data-prize-key="description">' +
-        esc(p.description) +
-        '</textarea></label><label>Diseño<select data-prize="' +
-        i +
-        '" data-prize-key="design">' +
-        ["orbit", "grid", "wave"]
-          .map(
-            (x) =>
-              "<option " +
-              (x === p.design ? "selected" : "") +
-              ">" +
-              x +
-              "</option>",
-          )
-          .join("") +
-        '</select></label><div class="editor-row"><label>Peso (probabilidad relativa)<input type="number" min="1" step="1" data-prize="' +
-        i +
-        '" data-prize-key="weight" value="' +
-        esc(p.weight ?? 1) +
-        '"></label><label>Copias (vacío = ilimitado para fondos)<input type="number" min="0" step="1" data-prize="' +
-        i +
-        '" data-prize-key="quantity" value="' +
-        esc(p.quantity ?? "") +
-        '"></label></div><p class="micro">Tipo: ' +
-        esc(p.kind || "premio real") +
-        ' · No se cambian asignaciones ya entregadas.</p><button class="small-button editor-danger" data-remove-prize="' +
-        i +
-        '">Quitar detalle</button></div>',
-    )
-    .join("");
-  el.oninput = (e) => {
-    const index = e.target.dataset.prize;
-    if (index === undefined) return;
-    const key = e.target.dataset.prizeKey;
-    let value = e.target.value;
-    if (key === "quantity") value = value === "" ? null : Number(value);
-    if (key === "weight") value = Number(value);
-    draft.rewards.prizes[Number(index)][key] = value;
-    dirty = true;
-    $("draftStatus").textContent = "CAMBIOS SIN GUARDAR";
-    applySettings(draft);
-  };
-  el.onclick = (e) => {
-    const b = e.target.closest("[data-remove-prize]");
-    if (!b) return;
-    draft.rewards.prizes.splice(Number(b.dataset.removePrize), 1);
-    dirty = true;
-    renderRewardEditor();
     applySettings(draft);
   };
 }

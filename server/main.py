@@ -24,7 +24,6 @@ from .state import BASE, StateStore, StateUnavailable, StateConflict
 from .settings import DEFAULT_SETTINGS, ALLOWED_FONTS
 
 COOKIE = "boleta_admin"
-VISITOR_COOKIE = "boleta_visitor"
 SESSION_TTL = 8 * 3600
 EVENTS = {"page_view", "view_product", "select_variant", "add_to_selection", "whatsapp_click", "faq_open", "radio_open", "studio_contact_click", "scroll_25", "scroll_50", "scroll_75", "scroll_100"}
 
@@ -108,6 +107,9 @@ def validate_settings(payload):
     allowed_sections = set(DEFAULT_SETTINGS["site_sections"]["order"])
     for field in ("order", "hidden"):
         values = sections[field]
+        if isinstance(values, list):
+            values = [v for v in values if v != "rewards"]
+            sections[field] = values
         if not isinstance(values, list) or not all(isinstance(v, str) for v in values) or len(values) != len(set(values)) or set(values) - allowed_sections:
             raise HTTPException(422, "Lista de secciones inválida.")
     if set(sections["order"]) != allowed_sections or "catalog" in sections["hidden"]:
@@ -143,30 +145,7 @@ def validate_settings(payload):
             datetime.strptime(payment["bcv_date"], "%Y-%m-%d")
         except (TypeError, ValueError):
             raise HTTPException(422, "Indica la fecha de la tasa.")
-    rewards = settings["rewards"]
-    if not isinstance(rewards["enabled"], bool) or not isinstance(rewards["prizes"], list) or len(rewards["prizes"]) > 20:
-        raise HTTPException(422, "Premios inválidos.")
-    text(rewards["terms"], 5000)
-    ids = set()
-    for prize in rewards["prizes"]:
-        if not isinstance(prize, dict) or set(prize) - {"id", "label", "description", "weight", "quantity", "kind", "design"}:
-            raise HTTPException(422, "Premio inválido.")
-        for field in ("id", "label", "description"):
-            text(prize.get(field, ""), 500)
-        if not prize.get("id") or not prize.get("label") or prize["id"] in ids:
-            raise HTTPException(422, "Identificador de premio repetido o vacío.")
-        ids.add(prize["id"])
-        number(prize.get("weight", 1), 1, 10000)
-        quantity = prize.get("quantity", 0)
-        if quantity is None:
-            if prize.get("kind") != "wallpaper" or prize.get("design") not in {"orbit", "grid", "wave"}:
-                raise HTTPException(422, "Solo los fondos digitales aprobados admiten copias ilimitadas.")
-        else:
-            number(quantity, 0, 100000)
-            if not isinstance(quantity, int):
-                raise HTTPException(422, "Cantidad debe ser un entero.")
-    if rewards["enabled"] and (not rewards["terms"] or not any(p.get("quantity", 0) is None or p.get("quantity", 0) > 0 for p in rewards["prizes"])):
-        raise HTTPException(422, "Activa premios solo con condiciones y unidades reales.")
+    # Retired reward configuration is retained as historical data only.
     return settings
 
 
@@ -328,10 +307,6 @@ def create_app(store=None):
 
     @app.get("/api/auth/session")
     def auth_session(request: Request, response: Response):
-        # Establish the anonymous promotion token before the first interaction;
-        # concurrent button presses in the normal UI then share one token.
-        if not re.fullmatch(r"[A-Za-z0-9_-]{43}", request.cookies.get(VISITOR_COOKIE, "")):
-            cookie(response, VISITOR_COOKIE, secrets.token_urlsafe(32), 365 * 86400)
         record = session(request)
         return {"authenticated": bool(record), "csrf_token": record["csrf"] if record else None}
 
@@ -380,7 +355,7 @@ def create_app(store=None):
         response.headers["X-Boleta-Data-Status"] = "snapshot" if stale else "live"
         # Prize inventory is private; public labels/terms suffice for the display.
         result = copy.deepcopy(state["settings"]["published"])
-        result["rewards"]["prizes"] = [{k: p[k] for k in ("id", "label", "description", "kind", "design") if k in p} for p in result["rewards"]["prizes"]]
+        result.pop("rewards", None)
         return result
 
     @app.get("/api/admin/site-settings")
@@ -399,6 +374,9 @@ def create_app(store=None):
         def save(state):
             s = state["settings"]
             version_check(s, body.get("version"))
+            # Retired campaign settings are an immutable historical record;
+            # new editors neither display nor overwrite them.
+            draft["rewards"] = copy.deepcopy(s["draft"].get("rewards", DEFAULT_SETTINGS["rewards"]))
             s["version"] += 1
             s["draft"] = draft
             return {"version": s["version"], "draft": s["draft"], "published": s["published"]}
@@ -432,6 +410,7 @@ def create_app(store=None):
             if item is None:
                 raise HTTPException(404, "Versión no encontrada.")
             s["draft"] = copy.deepcopy(item["settings"])
+            StateStore.complete(state)
             s["version"] += 1
             return {"version": s["version"], "draft": s["draft"], "published": s["published"]}
         return repository().mutate(change)
@@ -679,39 +658,8 @@ def create_app(store=None):
         return {**state["stats"], "leads_count": len(state["leads"]), "note": "Clics en WhatsApp no confirman conversaciones ni pagos."}
 
     @app.post("/api/rewards/spin")
-    async def spin(request: Request, response: Response):
-        check_origin(request)
-        rate(request, "spin", 5, 3600)
-        visitor = request.cookies.get(VISITOR_COOKIE)
-        if not visitor or not re.fullmatch(r"[A-Za-z0-9_-]{43}", visitor):
-            visitor = secrets.token_urlsafe(32)
-            cookie(response, VISITOR_COOKIE, visitor, 365 * 86400)
-        identifier = hashlib.sha256(visitor.encode()).hexdigest()
-        def change(state):
-            if identifier in state["spins"]:
-                return {**state["spins"][identifier], "already_spun": True}
-            rewards = state["settings"]["published"]["rewards"]
-            if not rewards["enabled"] or not rewards["terms"]:
-                raise HTTPException(409, "No hay una promoción activa.")
-            # Allocation is total real units, not a mutable UI stock counter. Keeping
-            # claims separately prevents publishing an old draft from replenishing it.
-            claims = state.setdefault("reward_claims", {})
-            eligible = [p for p in rewards["prizes"] if p.get("quantity", 0) is None or p.get("quantity", 0) > claims.get(p["id"], 0)]
-            if not eligible:
-                raise HTTPException(409, "Se agotaron los premios de esta promoción.")
-            weights = [max(1, int(p.get("weight", 1))) for p in eligible]
-            pick = secrets.randbelow(sum(weights))
-            chosen = eligible[-1]
-            for p, weight in zip(eligible, weights):
-                if pick < weight:
-                    chosen = p
-                    break
-                pick -= weight
-            claims[chosen["id"]] = claims.get(chosen["id"], 0) + 1
-            result = {"prize": {k: chosen.get(k, "") for k in ("id", "label", "description", "kind", "design")}, "claim_code": secrets.token_hex(6).upper(), "already_spun": False}
-            state["spins"][identifier] = result
-            return result
-        return repository().mutate(change)
+    async def retired_spin():
+        raise HTTPException(410, "Esta función fue retirada.")
 
     if (BASE / "dist").exists():
         app.mount("/", StaticFiles(directory=BASE / "dist", html=True), name="storefront")

@@ -44,3 +44,7 @@ grant execute on function public.boleta_state_compare_swap(bigint,jsonb) to serv
 -- carry X-Boleta-Data-Status:snapshot. Writes return 503/409; never local success.
 -- Contact leads remain private to admin export, with consent version/time. Avoid
 -- unnecessary retention: export only for the accepted purpose; honor deletion requests.
+-- 2026-10-22: rewards were retired. POST /api/rewards/spin returns 410 without
+-- changing state. Previous spins/claims/configuration remain private historical
+-- records; no migration or destructive data cleanup is required. Existing settings
+-- adopt studio.logo=/images/digital-solution-logo.webp without replacing other fields.

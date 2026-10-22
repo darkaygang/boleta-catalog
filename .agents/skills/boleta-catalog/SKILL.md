@@ -6,7 +6,7 @@ description: Planificar y modificar el catálogo BOLETA y su editor visual prese
 # BOLETA
 Lee [contexto](references/contexto.md) al retomar y [ejecución](references/ejecucion.md) al implementar.
 - Fuente técnica: repo actual, AGENTS.md y SDD; conservar FastAPI y frontend salvo justificación.
-- 21/10/2026: Cristian eligió C con bloque guía A y autorizó construir con agentes. Alcance incluye tattoo único bajo ojo izquierdo, temas, editor visual, tutorial, premio digital real, contactos opt-in y métricas. Mantener producción anterior hasta migración/env y revisión de despliegue.
+- 21/10/2026: Cristian eligió C con bloque guía A y autorizó construir con agentes. Alcance incluye tattoo único bajo ojo izquierdo, temas, editor visual, tutorial, contactos opt-in y métricas. 22/10 retiró ruleta/planeta y pidió intro1→100 >=1s, guía completa y tres propuestas con MP4; próxima portada pendiente de elección. Mantener producción anterior hasta migración/env y revisión de despliegue.
 - Registrar CONFIRMADO/ESTIMADO/PENDIENTE, evidencia y siguiente paso en MEMORY.md. No divulgar secretos.
 - Móvil primero, ligero; editor visual autenticado para productos y sitio con fuentes permitidas, frases, fotos, hero, secciones, FAQ y playlist. Borrador, preview, publicación y recuperación.
 - Tema claro/oscuro accesible, preferencia del sistema y elección persistente.

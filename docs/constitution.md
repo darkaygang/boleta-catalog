@@ -17,3 +17,6 @@
 
 ## Actualización aprobada 21/10/2026
 Tema claro/oscuro y paleta #60328A. Autenticación en servidor sin PIN público. Condiciones de anticipo configurables pendientes de aprobar; no imponer 50%. Tasa BCV real fechada o pendiente. Persistencia durable remota, sin fallback de escritura silencioso. Ver specs/estudio-interactivo/spec.md.
+
+## Corrección explícita 22/10/2026
+Ruleta retirada por propietario. Contador de entrada1→100 al menos1s; sin planeta giratorio. Guía completa en móvil. Estas correcciones sustituyen el comportamiento anterior.

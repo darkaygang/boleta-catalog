@@ -43,6 +43,8 @@ class StateStore:
                 elif isinstance(default, dict):
                     for field, value in default.items():
                         settings[key].setdefault(field, copy.deepcopy(value))
+            for field in ("order", "hidden"):
+                settings["site_sections"][field] = [v for v in settings["site_sections"][field] if v != "rewards"]
         return document
 
     def seed(self):

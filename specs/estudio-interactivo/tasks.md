@@ -10,3 +10,10 @@
 - [x] Stats/opt-in y ruleta desactivada sin términos (RF-23/24/29).
 - [x] Integración Digital Solution (RF-30).
 - [ ] PR, documentación y entrega verificable.
+
+## 22/10
+- [x] Correcciones intro/guía/retirada planeta y ruleta, logo editable.
+- [x] Tres MP4 decodificados y contact sheets inspeccionados.
+- [x] Tres bocetos visuales y comparación de funciones: docs/direcciones-22oct.md.
+- [x] QA final:23unittest,9gruposregresiónbrowser+checks específicos.
+- [ ] Actualizar PR1 y entrega (sin desplegar).

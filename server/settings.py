@@ -13,17 +13,13 @@ DEFAULT_SETTINGS = {
         "community_description": "Déjanos tu contacto para responder tu consulta. Tú decides si también quieres novedades.",
         "archive_title": "TU PRÓXIMA\nPIEZA.", "archive_description": "Encuentra lo que va contigo. Arma tu selección y hablamos.",
     },
-    "site_sections": {"order": ["radio", "categories", "studio", "catalog", "how", "faq", "rewards", "community"], "hidden": []},
+    "site_sections": {"order": ["radio", "categories", "studio", "catalog", "how", "faq", "community"], "hidden": []},
     "logistics": {"label": "Por encargo", "estimated_arrival": "2026-12-15", "note": "Llegada estimada, sujeta a logística."},
     "contacts": {"store_whatsapp": "584245314215", "studio_whatsapp": "573215885381"},
     "radio": {"playlist_url": "https://open.spotify.com/playlist/7JwsCKwcOZGfaWoJu8guQn"},
-    "studio": {"title": "TU NEGOCIO. OTRA DIMENSIÓN.", "description": "Webs, automatización y experiencias digitales por Digital Solution.", "cta": "Hablemos de tu proyecto", "url": "https://digital-solution-page.vercel.app"},
+    "studio": {"title": "TU NEGOCIO. OTRA DIMENSIÓN.", "description": "Webs, automatización y experiencias digitales por Digital Solution.", "cta": "Hablemos de tu proyecto", "url": "https://digital-solution-page.vercel.app", "logo": "/images/digital-solution-logo.webp"},
     "faq": [{"question": "¿Cómo encargar?", "answer": "Arma tu selección y consulta disponibilidad y condiciones por WhatsApp."}, {"question": "¿Cuándo llega?", "answer": "Llegada estimada el 15 de diciembre, sujeta a logística."}, {"question": "¿Cómo elijo mi talla?", "answer": "Consulta las medidas y confírmalas por WhatsApp antes de encargar."}],
     "payment": {"deposit_percent": None, "bcv_rate": None, "bcv_date": ""},
-    "rewards": {"enabled": True, "terms": "Un fondo digital BOLETA por dispositivo. Sin compra ni suscripción. Sin descuento ni valor monetario.", "prizes": [
-        {"id": "wallpaper-orbit", "kind": "wallpaper", "design": "orbit", "label": "BOLETA / ORBIT", "description": "Fondo digital BOLETA para tu teléfono.", "weight": 1, "quantity": None},
-        {"id": "wallpaper-grid", "kind": "wallpaper", "design": "grid", "label": "BOLETA / GRID", "description": "Fondo digital BOLETA para tu teléfono.", "weight": 1, "quantity": None},
-        {"id": "wallpaper-wave", "kind": "wallpaper", "design": "wave", "label": "BOLETA / WAVE", "description": "Fondo digital BOLETA para tu teléfono.", "weight": 1, "quantity": None},
-    ]},
+    "rewards": {"enabled": False, "terms": "", "prizes": []},
 }
 ALLOWED_FONTS = {"Arial", "Arial Black", "Helvetica", "Georgia", "Courier New", "Impact", "Verdana", "Trebuchet MS", "system-ui", "Manrope", "DM Mono", "Barlow Condensed"}

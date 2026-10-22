@@ -20,13 +20,22 @@
     <script type="module" src="/js/app.js"></script>
   </head>
   <body>
-    <div class="brand-intro" aria-hidden="true">
+    <div
+      class="brand-intro"
+      id="brandIntro"
+      role="status"
+      aria-live="off"
+      aria-label="Presentación BOLETA"
+    >
       <img
         src="/images/boleta-logo.webp"
         width="240"
         height="100"
         alt=""
-      /><span>FUERA DE LO COMÚN.</span>
+      /><span>FUERA DE LO COMÚN.</span
+      ><strong class="intro-counter" id="introCounter" aria-hidden="true"
+        >1</strong
+      ><small>ENTRANDO AL ARCHIVO · INTRO</small>
     </div>
     <a class="skip" href="#catalogo">Ir al catálogo</a>
     <header class="header shell" id="inicio">
@@ -75,7 +84,6 @@
       </div>
       <section class="hero framed" id="hero" aria-labelledby="heroTitle">
         <div class="hero-grid" aria-hidden="true"></div>
-        <div class="orbit" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
         <span class="cross" aria-hidden="true">✦</span>
         <div class="hero-copy">
           <p class="micro" id="heroEyebrow">ARCHIVO 001 / EST. 2022</p>
@@ -129,10 +137,6 @@
         <div class="sound-print" aria-hidden="true">▂▅▃▆▂▇▄▅▂▆▃</div>
       </section>
       <div id="radioEmbed" hidden></div>
-      <a id="rewardPeek" class="reward-peek" href="#rewardSection" hidden
-        ><span>✦ TU DETALLE BOLETA</span
-        ><span>Un fondo para tu teléfono. Descubrir ↗</span></a
-      >
       <section
         class="category-cards"
         id="categoryCards"
@@ -165,10 +169,16 @@
         </button>
       </section>
       <section class="studio framed reveal" id="estudio">
-        <div class="studio-visual" aria-hidden="true">
-          <span>DS</span>
-          <div class="studio-orbit"></div>
-          <small>WEB / DESIGN<br />AUTOMATION</small>
+        <div class="studio-visual">
+          <img
+            id="studioLogo"
+            class="agency-logo"
+            src="/images/digital-solution-logo.webp"
+            alt="Digital Solution"
+            width="360"
+            height="240"
+            loading="lazy"
+          /><small>WEB / DESIGN<br />AUTOMATION</small>
         </div>
         <div class="studio-copy">
           <p class="micro">DIGITAL SOLUTION</p>
@@ -270,15 +280,6 @@
         <p class="micro">MISMAS PREGUNTAS. MENTES DIFERENTES.</p>
         <h2>EN CLARO.</h2>
         <div id="faqList"></div>
-      </section>
-      <section id="rewardSection" class="framed reward-section" hidden>
-        <p class="micro">EL DETALLE ESTÁ EN LOS DETALLES.</p>
-        <h2>Tu detalle BOLETA.</h2>
-        <p id="rewardTerms"></p>
-        <button id="spinButton" class="button primary">
-          Descubrir mi detalle ↗
-        </button>
-        <p id="rewardResult" role="status"></p>
       </section>
       <section class="framed leads reveal" id="comunidad">
         <p class="micro">NO TE PIERDAS EL SIGUIENTE ARCHIVO.</p>

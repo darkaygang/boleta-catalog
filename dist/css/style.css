@@ -2544,3 +2544,116 @@ html[data-theme="light"] {
     top: var(--editor-toolbar-height, 160px);
   }
 }
+/* October 22: a counted editorial entrance, never a download indicator. */
+.brand-intro {
+  gap: 13px;
+  animation: intro-fallback 1.6s step-end forwards;
+}
+.brand-intro.is-finished {
+  display: none !important;
+}
+.brand-intro .intro-counter {
+  font:
+    700 clamp(60px, 16vw, 100px)/1 "Barlow Condensed",
+    sans-serif;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  min-width: 3ch;
+  text-align: center;
+}
+.brand-intro small {
+  font: 9px monospace;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+@keyframes intro-fallback {
+  0%,
+  99% {
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+.guide-portrait {
+  height: 350px;
+}
+.guide-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  padding: 10px 14px 0;
+}
+.guide-body {
+  padding: 22px;
+}
+.studio-visual .agency-logo {
+  width: 90%;
+  height: 145px;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+}
+.archive {
+  padding-top: 48px;
+}
+.how {
+  margin-top: 42px;
+  padding: 30px;
+}
+.faq-section {
+  padding-block: 38px;
+}
+.leads {
+  padding: 28px;
+}
+.footer {
+  padding-top: 32px;
+}
+@media (max-width: 600px) {
+  .guide-portrait {
+    height: min(48dvh, 390px);
+  }
+  .guide-portrait img {
+    object-fit: contain;
+    object-position: center bottom;
+  }
+  .guide-body {
+    padding: 20px;
+  }
+  .studio-visual .agency-logo {
+    width: 94%;
+    height: 105px;
+  }
+  .archive {
+    padding-top: 32px;
+  }
+  .how {
+    margin-top: 32px;
+    padding: 22px 20px;
+  }
+  .faq-section {
+    padding-block: 30px;
+  }
+  .leads {
+    padding: 22px 20px;
+  }
+  .footer {
+    padding-top: 28px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand-intro {
+    display: flex;
+    animation: intro-fallback 1.6s step-end forwards !important;
+  }
+}
+.brand-intro.is-counting {
+  animation: none !important;
+  opacity: 1;
+  visibility: visible;
+}

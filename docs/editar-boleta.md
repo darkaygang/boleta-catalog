@@ -9,7 +9,8 @@ Personalizar abre Contenido, Estilo, Fotos, Secciones, Guía, Piezas, Historial,
 - Fotos: logo, lentes y anillo de portada; sube imágenes propias.
 - Secciones: flechas para cambiar orden y controles de visibilidad. Hero/header/footer y catálogo permanecen como estructura esencial.
 - Guía: preguntas y respuestas que tú apruebas, añadir/quitar; no inventa respuestas.
-- Premios: activar/desactivar y editar términos, nombres y diseños de los fondos. Solo configurar premios comerciales cuando existan condiciones y unidades reales.
+- Logo Digital Solution: pestaña Imágenes, seleccionar archivo; revisar borrador y publicar.
+- Ruleta retirada por solicitud del propietario el 22/10; no aparece en el editor.
 Puedes tocar **Editar bloque** en la página para ir al panel correspondiente.
 
 ## Guardar y publicar
@@ -35,7 +36,7 @@ Si no hay precio/tasa o una variante se retiró, se muestra pendiente de confirm
 ## Contactos y métricas
 Contactos permite exportar CSV privado y eliminar datos ante solicitud.
 Solo contactos con **marketing_consent = sí** pueden recibir promociones.
-El premio digital no necesita registro ni consentimiento promocional.
+El consentimiento promocional sigue siendo opcional y separado de la compra. No hay ruleta ni premios activos.
 Las estadísticas son eventos agregados de visitantes que activaron medición. Clics WhatsApp no prueban conversaciones enviadas, ni representan pagos.
 El código no envía promociones automáticamente.
 

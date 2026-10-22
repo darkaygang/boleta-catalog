@@ -114,6 +114,7 @@ export const defaults = {
     playlist_url: "https://open.spotify.com/playlist/7JwsCKwcOZGfaWoJu8guQn",
   },
   studio: {
+    logo: "/images/digital-solution-logo.webp",
     title: "TU NEGOCIO.\nOTRA DIMENSIÓN.",
     description:
       "Webs, automatización y experiencias digitales por Digital Solution.",
@@ -168,7 +169,6 @@ defaults.site_sections = {
     "catalog",
     "how",
     "faq",
-    "rewards",
     "community",
   ],
   hidden: [],
@@ -382,16 +382,12 @@ export function applySettings(input) {
   $("studioTitle").textContent = s.studio.title;
   $("studioDescription").textContent = s.studio.description;
   $("studioButton").textContent = s.studio.cta + " ↗";
+  $("studioLogo").src = safeUrl(
+    s.studio.logo,
+    "/images/digital-solution-logo.webp",
+  );
   $("footerWhatsApp").href = whatsapp("Hola BOLETA, tengo una consulta.");
   renderFaq();
-  $("rewardSection").hidden = !(
-    s.rewards.enabled &&
-    s.rewards.terms &&
-    s.rewards.prizes?.length
-  );
-  $("rewardTerms").textContent = s.rewards.terms || "";
-  $("rewardPeek").hidden = $("rewardSection").hidden;
-  renderRewardWheel();
   applyCopyAndSections();
   if (state.products.length) renderProducts();
 }
@@ -403,7 +399,6 @@ export const sectionIds = {
   catalog: "catalogo",
   how: "como-encargar",
   faq: "preguntas",
-  rewards: "rewardSection",
   community: "comunidad",
 };
 function applyCopyAndSections() {
@@ -439,25 +434,17 @@ function applyCopyAndSections() {
       main.insertBefore(node, footer);
       if (key === "radio") {
         main.insertBefore($("radioEmbed"), footer);
-        main.insertBefore($("rewardPeek"), footer);
       }
     }
     lastSectionOrder = signature;
   }
   for (const [key, id] of Object.entries(sectionIds)) {
-    if (key === "rewards")
-      $(id).hidden =
-        sections.hidden.includes(key) ||
-        !(
-          state.settings.rewards.enabled &&
-          state.settings.rewards.terms &&
-          state.settings.rewards.prizes.length
-        );
-    else $(id).hidden = sections.hidden.includes(key);
+    const node = $(id);
+    if (node) node.hidden = sections.hidden.includes(key);
   }
   if (sections.hidden.includes("radio")) $("radioEmbed").hidden = true;
-  $("rewardPeek").hidden = $("rewardSection").hidden;
 }
+
 function setTheme(theme) {
   document.documentElement.dataset.theme = theme;
   $("themeToggle").setAttribute(
@@ -1037,98 +1024,6 @@ $("leadForm").onsubmit = async (e) => {
     b.disabled = false;
   }
 };
-function renderRewardWheel() {
-  const prizes = state.settings.rewards.prizes || [];
-  if (!prizes.length) return;
-  let stage = $("rewardWheelStage");
-  if (!stage) {
-    stage = document.createElement("div");
-    stage.id = "rewardWheelStage";
-    stage.className = "reward-wheel-stage";
-    $("rewardTerms").after(stage);
-  }
-  const n = prizes.length,
-    colors = ["#60328A", "#2d183f", "#9764c3", "#463052"];
-  stage.innerHTML =
-    '<div class="wheel-pointer" aria-hidden="true">▼</div><div id="rewardWheel" class="reward-wheel" aria-hidden="true"><span>BOLETA</span></div><div class="wheel-legend"></div>';
-  const wheel = $("rewardWheel");
-  wheel.style.background =
-    "conic-gradient(" +
-    prizes
-      .map(
-        (p, i) =>
-          colors[i % colors.length] +
-          " " +
-          (i * 360) / n +
-          "deg " +
-          ((i + 1) * 360) / n +
-          "deg",
-      )
-      .join(",") +
-    ")";
-  prizes.forEach((p, i) => {
-    const label = document.createElement("b");
-    label.textContent = String(i + 1).padStart(2, "0");
-    label.style.transform =
-      "rotate(" +
-      ((i + 0.5) * 360) / n +
-      "deg) translateY(-78px) rotate(-" +
-      ((i + 0.5) * 360) / n +
-      "deg)";
-    wheel.append(label);
-  });
-  stage.querySelector(".wheel-legend").innerHTML = prizes
-    .map(
-      (p, i) =>
-        "<span>" +
-        String(i + 1).padStart(2, "0") +
-        " / " +
-        esc(p.label) +
-        "</span>",
-    )
-    .join("");
-}
-let wheelRotation = 0;
-$("spinButton").onclick = async () => {
-  const b = $("spinButton");
-  b.disabled = true;
-  $("rewardResult").textContent = "Abriendo tu detalle…";
-  try {
-    const r = await api("/api/rewards/spin", { method: "POST", body: "{}" });
-    const prizes = state.settings.rewards.prizes || [],
-      idx = prizes.findIndex((p) => p.id === r.prize.id);
-    if (idx >= 0 && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      const target = 360 - ((idx + 0.5) * 360) / prizes.length;
-      wheelRotation = Math.ceil(wheelRotation / 360) * 360 + 1440 + target;
-      $("rewardWheel").style.transform = "rotate(" + wheelRotation + "deg)";
-      await new Promise((resolve) => setTimeout(resolve, 2200));
-    }
-    $("rewardResult").textContent =
-      `${r.already_spun ? "Tu detalle guardado" : "Tu detalle"}: ${r.prize.label}. ${r.prize.description || ""}${r.claim_code ? " Código: " + r.claim_code : ""}`;
-    if (r.prize.kind === "wallpaper") {
-      let dl = $("wallpaperDownload");
-      if (!dl) {
-        dl = document.createElement("button");
-        dl.id = "wallpaperDownload";
-        dl.className = "button secondary";
-        $("rewardResult").after(dl);
-      }
-      dl.textContent = "Descargar mi fondo BOLETA ↓";
-      dl.onclick = async () => {
-        try {
-          const { downloadWallpaper } = await import("./wallpaper.js");
-          await downloadWallpaper(r.prize.design);
-        } catch {
-          toast("No pudimos preparar la descarga. Intenta nuevamente.");
-        }
-      };
-    }
-  } catch (err) {
-    $("rewardResult").textContent = err.message;
-  } finally {
-    b.disabled = false;
-  }
-};
 $("privacyButton").onclick = () => {
   $("noticeTitle").textContent = "TUS DATOS, EN CLARO.";
   $("noticeContent").innerHTML =
@@ -1167,6 +1062,31 @@ document.addEventListener("keydown", (e) => {
     $("editorButton").click();
   }
 });
+function runBrandIntro() {
+  const intro = $("brandIntro"),
+    counter = $("introCounter");
+  if (!intro || !counter) return;
+  intro.classList.add("is-counting");
+  const duration = 1200,
+    start = performance.now();
+  counter.textContent = "1";
+  function frame(now) {
+    const elapsed = Math.max(0, now - start);
+    counter.textContent = String(
+      Math.min(100, 1 + Math.floor((elapsed / duration) * 99)),
+    );
+    if (elapsed < duration) requestAnimationFrame(frame);
+    else {
+      counter.textContent = "100";
+      setTimeout(() => {
+        intro.classList.add("is-finished");
+        intro.setAttribute("aria-hidden", "true");
+      }, 100);
+    }
+  }
+  requestAnimationFrame(frame);
+}
+runBrandIntro();
 async function init() {
   track("page_view");
   try {

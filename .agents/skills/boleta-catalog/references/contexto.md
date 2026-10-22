@@ -31,3 +31,6 @@ No copiar promesas de facturación, precios ni tiempos de respuesta como evidenc
 
 ## Decisión vigente 21/10/2026
 Elegida opción C con guía A. Implementación autorizada. URL https://boleta-catalog.onrender.com. Tattoo único bajo ojo izquierdo. Ruleta entrega fondos gratuitos reales sin registro; marketing opt-in separado. Ver docs/editar-boleta.md y docs/activar-render.md para estado y operación.
+
+## Corrección vigente22/10
+Ruleta retirada por usuario. Intro1→100 >=1s, guía completa y logo Digital Solution editable. Sin planeta. Tres propuestas por videos: Archivo de Calle/Vitrina Cromada/Portal del Drop, pendientes de elección. No publicar materiales ni variantes inventadas desde mockups.

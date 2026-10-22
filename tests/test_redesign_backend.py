@@ -86,9 +86,9 @@ class BackendTests(unittest.TestCase):
         self.assertEqual(restored.json()["draft"]["hero"]["title"], original["hero"]["title"])
         self.assertEqual(restored.json()["published"]["hero"]["title"], "NUEVO")
 
-    def test_settings_reject_invalid_font_url_and_fake_reward(self):
+    def test_settings_reject_invalid_font_and_url(self):
         draft = self.client.get("/api/site-settings").json()
-        for mutate in (lambda d: d["fonts"].update({"heading": "url(evil)"}), lambda d: d["hero"].update({"image": "javascript:alert(1)"}), lambda d: d["rewards"].update({"enabled": True, "prizes": []})):
+        for mutate in (lambda d: d["fonts"].update({"heading": "url(evil)"}), lambda d: d["hero"].update({"image": "javascript:alert(1)"})):
             candidate = copy.deepcopy(draft)
             mutate(candidate)
             self.assertEqual(self.client.put("/api/admin/site-settings", json={"version": 0, "settings": candidate}, headers=self.headers).status_code, 422)
@@ -142,28 +142,44 @@ class BackendTests(unittest.TestCase):
         self.assertEqual(self.client.post("/api/events", json={"event": "whatsapp_click"}).status_code, 200)
         self.assertEqual(self.client.get("/api/admin/stats").json()["events"]["whatsapp_click"], 1)
 
-    def test_rewards_disabled_then_idempotent_with_stock(self):
-        self.store.mutate(lambda state: state["settings"]["published"]["rewards"].update({"enabled": False}))
-        self.assertEqual(self.client.post("/api/rewards/spin", json={}).status_code, 409)
-        def enable(state):
-            state["settings"]["published"]["rewards"] = {"enabled": True, "terms": "Un regalo real por navegador, confirma retiro.", "prizes": [{"id": "sticker", "label": "Sticker", "description": "Sticker físico", "quantity": 1, "weight": 1}]}
-        self.store.mutate(enable)
-        first = self.client.post("/api/rewards/spin", json={})
-        self.assertEqual(first.status_code, 200, first.text)
-        second = self.client.post("/api/rewards/spin", json={})
-        self.assertEqual(second.status_code, 200, second.text)
-        self.assertEqual(first.json()["claim_code"], second.json()["claim_code"])
-        self.assertTrue(second.json()["already_spun"])
-        self.assertEqual(self.store.read()["reward_claims"]["sticker"], 1)
-        another = TestClient(create_app(self.store))
-        self.assertEqual(another.post("/api/rewards/spin", json={}).status_code, 409)
+    def test_retired_rewards_return_gone_and_preserve_historical_state(self):
+        def legacy(state):
+            state["spins"] = {"historic": {"claim_code": "EXISTING"}}
+            state["reward_claims"] = {"physical": 2}
+            for mode in ("draft", "published"):
+                state["settings"][mode]["rewards"] = {"enabled": True, "terms": "Legacy", "prizes": [{"id": "old", "label": "Old", "quantity": 10}]}
+                state["settings"][mode]["site_sections"]["order"].insert(1, "rewards")
+        self.store.mutate(legacy)
+        before = self.store.read()
+        for attempt in range(2):
+            response = self.client.post("/api/rewards/spin", json={})
+            self.assertEqual(response.status_code, 410, response.text)
+            self.assertNotIn("set-cookie", response.headers)
+        after = self.store.read()
+        self.assertEqual(after["revision"], before["revision"])
+        self.assertEqual(after["spins"], before["spins"])
+        self.assertEqual(after["reward_claims"], before["reward_claims"])
+        public = self.client.get("/api/site-settings").json()
+        self.assertNotIn("rewards", public)
+        self.assertNotIn("rewards", public["site_sections"]["order"])
+        admin = self.client.get("/api/admin/site-settings").json()
+        saved = self.client.put("/api/admin/site-settings", json={"version": admin["version"], "settings": admin["draft"]}, headers=self.headers)
+        self.assertEqual(saved.status_code, 200, saved.text)
+        published = self.client.post("/api/admin/site-settings/publish", json={"version": saved.json()["version"]}, headers=self.headers)
+        self.assertEqual(published.status_code, 200, published.text)
+        self.assertEqual(self.store.read()["spins"], before["spins"])
+        self.assertTrue(self.store.read()["settings"]["draft"]["rewards"]["enabled"])
 
-    def test_free_wallpaper_is_real_configured_reward_without_lead(self):
-        response = self.client.post("/api/rewards/spin", json={})
-        self.assertEqual(response.status_code, 200, response.text)
-        self.assertEqual(response.json()["prize"]["kind"], "wallpaper")
-        self.assertIn(response.json()["prize"]["design"], {"orbit", "grid", "wave"})
-        self.assertEqual(self.store.read()["leads"], [])
+    def test_studio_logo_editing_and_legacy_defaults(self):
+        self.store.mutate(lambda state: state["settings"]["draft"]["studio"].pop("logo"))
+        settings = self.client.get("/api/admin/site-settings").json()
+        self.assertEqual(settings["draft"]["studio"]["logo"], "/images/digital-solution-logo.webp")
+        settings["draft"]["studio"]["logo"] = "/images/agency-custom.webp"
+        saved = self.client.put("/api/admin/site-settings", json={"version": settings["version"], "settings": settings["draft"]}, headers=self.headers)
+        self.assertEqual(saved.status_code, 200, saved.text)
+        bad = copy.deepcopy(saved.json()["draft"])
+        bad["studio"]["logo"] = "javascript:alert(1)"
+        self.assertEqual(self.client.put("/api/admin/site-settings", json={"version": saved.json()["version"], "settings": bad}, headers=self.headers).status_code, 422)
 
     def test_upload_reencodes_checks_and_rejects_bad_bytes(self):
         bad = self.client.post("/api/upload", files={"file": ("fake.png", b"not an image", "image/png")}, headers=self.headers)
