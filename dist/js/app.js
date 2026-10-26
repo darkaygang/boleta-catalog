@@ -96,11 +96,13 @@ export const defaults = {
     logo: "/images/boleta-logo.webp",
   },
   hero: {
-    eyebrow: "ARCHIVO 001 / EST. 2022",
-    title: "PIEZAS CON CARÁCTER.",
-    description: "Accesorios reales para una generación propia.",
-    cta: "Ver piezas",
-    backdrop: "/images/hero-chrome-backdrop.webp",
+    eyebrow: "EST. 2022 — BARQUISIMETO",
+    title: "MODA\nOBJETOS\nIDEAS",
+    description:
+      "Ropa, accesorios e importados. Diseño web para marcas que piensan diferente.",
+    cta: "Explorar catálogo",
+    backdrop: "/images/hero-v2-ground.webp",
+    poster: "/images/hero-v2-poster.webp",
     image: "/images/hero-glasses.webp",
     secondary_image: "/images/hero-ring.webp",
   },
@@ -119,7 +121,7 @@ export const defaults = {
     title: "TU NEGOCIO.\nOTRA DIMENSIÓN.",
     description:
       "Webs, automatización y experiencias digitales por Digital Solution.",
-    cta: "Hablemos de tu proyecto",
+    cta: "¿Quieres una página web así para tu negocio?",
     url: "https://digital-solution-page.vercel.app",
   },
   faq: [
@@ -158,6 +160,17 @@ defaults.copy = {
   community_title: "QUÉDATE EN\nLA FRECUENCIA.",
   community_description:
     "Déjanos tu contacto para responder tu consulta. Tú decides si también quieres novedades.",
+  benefits_title: "TU NEGOCIO, MÁS FÁCIL DE EXPLORAR.",
+  benefit1_title: "Tu catálogo, siempre a mano",
+  benefit1_text:
+    "Comparte un enlace con tus fotos, precios y variantes ordenados.",
+  benefit2_title: "Consultas más claras",
+  benefit2_text: "Recibe por WhatsApp la selección que el cliente preparó.",
+  benefit3_title: "Actualiza sin editar código",
+  benefit3_text: "Cambia fotos, productos y frases desde tu propio panel.",
+  benefit4_title: "Una experiencia con tu identidad",
+  benefit4_text:
+    "Diseño para teléfono y métricas opcionales para seguir mejorando.",
   archive_title: "TU PRÓXIMA\nPIEZA.",
   archive_description:
     "Encuentra lo que va contigo. Arma tu selección y hablamos.",
@@ -376,11 +389,7 @@ export function applySettings(input) {
   $("heroDescription").textContent = s.hero.description;
   $("heroCta").textContent = s.hero.cta + " ↗";
   $("heroBackdrop").src = safeUrl(s.hero.backdrop, defaults.hero.backdrop);
-  $("heroGlasses").src = safeUrl(s.hero.image, defaults.hero.image);
-  $("heroRing").src = safeUrl(
-    s.hero.secondary_image,
-    defaults.hero.secondary_image,
-  );
+  $("heroPoster").src = safeUrl(s.hero.poster, defaults.hero.poster);
   document
     .querySelectorAll(".brand img,.footer>img")
     .forEach((x) => (x.src = safeUrl(s.brand.logo, defaults.brand.logo)));
@@ -427,6 +436,11 @@ function applyCopyAndSections() {
   set("#comunidad>.micro", "community_eyebrow");
   set("#comunidad>h2", "community_title");
   set("#comunidad>p:not(.micro):not(.privacy)", "community_description");
+  set("#benefitsTitle", "benefits_title");
+  for (let i = 1; i <= 4; i++) {
+    set("#benefitTitle" + i, "benefit" + i + "_title");
+    set("#benefitText" + i, "benefit" + i + "_text");
+  }
   set("#archiveTitle", "archive_title");
   set(".archive-intro", "archive_description");
   const sections = state.settings.site_sections;
@@ -507,6 +521,7 @@ export function renderProducts() {
         )
         .join("")
     : '<p class="empty">No hay piezas con esos filtros. Prueba otra búsqueda.</p>';
+  document.dispatchEvent(new Event("boleta-products-rendered"));
   $("loadMore").hidden = list.length <= state.limit;
   const cats = ["Todo", ...new Set(state.products.map(categoryOf))];
   $("categoryTabs").innerHTML = cats
@@ -1103,6 +1118,8 @@ async function init() {
   } catch {
     applySettings(defaults);
   }
+  if (new URLSearchParams(location.search).has("editor"))
+    $("editorButton").click();
   try {
     await loadProducts();
   } catch (err) {
@@ -1133,7 +1150,84 @@ async function init() {
     setTimeout(() => {
       $("guideInvite").hidden = false;
     }, 1800);
-  if (new URLSearchParams(location.search).has("editor"))
-    $("editorButton").click();
 }
 init();
+
+// Progressive 3D: commerce and poster work before any GPU code is downloaded.
+let heroController;
+function loadHero3D() {
+  const el = $("heroSculpture");
+  if (
+    matchMedia("(prefers-reduced-motion: reduce)").matches ||
+    navigator.connection?.saveData
+  ) {
+    el.dataset.heroStatus = "fallback";
+    el.dataset.heroFallback = "preference";
+    return;
+  }
+  import("./hero-3d.js")
+    .then((m) => m.initHero(el))
+    .then((c) => (heroController = c))
+    .catch(() => {
+      el.dataset.heroStatus = "fallback";
+      el.dataset.heroFallback = "unavailable";
+    });
+}
+if (!new URLSearchParams(location.search).has("editor"))
+  setTimeout(() => {
+    if ("requestIdleCallback" in window)
+      requestIdleCallback(loadHero3D, { timeout: 1600 });
+    else loadHero3D();
+  }, 1350);
+else $("heroSculpture").dataset.heroStatus = "fallback";
+window.addEventListener("pagehide", (event) => {
+  if (event.persisted) heroController?.pause();
+  else heroController?.destroy();
+});
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) heroController?.resume();
+});
+let topTick = false;
+function updateTopButton() {
+  $("backToTop").hidden = scrollY < Math.max(500, innerHeight * 0.8);
+  topTick = false;
+}
+window.addEventListener(
+  "scroll",
+  () => {
+    if (!topTick) {
+      topTick = true;
+      requestAnimationFrame(updateTopButton);
+    }
+  },
+  { passive: true },
+);
+$("backToTop").onclick = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "instant"
+      : "smooth",
+  });
+  $("menuButton").focus({ preventScroll: true });
+};
+updateTopButton();
+document.querySelectorAll("[data-nav-category]").forEach((a) =>
+  a.addEventListener("click", () => {
+    const type = a.dataset.navCategory,
+      names = [...new Set(state.products.map(categoryOf))];
+    state.category =
+      names.find((n) =>
+        new RegExp(
+          type === "ropa"
+            ? "ropa|prendas"
+            : type === "objetos"
+              ? "objects|objetos"
+              : "accesorios|joyería",
+          "i",
+        ).test(n),
+      ) || "Todo";
+    state.limit = 24;
+    renderProducts();
+  }),
+);

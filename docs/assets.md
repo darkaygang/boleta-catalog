@@ -12,3 +12,7 @@
 Las capturas se toman del navegador local; métricas son laboratorio local, no una promesa de velocidad en redes reales de Venezuela. Falta medir campo después del despliegue.
 
 Vitrina Cromada: hero-chrome-backdrop.webp850x1087,128.4KB, fondo original generado con imagegen a partir de dirección elegida. Ornamento y suelo solamente; productos hero permanecen cutouts anteriores y fotosQC del grid originales. Sin video/WebGL. Prompt y arte fuente en entrega local, asset consumido incluido enrepo.
+
+
+25/10: Three.js0.180.0 selfhost en dist/js/vendor, licenciaMIT incluida. SinGLBexistente:esculturaproceduralpropia. Fondo hero-v2-ground.webp93.5KBporimagegen;hero-v2-poster.webp46.8KBcapturado delrendererreal transparente. No spritesimulado3D. CSS/WAAPI+WebGLsinReact/GSAP/postbloomglobal.
+GZip paraJS/CSS. server/assets/catalog-thumbnails.zip recompilable conpython scripts/build_thumbnails.py;120covers400pxq72,hashSHA256original,cache4MBbounded, nuevasfotos fallback. Originalesintactos. Validación yapruebas tests/test_performance.py.

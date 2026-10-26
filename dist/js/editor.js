@@ -108,6 +108,7 @@ async function enter() {
   renderBar();
   renderPanel("content");
   renderProducts();
+  decorateProductCards();
   toast("Editor activo. Estás viendo el borrador privado.");
 }
 function renderBar() {
@@ -213,7 +214,7 @@ async function renderPanel(tab = panelTab) {
   };
   const el = $("editorFields");
   if (tab === "content")
-    el.innerHTML = `<p class="editor-note">Los textos cambian en tu vista previa al escribir. Guarda borrador y publica cuando estés listo. Las piezas se guardan directamente y lo indican antes de confirmar.</p><h3>Hero principal</h3>${field("Línea superior", "hero.eyebrow")}${field("Frase principal (puedes usar saltos de línea)", "hero.title", { area: true })}${field("Descripción", "hero.description", { area: true })}${field("Botón principal", "hero.cta")}<h3>Entrega</h3>${field("Estado visible", "logistics.label")}${field("Llegada estimada", "logistics.estimated_arrival", { type: "date" })}${field("Nota logística", "logistics.note", { area: true })}<h3>Contactos y música</h3>${field("WhatsApp tienda (solo dígitos y país)", "contacts.store_whatsapp")}${field("WhatsApp Digital Solution", "contacts.studio_whatsapp")}${field("Enlace de playlist Spotify", "radio.playlist_url", { type: "url" })}<h3>Digital Solution</h3>${field("Titular", "studio.title", { area: true })}${field("Descripción", "studio.description", { area: true })}${field("Botón", "studio.cta")}<h3>Condiciones comerciales</h3><p class="editor-note">Déjalas vacías hasta confirmar. La tasa solo aparece con fecha; nunca se calcula a partir de precios BCV antiguos.</p>${field("Anticipo (%) opcional", "payment.deposit_percent", { type: "number" })}${field("Tasa Bs. por USD (opcional)", "payment.bcv_rate", { type: "number" })}${field("Fecha de la tasa", "payment.bcv_date", { type: "date" })}<h3>Archivo, radio y comunidad</h3>${field("Titular del archivo", "copy.archive_title", { area: true })}${field("Descripción del archivo", "copy.archive_description", { area: true })}${field("Título radio", "copy.radio_title")}${field("Descripción radio", "copy.radio_description", { area: true })}${field("Línea superior cómo encargar", "copy.how_eyebrow")}${field("Título cómo encargar", "copy.how_title", { area: true })}${[1, 2, 3].map((i) => field("Paso " + i + " / título", "copy.how_step" + i + "_title") + field("Paso " + i + " / explicación", "copy.how_step" + i + "_text", { area: true })).join("")}${field("Línea superior comunidad", "copy.community_eyebrow")}${field("Título comunidad", "copy.community_title", { area: true })}${field("Descripción comunidad", "copy.community_description", { area: true })}${saveButton()}`;
+    el.innerHTML = `<p class="editor-note">Los textos cambian en tu vista previa al escribir. Guarda borrador y publica cuando estés listo. Las piezas se guardan directamente y lo indican antes de confirmar.</p><h3>Hero principal</h3>${field("Línea superior", "hero.eyebrow")}${field("Frase principal (puedes usar saltos de línea)", "hero.title", { area: true })}${field("Descripción", "hero.description", { area: true })}${field("Botón principal", "hero.cta")}<h3>Entrega</h3>${field("Estado visible", "logistics.label")}${field("Llegada estimada", "logistics.estimated_arrival", { type: "date" })}${field("Nota logística", "logistics.note", { area: true })}<h3>Contactos y música</h3>${field("WhatsApp tienda (solo dígitos y país)", "contacts.store_whatsapp")}${field("WhatsApp Digital Solution", "contacts.studio_whatsapp")}${field("Enlace de playlist Spotify", "radio.playlist_url", { type: "url" })}<h3>Digital Solution</h3>${field("Titular", "studio.title", { area: true })}${field("Descripción", "studio.description", { area: true })}${field("Botón", "studio.cta")}<h3>Beneficios de Digital Solution</h3>${field("Título de beneficios", "copy.benefits_title", { area: true })}${[1, 2, 3, 4].map((i) => field("Beneficio " + i + " / título", "copy.benefit" + i + "_title") + field("Beneficio " + i + " / explicación", "copy.benefit" + i + "_text", { area: true })).join("")}<h3>Condiciones comerciales</h3><p class="editor-note">Déjalas vacías hasta confirmar. La tasa solo aparece con fecha; nunca se calcula a partir de precios BCV antiguos.</p>${field("Anticipo (%) opcional", "payment.deposit_percent", { type: "number" })}${field("Tasa Bs. por USD (opcional)", "payment.bcv_rate", { type: "number" })}${field("Fecha de la tasa", "payment.bcv_date", { type: "date" })}<h3>Archivo, radio y comunidad</h3>${field("Titular del archivo", "copy.archive_title", { area: true })}${field("Descripción del archivo", "copy.archive_description", { area: true })}${field("Título radio", "copy.radio_title")}${field("Descripción radio", "copy.radio_description", { area: true })}${field("Línea superior cómo encargar", "copy.how_eyebrow")}${field("Título cómo encargar", "copy.how_title", { area: true })}${[1, 2, 3].map((i) => field("Paso " + i + " / título", "copy.how_step" + i + "_title") + field("Paso " + i + " / explicación", "copy.how_step" + i + "_text", { area: true })).join("")}${field("Línea superior comunidad", "copy.community_eyebrow")}${field("Título comunidad", "copy.community_title", { area: true })}${field("Descripción comunidad", "copy.community_description", { area: true })}${saveButton()}`;
   if (tab === "style")
     el.innerHTML = `<h3>Identidad</h3>${field("Color principal", "brand.accent", { type: "color" })}${field("Fuente de titulares", "fonts.heading", { options: ["Barlow Condensed", "Arial Black", "Impact", "Georgia", "Manrope"] })}${field("Fuente del hero", "fonts.hero", { options: ["Georgia", "Barlow Condensed", "Arial Black", "Impact", "Manrope"] })}${field("Fuente de textos", "fonts.body", { options: ["Manrope", "Arial", "Georgia", "Courier New", "system-ui"] })}<h3>Vista previa</h3><div class="editor-row"><button class="button secondary" id="previewDark">☾ Oscuro</button><button class="button secondary" id="previewLight">☼ Claro</button></div><button class="button secondary" id="panelMobile">Ver en formato móvil</button><p class="editor-note">La preferencia claro/oscuro pertenece a cada visitante. Las fuentes se limitan a las opciones validadas del sitio.</p>${saveButton()}`;
   if (tab === "sections") {
@@ -223,7 +224,7 @@ async function renderPanel(tab = panelTab) {
     renderSectionsEditor();
   }
   if (tab === "photos")
-    el.innerHTML = `<h3>Imágenes de portada</h3><p class="editor-note">Para conservar el diseño usa recortes con fondo transparente en lentes y anillo.</p>${uploadField("Fondo Vitrina Cromada", "hero.backdrop")}${uploadField("Lentes protagonistas", "hero.image")}${uploadField("Anillo protagonista", "hero.secondary_image")}${uploadField("Logo de BOLETA", "brand.logo")}${uploadField("Logo de Digital Solution", "studio.logo")}${saveButton()}`;
+    el.innerHTML = `<h3>Imágenes de portada</h3><p class="editor-note">El ambiente se aplica al hero 3D. La imagen alternativa aparece si el 3D no está disponible o el visitante reduce el movimiento. Lentes y anillo se usan en las categorías destacadas.</p>${uploadField("Ambiente / fondo del hero 3D", "hero.backdrop")}${uploadField("Imagen alternativa del hero sin 3D", "hero.poster")}${uploadField("Lentes de categoría destacada", "hero.image")}${uploadField("Anillo de categoría destacada", "hero.secondary_image")}${uploadField("Logo de BOLETA", "brand.logo")}${uploadField("Logo de Digital Solution", "studio.logo")}${saveButton()}`;
   if (tab === "faq") {
     el.innerHTML = `<h3>El guía responde por ti.</h3><p class="editor-note">Respuestas definidas por ti, sin inteligencia artificial ni aprendizaje automático. Se actualizan en el panel de ayuda y en preguntas frecuentes.</p><div id="faqEditor"></div><button class="button secondary" id="addFaq">+ Añadir pregunta</button>${saveButton()}`;
     renderFaqEditor();
@@ -241,7 +242,7 @@ async function renderPanel(tab = panelTab) {
     el.innerHTML = '<p class="editor-note">Cargando piezas…</p>';
     try {
       adminProducts = await adminApi("/api/admin/products");
-      el.innerHTML = `<h3>Todas las piezas</h3><p class="editor-note">Editar, archivar y fusionar se aplican al catálogo al guardar, independientemente del borrador de diseño.</p><button id="panelNewProduct" class="button primary">+ Nueva pieza</button><label>Buscar pieza<input id="adminProductSearch" type="search" placeholder="Nombre, marca, código…"></label><div id="adminProductList" class="admin-list"></div>`;
+      el.innerHTML = `<h3>Todas las piezas</h3><p class="editor-note">Editar, archivar y fusionar se aplican al catálogo al guardar, independientemente del borrador de diseño.</p><button id="panelNewProduct" class="button primary">+ Nueva pieza</button><label>Buscar pieza<input id="adminProductSearch" type="search" placeholder="Nombre, marca, código…"></label><div id="adminProductList" class="admin-product-grid"></div>`;
       const render = () => {
         $("adminProductList").innerHTML = adminProducts
           .filter((x) =>
@@ -251,7 +252,7 @@ async function renderPanel(tab = panelTab) {
           )
           .map(
             (x) =>
-              `<div><strong>${esc(x.title || x.name)}</strong><p>${esc(x.code || x.id)} · ${esc(x.status || "aprobado")}</p><button class="small-button" data-admin-product="${esc(x.id)}">Editar ↗</button>${x.status !== "aprobado" ? `<button class="small-button" data-restore-product="${esc(x.id)}">Restaurar</button>` : ""}</div>`,
+              `<article class="admin-product-tile"><button class="admin-product-image" data-admin-product="${esc(x.id)}" aria-label="Editar ${esc(x.title || x.name)}"><img src="${esc(adminThumb(x))}" alt="${esc(x.title || x.name)}" loading="lazy" width="240" height="240"></button><strong>${esc(x.title || x.name)}</strong><p>${esc(x.code || x.id)} · ${esc(x.status || "aprobado")}</p><button class="small-button" data-admin-product="${esc(x.id)}">Editar ↗</button>${x.status !== "aprobado" ? `<button class="small-button" data-restore-product="${esc(x.id)}">Restaurar</button>` : `<button class="small-button editor-danger" data-admin-archive="${esc(x.id)}">Quitar publicación</button><button class="small-button" data-admin-merge="${esc(x.id)}">Unir fotos ↗</button>`}</article>`,
           )
           .join("");
       };
@@ -261,6 +262,10 @@ async function renderPanel(tab = panelTab) {
       $("adminProductList").onclick = async (e) => {
         const b = e.target.closest("[data-admin-product]");
         if (b) editProduct(b.dataset.adminProduct);
+        const remove = e.target.closest("[data-admin-archive]");
+        if (remove) archiveVisualProduct(remove.dataset.adminArchive);
+        const merge = e.target.closest("[data-admin-merge]");
+        if (merge) chooseMergeDestination(merge.dataset.adminMerge);
         const r = e.target.closest("[data-restore-product]");
         if (r)
           try {
@@ -657,7 +662,7 @@ async function editProduct(id) {
     const d = newDialog(
       "editProductDialog",
       id ? "EDITAR PIEZA." : "NUEVA PIEZA.",
-      `<form class="admin-form" id="productAdminForm"><p class="editor-note">Al guardar se modifica el catálogo. La publicación del diseño es independiente.</p><label>Nombre<input name="title" required maxlength="160" value="${esc(p.title || p.name || "")}"></label><div class="editor-row"><label>Categoría<input name="category" required value="${esc(p.category || "Accesorios")}"></label><label>Marca<input name="brand" value="${esc(p.brand || "BOLETA")}"></label></div><label>Precio USD (vacío = por confirmar)<input name="price" type="number" min="0" step="0.01" value="${esc(p.numeric_usd ?? p.price ?? "")}"></label><label>Descripción / materiales<textarea name="description">${esc(p.description || p.material || "")}</textarea></label><label>Tallas separadas por coma (si no hay variantes detalladas)<input name="sizes" value="${esc(Array.isArray(p.sizes) ? p.sizes.join(", ") : "Única")}"></label><label>Variantes: una por línea · talla | color | existencias | precio USD<textarea name="variants" placeholder="S | Negro | 3 | 25&#10;M | Morado | 2 | 25">${esc(variantText)}</textarea><span class="micro">Deja existencias vacías si están por confirmar. No se preselecciona una variante al comprar.</span></label><label>Fotos (puedes elegir varias)<input id="productPhotos" type="file" multiple accept="image/jpeg,image/png,image/webp"></label><div class="admin-gallery" id="adminGallery"></div><label class="checkbox"><input type="checkbox" name="is_purchased" ${p.is_purchased ? "checked" : ""}><span>Comprado al proveedor</span></label><label class="checkbox"><input type="checkbox" name="in_stock" ${p.in_stock !== false ? "checked" : ""}><span>Disponible para consultar</span></label><button class="button primary" type="submit">Guardar pieza en catálogo</button>${id ? '<button type="button" class="button secondary" id="mergeProduct">Unir fotos de otra pieza</button><button type="button" class="button secondary editor-danger" id="archiveProduct">Archivar pieza</button>' : ""}<p id="productSaveStatus" role="status"></p></form>`,
+      `<form class="admin-form" id="productAdminForm"><p class="editor-note">Al guardar se modifica el catálogo. La publicación del diseño es independiente.</p><label>Nombre<input name="title" required maxlength="160" value="${esc(p.title || p.name || "")}"></label><div class="editor-row"><label>Categoría<input name="category" required value="${esc(p.category || "Accesorios")}"></label><label>Marca<input name="brand" value="${esc(p.brand || "BOLETA")}"></label></div><label>Precio USD (vacío = por confirmar)<input name="price" type="number" min="0" step="0.01" value="${esc(p.numeric_usd ?? p.price ?? "")}"></label><label>Descripción / materiales<textarea name="description">${esc(p.description || p.material || "")}</textarea></label><label>Tallas separadas por coma (si no hay variantes detalladas)<input name="sizes" value="${esc(Array.isArray(p.sizes) ? p.sizes.join(", ") : "Única")}"></label><label>Variantes: una por línea · talla | color | existencias | precio USD<textarea name="variants" placeholder="S | Negro | 3 | 25&#10;M | Morado | 2 | 25">${esc(variantText)}</textarea><span class="micro">Deja existencias vacías si están por confirmar. No se preselecciona una variante al comprar.</span></label><label>Fotos (puedes elegir varias)<input id="productPhotos" type="file" multiple accept="image/jpeg,image/png,image/webp"></label><div class="admin-gallery" id="adminGallery"></div><label class="checkbox"><input type="checkbox" name="is_purchased" ${p.is_purchased ? "checked" : ""}><span>Comprado al proveedor</span></label><label class="checkbox"><input type="checkbox" name="in_stock" ${p.in_stock !== false ? "checked" : ""}><span>Disponible para consultar</span></label><button class="button primary" type="submit">Guardar pieza en catálogo</button>${id ? '<button type="button" class="button secondary" id="mergeProduct">Unir esta pieza con otra</button><button type="button" class="button secondary editor-danger" id="archiveProduct">Archivar pieza</button>' : ""}<p id="productSaveStatus" role="status"></p></form>`,
     );
     renderAdminGallery();
     $("productPhotos").onchange = async (e) => {
@@ -796,42 +801,206 @@ async function saveProduct(e) {
     b.disabled = false;
   }
 }
-async function mergeProduct(targetId, parent) {
+async function mergeProduct(sourceId, parent) {
+  await chooseMergeDestination(sourceId, parent);
+}
+
+function adminThumb(product) {
+  const source =
+    product.image_url || product.image || "/images/boleta-logo.webp";
+  return safeUrl(
+    source.startsWith("photos/")
+      ? "/api/thumbnail?src=" + encodeURIComponent(source)
+      : source,
+  );
+}
+async function refreshVisualProducts() {
+  await loadProducts();
+  decorateProductCards();
+  if (document.querySelector(".editor-panel") && panelTab === "products")
+    await renderPanel("products");
+}
+function archiveVisualProduct(id) {
+  const product =
+    state.products.find((p) => String(p.id) === String(id)) ||
+    adminProducts.find((p) => String(p.id) === String(id));
+  if (!product) return toast("La pieza cambió. Recarga el catálogo.");
+  confirmAction(
+    "¿QUITAR ESTA PUBLICACIÓN?",
+    `“${product.title || product.name}” dejará de aparecer en el catálogo. Sus fotos y variantes se conservan. Puedes restaurarla desde Productos.`,
+    async () => {
+      await adminApi("/api/products/" + encodeURIComponent(id), {
+        method: "DELETE",
+      });
+      await refreshVisualProducts();
+      toast("Publicación archivada. Puedes restaurarla desde Productos.");
+    },
+  );
+}
+async function chooseMergeDestination(sourceId, parent = null) {
   try {
     adminProducts = await adminApi("/api/admin/products");
+    const source = adminProducts.find((p) => String(p.id) === String(sourceId));
+    if (!source || source.status !== "aprobado")
+      return toast("La pieza ya no está publicada.");
     const candidates = adminProducts.filter(
-      (x) => String(x.id) !== String(targetId) && x.status === "aprobado",
+      (p) => String(p.id) !== String(sourceId) && p.status === "aprobado",
     );
-    const d = newDialog(
-      "mergeProductDialog",
-      "UNIR GALERÍAS.",
-      `<form class="admin-form" id="mergeForm"><p class="editor-note">Se copiarán las fotos de la pieza elegida a esta galería. La pieza de origen se archivará; no se mezclan sus tallas ni precios.</p><label>Pieza de origen<select name="source_id">${candidates.map((x) => `<option value="${esc(x.id)}">${esc(x.title || x.name)} · ${esc(x.code || x.id)}</option>`).join("")}</select></label><button class="button primary">Confirmar unión y archivar origen</button><p id="mergeStatus" role="status"></p></form>`,
+    const dialog = newDialog(
+      "chooseMergeDestination",
+      "¿QUÉ PIEZA RECIBE LAS FOTOS?",
+      `<p class="editor-note">Origen: <strong>${esc(source.title || source.name)}</strong>. Toca la pieza que conservarás publicada. Antes de guardar verás la dirección y confirmarás.</p><label>Buscar destino<input id="mergeDestinationSearch" type="search" placeholder="Nombre o código"></label><div id="mergeDestinationTiles" class="merge-target-grid"></div>`,
     );
-    $("mergeForm").onsubmit = async (e) => {
-      e.preventDefault();
-      const source = new FormData(e.currentTarget).get("source_id");
+    const render = () => {
+      const query = $("mergeDestinationSearch").value.toLocaleLowerCase();
+      $("mergeDestinationTiles").innerHTML =
+        candidates
+          .filter((p) =>
+            `${p.title || p.name} ${p.code || p.id}`
+              .toLocaleLowerCase()
+              .includes(query),
+          )
+          .map(
+            (p) =>
+              `<button type="button" class="admin-product-tile" data-merge-destination="${esc(p.id)}"><img src="${esc(adminThumb(p))}" alt="" width="180" height="180" loading="lazy"><strong>${esc(p.title || p.name)}</strong><span>${esc(p.code || p.id)}</span><span>Recibe las fotos ↗</span></button>`,
+          )
+          .join("") || "<p>No hay piezas disponibles con esa búsqueda.</p>";
+    };
+    render();
+    $("mergeDestinationSearch").oninput = render;
+    $("mergeDestinationTiles").onclick = (event) => {
+      const button = event.target.closest("[data-merge-destination]");
+      if (button)
+        confirmVisualMerge(
+          sourceId,
+          button.dataset.mergeDestination,
+          dialog,
+          parent,
+        );
+    };
+    openDialog(dialog);
+  } catch (error) {
+    toast(error.message);
+  }
+}
+async function confirmVisualMerge(
+  sourceId,
+  targetId,
+  chooser = null,
+  parent = null,
+) {
+  if (String(sourceId) === String(targetId)) return;
+  try {
+    const products = await adminApi("/api/admin/products");
+    const source = products.find((p) => String(p.id) === String(sourceId));
+    const target = products.find((p) => String(p.id) === String(targetId));
+    if (
+      !source ||
+      !target ||
+      source.status !== "aprobado" ||
+      target.status !== "aprobado"
+    )
+      return toast("Una de las piezas cambió. Recarga antes de unir.");
+    const tile = (p, label) =>
+      `<div><p class="micro">${label}</p><img src="${esc(adminThumb(p))}" alt="${esc(p.title || p.name)}" width="220" height="220"><strong>${esc(p.title || p.name)}</strong><p>${esc(p.code || p.id)}</p></div>`;
+    const dialog = newDialog(
+      "confirmVisualMerge",
+      "CONFIRMAR DIRECCIÓN DE LA UNIÓN.",
+      `<div class="merge-direction">${tile(source, "ORIGEN → SE ARCHIVA")}${tile(target, "DESTINO → SE CONSERVA")}</div><p>Las fotos del origen se añaden a la galería del destino, conservando sus fotos actuales. El origen se archiva. No se mezclan tallas, precios ni existencias.</p><button id="confirmVisualMergeButton" type="button" class="button primary">Unir fotos y archivar origen</button><button type="button" class="button secondary close-dialog">Cancelar</button><p id="visualMergeStatus" role="status"></p>`,
+    );
+    $("confirmVisualMergeButton").onclick = async (event) => {
+      event.currentTarget.disabled = true;
       try {
         await adminApi("/api/products/merge", {
           method: "POST",
           body: JSON.stringify({
-            source_id: source,
+            source_id: String(sourceId),
             target_id: String(targetId),
           }),
         });
-        await loadProducts();
-        closeDialog(d);
-        closeDialog(parent);
-        toast("Galerías unidas. Pieza de origen archivada.");
-        await editProduct(targetId);
-      } catch (err) {
-        $("mergeStatus").textContent = err.message;
+        closeDialog(dialog);
+        if (chooser) closeDialog(chooser);
+        if (parent) closeDialog(parent);
+        await refreshVisualProducts();
+        toast("Fotos unidas. El destino conserva sus variantes y existencias.");
+      } catch (error) {
+        $("visualMergeStatus").textContent = error.message;
+        $("confirmVisualMergeButton").disabled = false;
       }
     };
-    openDialog(d);
-  } catch (err) {
-    toast(err.message);
+    openDialog(dialog);
+  } catch (error) {
+    toast(error.message);
   }
 }
+let draggedProductId = null;
+export function decorateProductCards() {
+  if (!state.editor) return;
+  document
+    .querySelectorAll("#productGrid .product-card[data-id]")
+    .forEach((card) => {
+      if (card.dataset.visualEditorReady) return;
+      card.dataset.visualEditorReady = "true";
+      const id = card.dataset.id;
+      const controls = document.createElement("div");
+      controls.className = "visual-product-actions";
+      const edit = card.querySelector("[data-edit]");
+      if (edit) controls.append(edit);
+      const archive = document.createElement("button");
+      archive.type = "button";
+      archive.className = "small-button editor-danger";
+      archive.textContent = "Quitar publicación";
+      archive.onclick = () => archiveVisualProduct(id);
+      const merge = document.createElement("button");
+      merge.type = "button";
+      merge.className = "small-button";
+      merge.textContent = "Unir fotos ↗";
+      merge.onclick = () => chooseMergeDestination(id);
+      const hint = document.createElement("span");
+      hint.className = "micro";
+      hint.textContent = "Arrastra esta pieza sobre otra para unir fotos";
+      controls.append(archive, merge, hint);
+      card.append(controls);
+      card.draggable = true;
+      card.addEventListener("dragstart", (event) => {
+        draggedProductId = id;
+        event.dataTransfer.effectAllowed = "move";
+        event.dataTransfer.setData("text/plain", id);
+        card.classList.add("is-drag-source");
+      });
+      card.addEventListener("dragover", (event) => {
+        if (!draggedProductId || draggedProductId === id) return;
+        event.preventDefault();
+        event.dataTransfer.dropEffect = "move";
+        card.classList.add("is-drop-target");
+      });
+      card.addEventListener("dragleave", (event) => {
+        if (!card.contains(event.relatedTarget))
+          card.classList.remove("is-drop-target");
+      });
+      card.addEventListener("drop", (event) => {
+        if (!draggedProductId || draggedProductId === id) return;
+        event.preventDefault();
+        const source = draggedProductId;
+        draggedProductId = null;
+        document
+          .querySelectorAll(".is-drop-target,.is-drag-source")
+          .forEach((el) =>
+            el.classList.remove("is-drop-target", "is-drag-source"),
+          );
+        confirmVisualMerge(source, id);
+      });
+      card.addEventListener("dragend", () => {
+        draggedProductId = null;
+        document
+          .querySelectorAll(".is-drop-target,.is-drag-source")
+          .forEach((el) =>
+            el.classList.remove("is-drop-target", "is-drag-source"),
+          );
+      });
+    });
+}
+document.addEventListener("boleta-products-rendered", decorateProductCards);
 document.addEventListener("boleta-edit-product", (e) => {
   if (state.editor) editProduct(e.detail);
 });

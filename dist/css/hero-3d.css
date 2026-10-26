@@ -1,0 +1,50 @@
+/* The surrounding hero owns layout; this layer only controls real 3D and its
+   identical-composition poster. No canvas is stretched into an artificial zoom. */
+.hero-v2-stage {
+  isolation: isolate;
+  contain: layout paint;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+.hero-v2-stage [data-hero-canvas],
+.hero-v2-stage [data-hero-poster] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+}
+.hero-v2-stage [data-hero-canvas] {
+  opacity: 0;
+  transition: opacity 0.65s ease;
+  z-index: 2;
+}
+.hero-v2-stage [data-hero-poster] {
+  opacity: 1;
+  transition: opacity 0.65s ease;
+  z-index: 1;
+}
+.hero-v2-stage[data-hero-status="ready"] [data-hero-canvas],
+.hero-v2-stage[data-hero-status="paused"] [data-hero-canvas] {
+  opacity: 1;
+}
+.hero-v2-stage[data-hero-status="ready"] [data-hero-poster],
+.hero-v2-stage[data-hero-status="paused"] [data-hero-poster] {
+  opacity: 0;
+}
+.hero-v2-stage[data-hero-status="fallback"] [data-hero-canvas],
+.hero-v2-stage[data-hero-status="destroyed"] [data-hero-canvas] {
+  opacity: 0;
+}
+.hero-v2-stage[data-hero-status="fallback"] [data-hero-poster],
+.hero-v2-stage[data-hero-status="destroyed"] [data-hero-poster] {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-v2-stage [data-hero-canvas],
+  .hero-v2-stage [data-hero-poster] {
+    transition: none;
+  }
+}

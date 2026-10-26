@@ -54,7 +54,7 @@ class BackendTests(unittest.TestCase):
     def test_chrome_backdrop_and_custom_order_survive_editor_save(self):
         default = self.client.get("/api/site-settings").json()
         self.assertEqual(default["site_sections"]["order"][0], "catalog")
-        self.assertEqual(default["hero"]["backdrop"], "/images/hero-chrome-backdrop.webp")
+        self.assertEqual(default["hero"]["backdrop"], "/images/hero-v2-ground.webp")
         admin = self.client.get("/api/admin/site-settings").json()
         admin["draft"]["site_sections"]["order"].reverse()
         wanted = admin["draft"]["site_sections"]["order"][:]
@@ -86,12 +86,20 @@ class BackendTests(unittest.TestCase):
 
     def test_merge_retains_every_photo(self):
         for pid in ("merge-a", "merge-b"):
-            response = self.client.post("/api/products", json={"id": pid, "title": pid, "image": f"/photos/{pid}.jpg", "gallery": [f"/photos/{pid}-back.jpg"]}, headers=self.headers)
+            response = self.client.post("/api/products", json={"id": pid, "title": pid, "image": f"/photos/{pid}.jpg", "gallery": [f"/photos/{pid}-back.jpg"], "numeric_usd": 29 if pid == "merge-b" else 10, "sizes": ["9"] if pid == "merge-b" else ["7"], "variants": [{"id": pid + "-v", "size": "9" if pid == "merge-b" else "7", "quantity": 3 if pid == "merge-b" else 8}]}, headers=self.headers)
             self.assertEqual(response.status_code, 200, response.text)
         response = self.client.post("/api/products/merge", json={"source_id": "merge-a", "target_id": "merge-b"}, headers=self.headers)
         self.assertEqual(response.status_code, 200, response.text)
         self.assertEqual(len(response.json()["target_product"]["gallery"]), 3)
+        self.assertEqual(response.json()["target_product"]["numeric_usd"], 29)
+        self.assertEqual(response.json()["target_product"]["sizes"], ["9"])
+        self.assertEqual(response.json()["target_product"]["variants"], [{"id": "merge-b-v", "size": "9", "quantity": 3}])
+        self.assertEqual(response.json()["target_product"]["image"], "/photos/merge-b.jpg")
         self.assertEqual(self.client.get("/api/products/merge-a").status_code, 404)
+        self.assertEqual(self.client.patch("/api/products/merge-a", json={"status": "aprobado"}, headers=self.headers).status_code, 200)
+        restored = self.client.get("/api/products/merge-a").json()
+        self.assertEqual(restored["gallery"], ["/photos/merge-a-back.jpg"])
+        self.assertEqual(restored["variants"][0]["quantity"], 8)
 
     def test_draft_publish_conflict_and_restore(self):
         original = self.client.get("/api/site-settings").json()
