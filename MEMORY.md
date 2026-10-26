@@ -13,3 +13,9 @@ Sold out reversible, distinto de archivar: pieza visible, badge, encargos deshab
 Diagnóstico de memoria: procesamiento simultáneo de miniaturas grandes. Corrección: una conversión por proceso, reducción JPEG antes de copiar/rotar, caché con límite de bytes y hash por bloques. Laboratorio cuatro fotos: pico aproximado369→53MiB; no es una garantía bajo cualquier carga real.
 Imagen para enlaces y favicon nuevos. Composición de logo/escultura autorizada expresamente para publicación pública. Fotos nuevas van al almacenamiento externo, originales intactos; precio/medidas por confirmar.
 41 pruebasunitarias y8gruposbrowserlocalPASS. Publicación, importación de fotos y comprobación remota pendientes en este checkpoint. Guía pública: docs/operar-boleta.md. Detalles de operación y evidencias privadas se guardan localmente fuera de Git.
+
+
+## Publicación verificada 26/10/2026
+Sold out, límites de memoria, favicon y metadatos OG publicados y comprobados. Se crearon36piezas nuevas a partir de67fotos únicas(69archivos,2duplicadosexactos), con miniaturas separadas. Catálogo156registros/150publicados;120anteriores y6archivados preservados. Diseño/textos del dueño intactos. Nuevos precios y medidas por confirmar.
+41tests locales yCI aprobados;8gruposbrowserlocales y7checksproducción sin erroresJS/recursos.24miniaturas con4solicitudes concurrentes respondieron correctamente. Durante ventana posterior aldespliegue, memoria observada<=223MiB; no es garantía bajo toda carga futura.
+VPS: acceso SSH del dueño confirmado yruntime independiente instalado,41testsLinux aprobados. Servicio BOLETA no activado; falta dominio y configurarvariables privadas desde cuentaRender. Servicios previos preservados. Producción sigueenRender. No anunciar migracióncompleta. Las preguntas de dominio/loginquedaron pendientes al cerrar estecheckpoint.
