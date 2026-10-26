@@ -1,4 +1,4 @@
-# BOLETA · producción verificada22/10/2026
+# BOLETA · producción actualizada25/10/2026
 
 ## Estado actual
 Vitrina Cromada elegida por Cristian y publicada en https://boleta-catalog.onrender.com.
@@ -45,3 +45,6 @@ CTAnegocio preguntaexplícita y4beneficioseditables. Backtop solo trasbajar. Cat
 GZipThree720032→182069bytes(-74.7%), bundle120covers400q72 (1.69MBprivadoserverasset,noextraído),matchSHAoriginal/fallbackPIL. Benchmark24cold13msbundle vs868msPIL laboratorio.
 32/32unittestPASS. BrowserWebGLSwiftShader laboratorio: real3D,6anchos360-1440,nooverflow,scrollpause/backtop,archivar/restaurar/unirtáctil/dragcancel,copypúblico/fallbacksinWebGL/reducedmotion PASS,sinerroresJS. No writesproducto enproducción; todaspruebas mutanteslocalesaisladas.
 Rama codex/boleta-3d-visual-editor. Publicación/CI/QAremoto pendientes duranteestecheckpoint. Detalles specs/estudio-interactivo/hero-v2.md.
+
+## ESTADO VIGENTE25/10 · Hero3Dpublicado
+PR2merged, commit1b9e1f3b5e483b2ca0f8b5286a1bbc971b0f8e31, Renderdep-dbfbnt67bikc73c261p0 LIVE26/10UTC02:34(25/10ET22:34). Settingsv8/revision13: patchúnicamentehero/CTA; otros textos/fuentes yproductos intactos. MD5productoscambiosantes/después3828009fe0b1cb812e3896a26eb7baf2,120registros. BFcachepausa/reanuda corregidoyprobado. QAproducción5gruposPASS(3D,360–1440,beneficios/backtop,carritoWA simulado,editorconfirmacionescanceladas),sinerroresJS/recursos; nofusiones/borradosreales.32unittestyCIhead d0ddc7bPASS run40259548225. Guíaoutputs/boleta-v2-entrega.md ydocs/operar-boleta.md. Lo anterior22/10escheckpoint histórico; prevalece esteestado. No nuevasmigraciones/credenciales/planes.

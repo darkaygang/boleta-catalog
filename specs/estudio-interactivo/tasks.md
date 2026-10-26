@@ -30,4 +30,4 @@
 - [x] Editorvisualinline/drag/táctil/archivoreversible.
 - [x] Backtop/CTAnegocio/beneficioseditables.
 - [x] GZip/precomputedthumbs/32tests/ChromeQA.
-- [ ] PR/CI/despliegue/patchcontenidoautorizado/QAremoto.
+- [x] PR2/CI32PASS/despliegueLIVE/patchselectivo/QAremoto sinmutarproductos.
