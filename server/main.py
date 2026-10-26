@@ -10,6 +10,7 @@ import re
 import secrets
 import threading
 import time
+import zipfile
 from collections import defaultdict, deque
 from datetime import datetime, timezone
 from functools import lru_cache
@@ -19,6 +20,7 @@ from urllib.parse import urlparse
 from fastapi import FastAPI, Request, Response, HTTPException, Depends, UploadFile, File
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.middleware.gzip import GZipMiddleware
 from PIL import Image, ImageOps, UnidentifiedImageError
 from .state import BASE, StateStore, StateUnavailable, StateConflict
 from .settings import DEFAULT_SETTINGS, ALLOWED_FONTS
@@ -26,6 +28,62 @@ from .settings import DEFAULT_SETTINGS, ALLOWED_FONTS
 COOKIE = "boleta_admin"
 SESSION_TTL = 8 * 3600
 EVENTS = {"page_view", "view_product", "select_variant", "add_to_selection", "whatsapp_click", "faq_open", "radio_open", "studio_contact_click", "scroll_25", "scroll_50", "scroll_75", "scroll_100"}
+
+
+@lru_cache(maxsize=256)
+def source_digest(path_string, mtime_ns, file_size):
+    """Hash originals once per file revision; no image decoding on the hot path."""
+    return hashlib.sha256(Path(path_string).read_bytes()).hexdigest()
+
+
+@lru_cache(maxsize=1)
+def thumbnail_bundle(path_string, mtime_ns, file_size):
+    """Read only the shipped bounded archive, never a visitor-controlled path.
+
+    WEBP data stays in a single <=4MB cache; corrupt/missing assets safely use
+    the existing runtime encoder. ZIP members are read in memory, never extracted.
+    """
+    try:
+        if file_size > 4 * 1024 * 1024:
+            return {}
+        with zipfile.ZipFile(path_string) as archive:
+            info = archive.getinfo("manifest.json")
+            if info.file_size > 256 * 1024:
+                return {}
+            manifest = json.loads(archive.read(info))
+            if not isinstance(manifest, dict):
+                return {}
+            entries = manifest.get("thumbnails", {})
+            if manifest.get("version") != 1 or not isinstance(entries, dict) or len(entries) > 1024:
+                return {}
+            result, total = {}, 0
+            for digest, entry in entries.items():
+                if not isinstance(digest, str) or not re.fullmatch(r"[a-f0-9]{64}", digest) or entry != digest + ".webp":
+                    return {}
+                info = archive.getinfo(entry)
+                total += info.file_size
+                if info.file_size > 512 * 1024 or total > 4 * 1024 * 1024:
+                    return {}
+                encoded = archive.read(info)
+                if encoded[:4] != b"RIFF" or encoded[8:12] != b"WEBP":
+                    return {}
+                result[digest] = encoded
+            return result
+    except (OSError, ValueError, KeyError, TypeError, zipfile.BadZipFile):
+        return {}
+
+
+def precomputed_thumbnail(candidate, info):
+    bundle = BASE / "server/assets/catalog-thumbnails.zip"
+    try:
+        bundle_info = bundle.stat()
+        entries = thumbnail_bundle(str(bundle), bundle_info.st_mtime_ns, bundle_info.st_size)
+        if not entries:
+            return None
+        digest = source_digest(str(candidate), info.st_mtime_ns, info.st_size)
+        return entries.get(digest)
+    except OSError:
+        return None
 
 
 @lru_cache(maxsize=64)
@@ -99,7 +157,7 @@ def validate_settings(payload):
     for section in ("brand", "hero", "fonts", "logistics", "contacts", "radio", "studio"):
         for key, value in settings[section].items():
             text(value, 3000)
-            if key in {"image", "secondary_image", "backdrop", "logo", "url", "playlist_url"}:
+            if key in {"image", "secondary_image", "backdrop", "poster", "logo", "url", "playlist_url"}:
                 safe_url(value)
     for value in settings["copy"].values():
         text(value, 3000)
@@ -232,6 +290,9 @@ def build_store():
 
 def create_app(store=None):
     app = FastAPI(title="BOLETA", version="4.0", docs_url=None, redoc_url=None)
+    # Compress local scripts/CSS and JSON in transit. API privacy/no-store headers
+    # remain applied by the outer response middleware below.
+    app.add_middleware(GZipMiddleware, minimum_size=1000, compresslevel=5)
     app.state.store = store
     sessions, attempts = {}, defaultdict(deque)
     lock = threading.RLock()
@@ -434,7 +495,9 @@ def create_app(store=None):
         info = candidate.stat()
         if info.st_size > 20 * 1024 * 1024:
             raise HTTPException(404, "Imagen no disponible.")
-        encoded = thumbnail_bytes(str(candidate), info.st_mtime_ns, info.st_size)
+        encoded = precomputed_thumbnail(candidate, info)
+        if encoded is None:
+            encoded = thumbnail_bytes(str(candidate), info.st_mtime_ns, info.st_size)
         etag = '"' + hashlib.sha256(encoded).hexdigest()[:24] + '"'
         return Response(encoded, media_type="image/webp", headers={"Cache-Control": "public, max-age=86400", "ETag": etag})
 

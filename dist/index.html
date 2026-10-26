@@ -12,11 +12,13 @@
     <link rel="icon" href="/images/guide-face.webp" type="image/webp" />
     <link
       rel="preload"
-      href="/images/hero-glasses.webp"
+      href="/images/hero-v2-poster.webp"
       as="image"
       fetchpriority="high"
     />
     <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/hero-v2.css" />
+    <link rel="stylesheet" href="/css/hero-3d.css" />
     <script type="module" src="/js/app.js"></script>
   </head>
   <body>
@@ -37,6 +39,14 @@
         >1</strong
       ><small>ENTRANDO AL ARCHIVO · INTRO</small>
     </div>
+    <button
+      id="backToTop"
+      class="back-to-top"
+      aria-label="Volver al inicio"
+      hidden
+    >
+      ↑
+    </button>
     <a class="skip" href="#catalogo">Ir al catálogo</a>
     <header class="header shell" id="inicio">
       <button
@@ -55,6 +65,12 @@
           height="100"
           fetchpriority="high"
       /></a>
+      <nav class="desktop-links" aria-label="Colecciones y servicios">
+        <a href="#catalogo" data-nav-category="ropa">ROPA</a
+        ><a href="#catalogo" data-nav-category="objetos">OBJETOS</a
+        ><a href="#catalogo" data-nav-category="accesorios">ACCESORIOS</a
+        ><a href="#estudio">SERVICIOS ✦</a>
+      </nav>
       <div class="head-actions">
         <button
           class="theme-toggle"
@@ -78,68 +94,57 @@
       </nav>
     </header>
     <main class="shell">
-      <div class="edition">
-        <span>EST. 2022 · BARQUISIMETO</span
-        ><span>ROPA / OBJETOS / SONIDO</span>
-      </div>
-      <section
-        class="hero framed chrome-hero"
-        id="hero"
-        aria-labelledby="heroTitle"
-      >
+      <section class="hero-v2" id="hero" aria-labelledby="heroTitle">
         <img
           id="heroBackdrop"
-          class="hero-backdrop"
-          src="/images/hero-chrome-backdrop.webp"
+          class="hero-v2-ground"
+          src="/images/hero-v2-ground.webp"
           alt=""
-          width="900"
-          height="1150"
-          fetchpriority="high"
+          width="1440"
+          height="960"
+          decoding="async"
         />
-        <div class="hero-sheen" aria-hidden="true"></div>
-        <div class="chrome-nodes" aria-hidden="true">
-          <i></i><i></i><i></i><i></i>
+        <div
+          class="hero-v2-stage"
+          id="heroSculpture"
+          data-hero-status="loading"
+          role="img"
+          aria-label="Escultura abstracta cromada, con cintas entrelazadas y un núcleo violeta luminoso"
+        >
+          <img
+            id="heroPoster"
+            data-hero-poster
+            src="/images/hero-v2-poster.webp"
+            alt=""
+            width="1000"
+            height="1000"
+            fetchpriority="high"
+          />
+          <canvas data-hero-canvas aria-hidden="true"></canvas>
         </div>
-        <div class="hero-grid" aria-hidden="true"></div>
-        <span class="cross" aria-hidden="true">✦</span>
-        <div class="hero-copy">
-          <p class="micro" id="heroEyebrow">ARCHIVO 001 / EST. 2022</p>
-          <h1 id="heroTitle">PIEZAS CON CARÁCTER.</h1>
+        <div class="hero-v2-copy">
+          <p class="micro" id="heroEyebrow">EST. 2022 — BARQUISIMETO</p>
+          <h1 id="heroTitle">MODA OBJETOS IDEAS</h1>
           <p id="heroDescription">
-            Accesorios reales para una generación propia.
+            Ropa, accesorios e importados. Diseño web para marcas que piensan
+            diferente.
+          </p>
+          <div class="hero-v2-actions">
+            <a class="button primary" id="heroCta" href="#catalogo"
+              >Explorar catálogo ↗</a
+            ><a class="hero-services" href="#estudio">Servicios Web ↗</a>
+          </div>
+          <p class="hero-v2-signature">
+            TU ESTILO. TUS IDEAS. EN UN MISMO LUGAR.
           </p>
         </div>
-        <span class="hero-margin micro" aria-hidden="true"
-          >OBJETOS<br />IDEAS<br />SONIDO<br />ESTILO<br />///</span
-        >
-        <div class="hero-stage">
-          <img
-            id="heroGlasses"
-            class="hero-glasses"
-            src="/images/hero-glasses.webp"
-            alt="Lentes del archivo BOLETA"
-            width="800"
-            height="600"
-            fetchpriority="high"
-          /><img
-            id="heroRing"
-            class="hero-ring"
-            src="/images/hero-ring.webp"
-            alt="Anillo del archivo BOLETA"
-            width="400"
-            height="400"
-          />
-        </div>
-        <a class="button primary hero-cta" id="heroCta" href="#catalogo"
-          >Ver piezas ↗</a
-        >
-        <div class="hero-bottom">
-          <span>✦</span
-          ><span id="logisticsSummary"
-            >POR ENCARGO · Llegada estimada: 15 dic. 2026</span
-          ><span>+</span>
+        <div class="hero-v2-footer" aria-hidden="true">
+          <span>✧</span> FASHION <i>×</i> IMPORTED ITEMS <i>×</i> WEB DESIGN
         </div>
       </section>
+      <p class="release-note" id="logisticsSummary">
+        Por encargo · Llegada estimada: 15 dic. 2026 · Sujeta a logística.
+      </p>
       <section
         class="archive"
         id="catalogo"
@@ -257,8 +262,43 @@
             Webs, automatización y experiencias digitales para tu negocio.
           </p>
           <button class="small-button" id="studioButton">
-            Hablemos de tu proyecto ↗
+            ¿Quieres una página web así para tu negocio? ↗
           </button>
+        </div>
+        <div class="business-benefits" aria-labelledby="benefitsTitle">
+          <p class="micro">DIGITAL SOLUTION / HECHO PARA TU MARCA</p>
+          <h3 id="benefitsTitle">TU NEGOCIO, MÁS FÁCIL DE EXPLORAR.</h3>
+          <div class="benefit-grid">
+            <article>
+              <span>01 ↗</span>
+              <h4 id="benefitTitle1">Tu catálogo, siempre a mano</h4>
+              <p id="benefitText1">
+                Comparte un enlace con tus fotos, precios y variantes ordenados.
+              </p>
+            </article>
+            <article>
+              <span>02 ↗</span>
+              <h4 id="benefitTitle2">Consultas más claras</h4>
+              <p id="benefitText2">
+                Recibe por WhatsApp la selección que el cliente preparó.
+              </p>
+            </article>
+            <article>
+              <span>03 ↗</span>
+              <h4 id="benefitTitle3">Actualiza sin editar código</h4>
+              <p id="benefitText3">
+                Cambia fotos, productos y frases desde tu propio panel.
+              </p>
+            </article>
+            <article>
+              <span>04 ↗</span>
+              <h4 id="benefitTitle4">Una experiencia con tu identidad</h4>
+              <p id="benefitText4">
+                Diseño para teléfono y métricas opcionales para seguir
+                mejorando.
+              </p>
+            </article>
+          </div>
         </div>
       </section>
       <section class="how framed reveal" id="como-encargar">

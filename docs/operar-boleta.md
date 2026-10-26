@@ -27,3 +27,9 @@ Busca o filtra, abre una pieza, elige variante y cantidad y añade a su selecci�
 Métricas y contactos son privados dentro del editor. El consentimiento para promociones es opcional y separado. La página no envía campañas automáticamente.
 
 No necesitas ejecutar SQL: la migración privada del editor ya se aplicó en Supabase. El catálogo anterior y sus120productos se conservaron. La contraseña administrativa puede cambiarse después en **Render → boleta-catalog → Environment → ADMIN_PASSWORD**; guarda y despliega el cambio.
+
+
+## Edición visual25/10
+Entra al editor y cierra el panel lateral con × para recorrer el catálogo. Cada tarjeta tiene Editar, Quitar publicación yUnir fotos. Quitar oculta la pieza sinborrar susdatos; se restaura desde Productos/Piezas con miniaturas.
+En escritorio arrastra una tarjeta sobre otra; en móvil pulsa Unirfotos y toca el destino. La confirmación muestra ambos productos: el destino recibe fotos y conserva precio/tallas/stock; el origen searchiva. Solo unir fotografías delmismoartículo, no variantes distintas.
+Contenido incluye losbeneficios deDigitalSolution. Fotos permitecambiar elambiente yposter sin3D; elposter no sustituye laescultura real en dispositivos compatibles. Estilo mantiene fuenteheroindependiente. SinWebGL/movimientoreducido/ahorrodatos usa imagenalternativa. No hacefaltaWebGLpara comprar.

@@ -23,3 +23,11 @@
 - [x] Contraseña soloenv y configuración Render.
 - [x] CI26testsPASS, mergePR1 y deployLIVE b13840c.
 - [x] QAAPI+browser reales, uploadStorage/borrador/publicación/historial/logout.
+
+## 25/10 Hero3D
+- [x] Backupdiseño/productos privado.
+- [x] Hero3Dprocedural real/iluminación/fallback.
+- [x] Editorvisualinline/drag/táctil/archivoreversible.
+- [x] Backtop/CTAnegocio/beneficioseditables.
+- [x] GZip/precomputedthumbs/32tests/ChromeQA.
+- [ ] PR/CI/despliegue/patchcontenidoautorizado/QAremoto.

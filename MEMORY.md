@@ -33,3 +33,15 @@ Portada subida porAPIeditor a SupabaseStorage product-images ypublicada; sesión
 ## Próximo trabajo comercial
 Cristian organiza compra real: piezas/variantes/unidades/precios/fotosQC; no marcar todo el catálogo como comprado. Llegada15/12/2026 es estimación sujeta a logística. Anticipo/cancelaciones yBCVfechado pendientes de decisionesreales. No imponer50%. Banners futuros solo cuando los pida.
 Guíaoperativa docs/operar-boleta.md. Evitar reimportarTelegram o tocardatosproductivos para tests. Mantener FastAPI/frontendvanilla ligero salvojustificación.
+
+
+## Hero3D yediciónvisual25/10/2026
+Usuario rechazó heroanterior; adjuntó Concepto02 yprompttécnico. Autorizóreal3D/luces, edicióninline/dragfusión, volverarriba yCTAnegocio+beneficios. Skillboleta y agentes usados.
+Backup remoto antes:revision11/settings6/productos120; hero «BOLETA TYPE SHI» ycopy/estudiopersonalizados. Conservar cambios; patchremoto solo hero ystudio.cta/copybeneficios. No resetearproductos/otrasfrases.
+Implementado: heroHTMLeditorial +Threev0.180.0selfhost dinámico: escultura proceduraloriginal,cintas/puntas/núcleovioleta,PBRPMREMenvlocal,rot45s/pulse4s/ligeroparallax;4drawcalls≈31kdesktop/17kmobile,DPR<=1.35mobile30fpscap. Pausahidden/offscreen, cleanup, fallbackWebP realcapture, reducedmotion/SaveData/noWebGL.
+FuenteGeorgiaeditable,logo intacto,esculturaarriba móvil/texizqdesktop. Fotoambienteoriginalgenerada conimagegen93.5KB, poster realrender46.8KB. No afirmar réplica geométrica exacta de2D niFPSdispositivoreal no medido.
+Editorpor tarjeta: Editar/Quitarpublicación(reversible)/Unirfotos. Dragdesktop→confirmación con fotos; táctilselectorvisual+buscador. Destinoconservaprecio/tallas/stock; origenarchivado/restaurable. PanelProductosthumbnails.
+CTAnegocio preguntaexplícita y4beneficioseditables. Backtop solo trasbajar. CatálogoQC/carrito/temas/guíaradio siguen.
+GZipThree720032→182069bytes(-74.7%), bundle120covers400q72 (1.69MBprivadoserverasset,noextraído),matchSHAoriginal/fallbackPIL. Benchmark24cold13msbundle vs868msPIL laboratorio.
+32/32unittestPASS. BrowserWebGLSwiftShader laboratorio: real3D,6anchos360-1440,nooverflow,scrollpause/backtop,archivar/restaurar/unirtáctil/dragcancel,copypúblico/fallbacksinWebGL/reducedmotion PASS,sinerroresJS. No writesproducto enproducción; todaspruebas mutanteslocalesaisladas.
+Rama codex/boleta-3d-visual-editor. Publicación/CI/QAremoto pendientes duranteestecheckpoint. Detalles specs/estudio-interactivo/hero-v2.md.
