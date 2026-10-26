@@ -11,7 +11,7 @@ import secrets
 import threading
 import time
 import zipfile
-from collections import defaultdict, deque
+from collections import OrderedDict, defaultdict, deque
 from datetime import datetime, timezone
 from functools import lru_cache
 from pathlib import Path
@@ -21,6 +21,7 @@ from fastapi import FastAPI, Request, Response, HTTPException, Depends, UploadFi
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.gzip import GZipMiddleware
+from starlette.concurrency import run_in_threadpool
 from PIL import Image, ImageOps, UnidentifiedImageError
 from .state import BASE, StateStore, StateUnavailable, StateConflict
 from .settings import DEFAULT_SETTINGS, ALLOWED_FONTS
@@ -33,7 +34,11 @@ EVENTS = {"page_view", "view_product", "select_variant", "add_to_selection", "wh
 @lru_cache(maxsize=256)
 def source_digest(path_string, mtime_ns, file_size):
     """Hash originals once per file revision; no image decoding on the hot path."""
-    return hashlib.sha256(Path(path_string).read_bytes()).hexdigest()
+    digest = hashlib.sha256()
+    with open(path_string, "rb") as source:
+        for block in iter(lambda: source.read(64 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
 
 
 @lru_cache(maxsize=1)
@@ -86,21 +91,92 @@ def precomputed_thumbnail(candidate, info):
         return None
 
 
-@lru_cache(maxsize=64)
+# A single decode gate is shared by thumbnail misses and uploads. Pillow may
+# need ~100 MB for one allowed 25 MP image; the default 40 ASGI worker threads
+# must never decode 40 such images concurrently on a 512 MiB Render instance.
+IMAGE_DECODE_LOCK = threading.Lock()
+THUMBNAIL_CACHE_MAX_BYTES = 8 * 1024 * 1024
+_thumbnail_cache = OrderedDict()
+_thumbnail_cache_bytes = 0
+_thumbnail_cache_lock = threading.Lock()
+
+
+def encode_image(source_input, dimensions, quality):
+    """Caller holds IMAGE_DECODE_LOCK; release all decoded buffers explicitly."""
+    with Image.open(source_input) as source:
+        if source.width * source.height > 25000000 or source.format not in {"JPEG", "PNG", "WEBP", "GIF"}:
+            raise ValueError()
+        source.seek(0)
+        # JPEG decoder subsampling happens before any load/EXIF copy. PNG/WebP
+        # still require full decoding, but only one is allowed at a time.
+        source.draft("RGB", dimensions)
+        source.thumbnail(dimensions)
+        # Resize before EXIF transpose: orientation changes preserve the bound
+        # and this avoids copying the full original just to make a thumbnail.
+        with ImageOps.exif_transpose(source) as oriented:
+            with oriented.convert("RGBA" if "A" in oriented.getbands() else "RGB") as converted:
+                with io.BytesIO() as output:
+                    converted.save(output, format="WEBP", quality=quality)
+                    return output.getvalue()
+
+
+def clear_thumbnail_cache():
+    global _thumbnail_cache_bytes
+    with _thumbnail_cache_lock:
+        _thumbnail_cache.clear()
+        _thumbnail_cache_bytes = 0
+
+
+def cached_thumbnail(key):
+    with _thumbnail_cache_lock:
+        encoded = _thumbnail_cache.get(key)
+        if encoded is not None:
+            _thumbnail_cache.move_to_end(key)
+        return encoded
+
+
 def thumbnail_bytes(path_string, mtime_ns, file_size):
-    """Bounded in-memory derived images; key invalidates when originals change."""
-    try:
-        with Image.open(path_string) as source:
-            if source.width * source.height > 25000000 or source.format not in {"JPEG", "PNG", "WEBP", "GIF"}:
-                raise ValueError()
-            source.seek(0)
-            source = ImageOps.exif_transpose(source)
-            source.thumbnail((480, 480))
-            output = io.BytesIO()
-            source.convert("RGBA" if "A" in source.getbands() else "RGB").save(output, format="WEBP", quality=75)
-            return output.getvalue()
-    except (UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError) as exc:
-        raise HTTPException(404, "Imagen no disponible.") from exc
+    """Single-flight misses, bounded by both encoded bytes and entry count."""
+    global _thumbnail_cache_bytes
+    key = (path_string, mtime_ns, file_size)
+    encoded = cached_thumbnail(key)
+    if encoded is not None:
+        return encoded
+    with IMAGE_DECODE_LOCK:
+        # Concurrent requests for the same cold image reuse the first result.
+        encoded = cached_thumbnail(key)
+        if encoded is not None:
+            return encoded
+        try:
+            encoded = encode_image(path_string, (480, 480), 75)
+        except (UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError) as exc:
+            raise HTTPException(404, "Imagen no disponible.") from exc
+        with _thumbnail_cache_lock:
+            if len(encoded) <= THUMBNAIL_CACHE_MAX_BYTES:
+                _thumbnail_cache[key] = encoded
+                _thumbnail_cache_bytes += len(encoded)
+                while len(_thumbnail_cache) > 64 or _thumbnail_cache_bytes > THUMBNAIL_CACHE_MAX_BYTES:
+                    _, evicted = _thumbnail_cache.popitem(last=False)
+                    _thumbnail_cache_bytes -= len(evicted)
+        return encoded
+
+
+# Keep the established cache reset hook for isolated tests/maintenance.
+thumbnail_bytes.cache_clear = clear_thumbnail_cache
+
+
+def encode_upload(file_object):
+    # UploadFile has already spooled large multipart bodies to disk. Wait for the
+    # shared decode slot BEFORE reading it, avoiding N concurrent 10 MB buffers.
+    with IMAGE_DECODE_LOCK:
+        contents = file_object.read(10 * 1024 * 1024 + 1)
+        if not contents or len(contents) > 10 * 1024 * 1024:
+            raise HTTPException(413, "La imagen debe pesar menos de 10 MB.")
+        try:
+            with io.BytesIO(contents) as source:
+                return encode_image(source, (2000, 2000), 85)
+        except (UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError) as exc:
+            raise HTTPException(422, "Archivo de imagen inválido.") from exc
 
 
 def now():
@@ -211,7 +287,7 @@ def normalize_product(data, existing=None):
     if not isinstance(data, dict) or len(json.dumps(data)) > 100000:
         raise HTTPException(422, "Producto inválido.")
     p = copy.deepcopy(existing or {})
-    allowed = {"id", "title", "name", "category", "brand", "numeric_usd", "price", "numeric_bcv", "price_usd", "price_bcv", "image", "image_url", "thumb", "gallery", "sizes", "variants", "material", "description", "tag", "status", "is_purchased", "in_stock", "available", "logistics_status", "quantity", "code"}
+    allowed = {"id", "title", "name", "category", "brand", "numeric_usd", "price", "numeric_bcv", "price_usd", "price_bcv", "image", "image_url", "thumb", "gallery", "sizes", "variants", "material", "description", "tag", "status", "is_purchased", "in_stock", "available", "logistics_status", "quantity", "code", "sold_out"}
     if set(data) - allowed:
         raise HTTPException(422, "Campo de producto desconocido.")
     p.update(data)
@@ -269,6 +345,9 @@ def normalize_product(data, existing=None):
     p["is_purchased"] = data.get("is_purchased", p.get("is_purchased", False))
     if not isinstance(p["available"], bool) or not isinstance(p["is_purchased"], bool):
         raise HTTPException(422, "Estado inválido.")
+    p["sold_out"] = data.get("sold_out", p.get("sold_out", False))
+    if not isinstance(p["sold_out"], bool):
+        raise HTTPException(422, "Estado agotado inválido.")
     p["in_stock"] = p["available"]
     p["status"] = p.get("status", "aprobado")
     if not isinstance(p["status"], str) or p["status"] not in {"aprobado", "descartado", "borrador"}:
@@ -530,7 +609,7 @@ def create_app(store=None):
                     result[key] = json.loads(result[key])
                 except ValueError:
                     result[key] = [v.strip() for v in result[key].split(",") if v.strip()]
-        for key in ("available", "in_stock", "is_purchased"):
+        for key in ("available", "in_stock", "is_purchased", "sold_out"):
             if key in result:
                 if result[key].lower() not in {"true", "false"}:
                     raise HTTPException(422, "Estado inválido.")
@@ -589,21 +668,9 @@ def create_app(store=None):
         return repository().mutate(change)
 
     async def save_image(file):
-        contents = await file.read(10 * 1024 * 1024 + 1)
-        if not contents or len(contents) > 10 * 1024 * 1024:
-            raise HTTPException(413, "La imagen debe pesar menos de 10 MB.")
-        try:
-            with Image.open(io.BytesIO(contents)) as image:
-                if image.width * image.height > 25000000 or image.format not in {"JPEG", "PNG", "WEBP", "GIF"}:
-                    raise ValueError()
-                image.seek(0)
-                image.thumbnail((2000, 2000))
-                converted = image.convert("RGBA" if "A" in image.getbands() else "RGB")
-                stream = io.BytesIO()
-                converted.save(stream, "WEBP", quality=85)
-                contents = stream.getvalue()
-        except (UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError):
-            raise HTTPException(422, "Archivo de imagen inválido.")
+        # Pillow and file reads run in the worker pool; the shared gate bounds
+        # memory without blocking the event loop or changing durable storage.
+        contents = await run_in_threadpool(encode_upload, file.file)
         name = secrets.token_hex(20) + ".webp"
         repo = repository()
         # Confirm durable state is available before accepting a media write.

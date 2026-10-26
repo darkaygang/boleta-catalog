@@ -40,9 +40,10 @@ export function writeLocal(key, value) {
   }
 }
 export async function api(path, options = {}) {
+  const { requireLive = false, ...requestOptions } = options;
   const res = await fetch(path, {
     credentials: "same-origin",
-    ...options,
+    ...requestOptions,
     headers: {
       ...(options.body && !(options.body instanceof FormData)
         ? { "Content-Type": "application/json" }
@@ -61,6 +62,10 @@ export async function api(path, options = {}) {
       typeof data.detail === "string"
         ? data.detail
         : "No pudimos completar la operación. Intenta de nuevo.",
+    );
+  if (requireLive && res.headers.get("X-Boleta-Data-Status") !== "live")
+    throw new Error(
+      "No pudimos verificar la disponibilidad actual. Intenta nuevamente.",
     );
   return data;
 }
@@ -511,13 +516,16 @@ export function renderProducts() {
     list.sort((a, b) =>
       (a.title || a.name || "").localeCompare(b.title || b.name || ""),
     );
+  list.sort(
+    (a, b) => Number(a.sold_out === true) - Number(b.sold_out === true),
+  );
   $("productCount").textContent = `${list.length} piezas en el archivo`;
   $("productGrid").innerHTML = list.length
     ? list
         .slice(0, state.limit)
         .map(
           (p, i) =>
-            `<article class="product-card" data-id="${esc(p.id)}"><button class="product-open" data-open="${esc(p.id)}" aria-label="Ver ${esc(p.title || p.name)}"><div class="product-photo"><img src="${esc(thumbnail(p))}" alt="${esc(p.title || p.name)}" width="400" height="450" loading="lazy" decoding="async"><span class="product-index">${String(i + 1).padStart(2, "0")} / ${esc(p.code || p.id)}</span><span class="card-arrow" aria-hidden="true">↗</span></div><div class="product-info"><p class="micro">${esc(categoryOf(p))} / ${esc(p.brand || "BOLETA")}</p><h3>${esc(p.title || p.name)}</h3><span class="price">${esc(priceLabel(p))}</span></div></button>${state.editor ? `<button class="product-edit-button" data-edit="${esc(p.id)}">✎ Editar esta pieza</button>` : ""}</article>`,
+            `<article class="product-card ${p.sold_out === true ? "is-sold-out" : ""}" data-id="${esc(p.id)}"><button class="product-open" data-open="${esc(p.id)}" aria-label="Ver ${esc(p.title || p.name)}"><div class="product-photo"><img src="${esc(thumbnail(p))}" alt="${esc(p.title || p.name)}" width="400" height="450" loading="lazy" decoding="async"><span class="product-index">${String(i + 1).padStart(2, "0")} / ${esc(p.code || p.id)}</span><span class="card-arrow" aria-hidden="true">↗</span>${p.sold_out === true ? '<span class="sold-out-badge">SOLD OUT</span>' : ""}</div><div class="product-info"><p class="micro">${esc(categoryOf(p))} / ${esc(p.brand || "BOLETA")}</p><h3>${esc(p.title || p.name)}</h3><span class="price">${esc(priceLabel(p))}</span></div></button>${p.sold_out === true ? '<button type="button" class="sold-out-order" disabled>Sold out · No disponible</button>' : ""}${state.editor ? `<button class="product-edit-button" data-edit="${esc(p.id)}">✎ Editar esta pieza</button>` : ""}</article>`,
         )
         .join("")
     : '<p class="empty">No hay piezas con esos filtros. Prueba otra búsqueda.</p>';
@@ -531,11 +539,17 @@ export function renderProducts() {
     )
     .join("");
 }
-export async function loadProducts() {
-  state.products = await api("/api/products");
+export async function loadProducts(requireLive = false) {
+  state.products = await api("/api/products", { requireLive });
   if (!Array.isArray(state.products))
     throw new Error("El archivo no está disponible.");
   renderProducts();
+  if (state.product) {
+    state.product =
+      state.products.find((p) => String(p.id) === String(state.product.id)) ||
+      state.product;
+    if ($("productDialog").open) renderProductDialog();
+  }
   updateCart();
 }
 $("productGrid").onclick = (e) => {
@@ -600,7 +614,7 @@ function renderProductDialog() {
           }
         : p;
   $("productContent").innerHTML =
-    `<div class="product-layout"><button class="icon-btn product-close close-dialog" aria-label="Cerrar producto">×</button><div class="product-gallery"><div class="product-main-image"><img id="detailImage" src="${esc(photos[state.image] || "/images/boleta-logo.webp")}" alt="${esc(p.title || p.name)} — foto ${state.image + 1}" width="650" height="650">${photos.length > 1 ? `<div class="gallery-controls"><button data-gallery-prev aria-label="Foto anterior">←</button><span>${state.image + 1} / ${photos.length}</span><button data-gallery-next aria-label="Foto siguiente">→</button></div>` : ""}</div><div class="gallery-thumbs">${photos.map((src, i) => `<button data-photo="${i}" class="${i === state.image ? "active" : ""}" aria-label="Ver foto ${i + 1}" aria-pressed="${i === state.image}"><img src="${esc(thumbnail(src))}" alt="" width="62" height="62" loading="lazy"></button>`).join("")}</div></div><div class="product-detail"><p class="micro">${esc(p.code || p.id)} / ${esc(p.brand || "BOLETA")}</p><h2 id="productTitle">${esc(p.title || p.name)}</h2><p class="detail-price">${esc(priceLabel(priced))}</p>${bcvPrice(priced) ? `<p class="privacy">${esc(bcvPrice(priced))}</p>` : ""}<p class="product-description">${esc(p.description || p.material || "El detalle hace la diferencia. Consulta las medidas y disponibilidad antes de encargar.")}</p><p class="field-label" id="variantLabel">Elige tu variante</p><div class="variant-pills" role="group" aria-labelledby="variantLabel">${vs.map((v) => `<button data-variant="${esc(v.id)}" class="${state.variant?.id === v.id ? "active" : ""}" aria-pressed="${state.variant?.id === v.id}" ${v.available === false || v.stock === 0 ? "disabled" : ""}>${esc(v.label)}</button>`).join("")}</div><div class="quantity-row"><span>Cantidad</span><button data-qty="-1" aria-label="Reducir cantidad">−</button><input id="detailQuantity" type="number" min="1" max="99" value="${state.quantity}" aria-label="Cantidad"><button data-qty="1" aria-label="Aumentar cantidad">+</button></div><div class="logistics-note">${esc(arrivalText())}<br>${esc(state.settings.logistics.note)}</div><button id="addSelection" class="button primary" ${!state.variant ? "disabled" : ""}>${state.variant ? "Añadir a mi selección ↗" : "Primero elige tu variante"}</button><p class="privacy">Consulta por WhatsApp antes de pagar. Añadir una pieza no confirma una reserva.</p></div></div>`;
+    `<div class="product-layout"><button class="icon-btn product-close close-dialog" aria-label="Cerrar producto">×</button><div class="product-gallery"><div class="product-main-image"><img id="detailImage" src="${esc(photos[state.image] || "/images/boleta-logo.webp")}" alt="${esc(p.title || p.name)} — foto ${state.image + 1}" width="650" height="650">${photos.length > 1 ? `<div class="gallery-controls"><button data-gallery-prev aria-label="Foto anterior">←</button><span>${state.image + 1} / ${photos.length}</span><button data-gallery-next aria-label="Foto siguiente">→</button></div>` : ""}</div><div class="gallery-thumbs">${photos.map((src, i) => `<button data-photo="${i}" class="${i === state.image ? "active" : ""}" aria-label="Ver foto ${i + 1}" aria-pressed="${i === state.image}"><img src="${esc(thumbnail(src))}" alt="" width="62" height="62" loading="lazy"></button>`).join("")}</div></div><div class="product-detail"><p class="micro">${esc(p.code || p.id)} / ${esc(p.brand || "BOLETA")}</p><h2 id="productTitle">${esc(p.title || p.name)}</h2>${p.sold_out === true ? '<p class="sold-out-detail" role="status">SOLD OUT · Esta pieza está agotada.</p>' : ""}<p class="detail-price">${esc(priceLabel(priced))}</p>${bcvPrice(priced) ? `<p class="privacy">${esc(bcvPrice(priced))}</p>` : ""}<p class="product-description">${esc(p.description || p.material || "El detalle hace la diferencia. Consulta las medidas y disponibilidad antes de encargar.")}</p><p class="field-label" id="variantLabel">Elige tu variante</p><div class="variant-pills" role="group" aria-labelledby="variantLabel">${vs.map((v) => `<button data-variant="${esc(v.id)}" class="${state.variant?.id === v.id ? "active" : ""}" aria-pressed="${state.variant?.id === v.id}" ${p.sold_out === true || v.available === false || v.stock === 0 ? "disabled" : ""}>${esc(v.label)}</button>`).join("")}</div><div class="quantity-row"><span>Cantidad</span><button data-qty="-1" aria-label="Reducir cantidad">−</button><input id="detailQuantity" type="number" min="1" max="99" value="${state.quantity}" aria-label="Cantidad"><button data-qty="1" aria-label="Aumentar cantidad">+</button></div><div class="logistics-note">${esc(arrivalText())}<br>${esc(state.settings.logistics.note)}</div><button id="addSelection" class="button primary" ${p.sold_out === true || !state.variant ? "disabled" : ""}>${p.sold_out === true ? "SOLD OUT · No disponible" : state.variant ? "Añadir a mi selección ↗" : "Primero elige tu variante"}</button><p class="privacy">Consulta por WhatsApp antes de pagar. Añadir una pieza no confirma una reserva.</p></div></div>`;
 }
 function bcvPrice(p) {
   const { bcv_rate, bcv_date } = state.settings.payment || {};
@@ -630,7 +644,7 @@ $("productContent").onclick = (e) => {
       ?.focus({ preventScroll: true });
   }
   const v = e.target.closest("[data-variant]");
-  if (v) {
+  if (v && state.product?.sold_out !== true && !v.disabled) {
     state.variant = variants(state.product).find(
       (x) => x.id === v.dataset.variant,
     );
@@ -663,6 +677,13 @@ $("productContent").onchange = (e) => {
 };
 function addToCart() {
   if (!state.product || !state.variant) return;
+  const currentProduct = state.products.find(
+    (p) => String(p.id) === String(state.product.id),
+  );
+  if (state.product.sold_out === true || currentProduct?.sold_out === true) {
+    toast("Esta pieza está sold out y no puede encargarse.");
+    return;
+  }
   const p = state.product,
     v = state.variant;
   const stock =
@@ -697,7 +718,20 @@ function addToCart() {
   closeDialog($("productDialog"));
 }
 export function updateCart() {
+  const removed = state.cart.filter((x) =>
+    state.products.some(
+      (p) => String(p.id) === String(x.id) && p.sold_out === true,
+    ),
+  ).length;
+  if (removed)
+    toast("Retiramos de tu selección las piezas que ahora están sold out.");
   state.cart = state.cart
+    .filter(
+      (x) =>
+        !state.products.some(
+          (p) => String(p.id) === String(x?.id) && p.sold_out === true,
+        ),
+    )
     .filter(
       (x) =>
         x &&
@@ -829,10 +863,15 @@ $("selectionContent").onclick = async (e) => {
     const checkoutWindow = window.open("about:blank", "_blank");
     if (checkoutWindow) checkoutWindow.opener = null;
     try {
-      await loadProducts();
+      await loadProducts(true);
     } catch {
       checkoutWindow?.close();
       toast("No pudimos verificar el catálogo actual. Intenta nuevamente.");
+      return;
+    }
+    if (!state.cart.length) {
+      checkoutWindow?.close();
+      toast("Tu selección no contiene piezas disponibles para encargar.");
       return;
     }
     const { total, pending } = selectionSummary();
