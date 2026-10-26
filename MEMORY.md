@@ -1,50 +1,15 @@
-# BOLETA · producción actualizada25/10/2026
+# BOLETA · estado operativo público
 
-## Estado actual
-Vitrina Cromada elegida por Cristian y publicada en https://boleta-catalog.onrender.com.
-Código desplegado b13840c6f5bd30135f1e985088a65191403950e4; PR1 fusionado. Render deploy dep-dbd8r315efls73aisr50 LIVE desde22:29:19UTC22/10. Los commits posteriores de documentación usan [skip render]; no requieren redeploy.
-WorkspaceRender tea-d1vr5n2li9vc73fq65bg confirmado por propietario. Servicio existente srv-db3e4b5g1s2s73a2ucfg, rama main/autodeploy, PythonFreeOregon,1instancia. No se crearon servicios ni se cambiaron planes/costos.
+## Identidad y reglas
+Catálogo editorial móvil negro/morado, mascota seria Track + Flares. Preservar fotos QC, decisiones del dueño y editor visual. No inventar autenticidad, materiales, stock, reservas, descuentos o prueba social. Llegada estimada sujeta a logística; anticipo y BCV configurables.
+FastAPI y frontend vanilla. Editor con sesión servidor/CSRF, datos durables en Supabase y publicación en Render. Nunca guardar secretos en código ni escribir un fallback local silencioso en producción. Los identificadores de infraestructura y respaldos se conservan fuera del repositorio.
 
-## Diseño y funcionamiento
-- Hero cromado con fondo originalWebP128KB +cutouts de lentes/anillo reales; debajo catálogo con fotosQC originales,120productos por carga progresiva. No inferir autenticidad/materiales desde títulos heredados.
-- Morado#60328A/negro/claro, fuente hero independiente editable, fondo/medios/textos/logoagencia editables.
-- Guía Track+Flares serio, negro/morado, tattoo único bajo ojoizquierdo, cuerpo completo contain. Tutorial y FAQ editables, no aprendizaje inventado.
-- Introcontador1→1001200ms+100ms cierre; animación editorial, no porcentaje realdedescarga; fallbackCSSy reducedmotion.
-- Encargo con variante obligatoria, cantidad, revalidación, precio pendiente/confirmado y mensajeWhatsApp. No reserva/pago automático. B2C584245314215/B2B573215885381.
-- Ruleta yplaneta retirados explícitamente. Endpointlegado410. No cuenta obligatoria ni falsa prueba social.
-- RadioSpotify7JwsCKwcOZGfaWoJu8guQn soloalclick, sin iframe/audioinicial.
-- Contactos opt-in separados, no campañasautomáticas. Métricas opt-in privadas; clic noequivale venta.
+## Diseño vigente
+Hero real 3D procedural cromado, núcleo violeta y composición editorial. Pausa fuera de pantalla, alternativa sin WebGL y respeto por movimiento reducido. Temas claro/oscuro, fuente de hero independiente, intro breve, carrito por WhatsApp, guía con FAQ, Spotify bajo demanda y bloque Digital Solution.
+Editar desde cada tarjeta; archivar es reversible. Unir fotos conserva los datos del destino y archiva el origen. No unir productos distintos. Guardar productos aplica directamente; guardar borrador/publicar diseño es independiente.
 
-## Editor y persistencia remotos verificados
-Entrada /?editor o pie Editar página. Contraseña elegida porpropietario configurada SOLOenvRenderADMIN_PASSWORD (mínimo10caracteres por solicitudexpresa), no guardada en Git ni navegador. CookieHttpOnly/Secure, CSRF, sesión8h/unproceso, login denuevo trasrestart.
-Supabase zvwcwbkkmtojvolgxbda. Migración boleta_private_visual_editor_state aplicada: tabla boleta_state yRPCcompare-swap; RLStrue ysin permisos anon/authenticated; RPCsolo service_role. Aviso INFO no-policy esperado porque tabla privada backend-only. Tabla public.products120filas y objetos existentes intactos.
-Stateadoptado120productos/revision2/settingsv2 después de verificación. Fusión conserva portada, descripción y galerías legacyimagesJSONB/seed sin duplicados. No fallbackwrite efímero. BOLETA_ALLOW_LOCAL_STORAGE=0, BOLETA_ENVproduction, BOLETA_PUBLIC_ORIGIN ySUPABASE_URL configurados, secretosprevios preservados sinleerlos.
-Portada subida porAPIeditor a SupabaseStorage product-images ypublicada; sesión nueva confirmóURLycontenido. Guardarborrador no cambiópúblico; publicación preservóhistorial; logout invalidósesión. No se crearon leads/contactos ficticios ni se enviaronmensajes.
-
-## Evidencia
--26/26unittest aisladosPASS; sintaxisapp/editorPASS.
--CI head5201f1e PASS run39864831092.
--9gruposbrowserlocalPASS.
--APIproducción16checksPASS: authcookie/privacidad/IDs/gallery/live/noFallback/uploadStorage/draft/publicación/historial/logout/persistenciafreshsession.
--BrowserpúblicoPASS:120tarjetas, variantes/carrito/WhatsAppsimulado(sinenvío), guía,tema,editorreal/fontshero/logout. Sin erroresJS/recursos inesperados ysin overflow360/390/418/430/1440.
--Un recorrido combinado de estrés120piezas+navegación editor agotó el tiempo del selector; repetido con nueva pestaña de editor completó sin errores. No afirmar rendimiento bajo cualquier carga ni ausencia absoluta de defectos.
--Backup previo120productos: work/backup-22oct/supabase-products-before.json fuera delrepo. FotosQCoriginales verificadas localmente. Entregables/evidenciavisual en outputs/ delworkspacepadre.
-
-## Próximo trabajo comercial
-Cristian organiza compra real: piezas/variantes/unidades/precios/fotosQC; no marcar todo el catálogo como comprado. Llegada15/12/2026 es estimación sujeta a logística. Anticipo/cancelaciones yBCVfechado pendientes de decisionesreales. No imponer50%. Banners futuros solo cuando los pida.
-Guíaoperativa docs/operar-boleta.md. Evitar reimportarTelegram o tocardatosproductivos para tests. Mantener FastAPI/frontendvanilla ligero salvojustificación.
-
-
-## Hero3D yediciónvisual25/10/2026
-Usuario rechazó heroanterior; adjuntó Concepto02 yprompttécnico. Autorizóreal3D/luces, edicióninline/dragfusión, volverarriba yCTAnegocio+beneficios. Skillboleta y agentes usados.
-Backup remoto antes:revision11/settings6/productos120; hero «BOLETA TYPE SHI» ycopy/estudiopersonalizados. Conservar cambios; patchremoto solo hero ystudio.cta/copybeneficios. No resetearproductos/otrasfrases.
-Implementado: heroHTMLeditorial +Threev0.180.0selfhost dinámico: escultura proceduraloriginal,cintas/puntas/núcleovioleta,PBRPMREMenvlocal,rot45s/pulse4s/ligeroparallax;4drawcalls≈31kdesktop/17kmobile,DPR<=1.35mobile30fpscap. Pausahidden/offscreen, cleanup, fallbackWebP realcapture, reducedmotion/SaveData/noWebGL.
-FuenteGeorgiaeditable,logo intacto,esculturaarriba móvil/texizqdesktop. Fotoambienteoriginalgenerada conimagegen93.5KB, poster realrender46.8KB. No afirmar réplica geométrica exacta de2D niFPSdispositivoreal no medido.
-Editorpor tarjeta: Editar/Quitarpublicación(reversible)/Unirfotos. Dragdesktop→confirmación con fotos; táctilselectorvisual+buscador. Destinoconservaprecio/tallas/stock; origenarchivado/restaurable. PanelProductosthumbnails.
-CTAnegocio preguntaexplícita y4beneficioseditables. Backtop solo trasbajar. CatálogoQC/carrito/temas/guíaradio siguen.
-GZipThree720032→182069bytes(-74.7%), bundle120covers400q72 (1.69MBprivadoserverasset,noextraído),matchSHAoriginal/fallbackPIL. Benchmark24cold13msbundle vs868msPIL laboratorio.
-32/32unittestPASS. BrowserWebGLSwiftShader laboratorio: real3D,6anchos360-1440,nooverflow,scrollpause/backtop,archivar/restaurar/unirtáctil/dragcancel,copypúblico/fallbacksinWebGL/reducedmotion PASS,sinerroresJS. No writesproducto enproducción; todaspruebas mutanteslocalesaisladas.
-Rama codex/boleta-3d-visual-editor. Publicación/CI/QAremoto pendientes duranteestecheckpoint. Detalles specs/estudio-interactivo/hero-v2.md.
-
-## ESTADO VIGENTE25/10 · Hero3Dpublicado
-PR2merged, commit1b9e1f3b5e483b2ca0f8b5286a1bbc971b0f8e31, Renderdep-dbfbnt67bikc73c261p0 LIVE26/10UTC02:34(25/10ET22:34). Settingsv8/revision13: patchúnicamentehero/CTA; otros textos/fuentes yproductos intactos. MD5productoscambiosantes/después3828009fe0b1cb812e3896a26eb7baf2,120registros. BFcachepausa/reanuda corregidoyprobado. QAproducción5gruposPASS(3D,360–1440,beneficios/backtop,carritoWA simulado,editorconfirmacionescanceladas),sinerroresJS/recursos; nofusiones/borradosreales.32unittestyCIhead d0ddc7bPASS run40259548225. Guíaoutputs/boleta-v2-entrega.md ydocs/operar-boleta.md. Lo anterior22/10escheckpoint histórico; prevalece esteestado. No nuevasmigraciones/credenciales/planes.
+## Trabajo autorizado 26/10/2026
+Sold out reversible, distinto de archivar: pieza visible, badge, encargos deshabilitados y orden al final. Carritos anteriores se revalidan; WhatsApp requiere disponibilidad consultada en vivo.
+Diagnóstico de memoria: procesamiento simultáneo de miniaturas grandes. Corrección: una conversión por proceso, reducción JPEG antes de copiar/rotar, caché con límite de bytes y hash por bloques. Laboratorio cuatro fotos: pico aproximado369→53MiB; no es una garantía bajo cualquier carga real.
+Imagen para enlaces y favicon nuevos. Composición de logo/escultura autorizada expresamente para publicación pública. Fotos nuevas van al almacenamiento externo, originales intactos; precio/medidas por confirmar.
+41 pruebasunitarias y8gruposbrowserlocalPASS. Publicación, importación de fotos y comprobación remota pendientes en este checkpoint. Guía pública: docs/operar-boleta.md. Detalles de operación y evidencias privadas se guardan localmente fuera de Git.

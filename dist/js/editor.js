@@ -252,7 +252,7 @@ async function renderPanel(tab = panelTab) {
           )
           .map(
             (x) =>
-              `<article class="admin-product-tile"><button class="admin-product-image" data-admin-product="${esc(x.id)}" aria-label="Editar ${esc(x.title || x.name)}"><img src="${esc(adminThumb(x))}" alt="${esc(x.title || x.name)}" loading="lazy" width="240" height="240"></button><strong>${esc(x.title || x.name)}</strong><p>${esc(x.code || x.id)} · ${esc(x.status || "aprobado")}</p><button class="small-button" data-admin-product="${esc(x.id)}">Editar ↗</button>${x.status !== "aprobado" ? `<button class="small-button" data-restore-product="${esc(x.id)}">Restaurar</button>` : `<button class="small-button editor-danger" data-admin-archive="${esc(x.id)}">Quitar publicación</button><button class="small-button" data-admin-merge="${esc(x.id)}">Unir fotos ↗</button>`}</article>`,
+              `<article class="admin-product-tile"><button class="admin-product-image" data-admin-product="${esc(x.id)}" aria-label="Editar ${esc(x.title || x.name)}"><img src="${esc(adminThumb(x))}" alt="${esc(x.title || x.name)}" loading="lazy" width="240" height="240"></button><strong>${esc(x.title || x.name)}</strong><p>${esc(x.code || x.id)} · ${esc(x.status || "aprobado")}</p><button class="small-button" data-admin-product="${esc(x.id)}">Editar ↗</button>${x.status !== "aprobado" ? `<button class="small-button" data-restore-product="${esc(x.id)}">Restaurar</button>` : `<button class="small-button editor-danger" data-admin-archive="${esc(x.id)}">Quitar publicación</button><button class="small-button" data-admin-merge="${esc(x.id)}">Unir fotos ↗</button><button class="small-button" data-admin-sold-out="${esc(x.id)}">${x.sold_out === true ? "Marcar disponible" : "Marcar sold out"}</button>`}</article>`,
           )
           .join("");
       };
@@ -266,6 +266,8 @@ async function renderPanel(tab = panelTab) {
         if (remove) archiveVisualProduct(remove.dataset.adminArchive);
         const merge = e.target.closest("[data-admin-merge]");
         if (merge) chooseMergeDestination(merge.dataset.adminMerge);
+        const sold = e.target.closest("[data-admin-sold-out]");
+        if (sold) toggleSoldOut(sold.dataset.adminSoldOut, sold);
         const r = e.target.closest("[data-restore-product]");
         if (r)
           try {
@@ -662,7 +664,7 @@ async function editProduct(id) {
     const d = newDialog(
       "editProductDialog",
       id ? "EDITAR PIEZA." : "NUEVA PIEZA.",
-      `<form class="admin-form" id="productAdminForm"><p class="editor-note">Al guardar se modifica el catálogo. La publicación del diseño es independiente.</p><label>Nombre<input name="title" required maxlength="160" value="${esc(p.title || p.name || "")}"></label><div class="editor-row"><label>Categoría<input name="category" required value="${esc(p.category || "Accesorios")}"></label><label>Marca<input name="brand" value="${esc(p.brand || "BOLETA")}"></label></div><label>Precio USD (vacío = por confirmar)<input name="price" type="number" min="0" step="0.01" value="${esc(p.numeric_usd ?? p.price ?? "")}"></label><label>Descripción / materiales<textarea name="description">${esc(p.description || p.material || "")}</textarea></label><label>Tallas separadas por coma (si no hay variantes detalladas)<input name="sizes" value="${esc(Array.isArray(p.sizes) ? p.sizes.join(", ") : "Única")}"></label><label>Variantes: una por línea · talla | color | existencias | precio USD<textarea name="variants" placeholder="S | Negro | 3 | 25&#10;M | Morado | 2 | 25">${esc(variantText)}</textarea><span class="micro">Deja existencias vacías si están por confirmar. No se preselecciona una variante al comprar.</span></label><label>Fotos (puedes elegir varias)<input id="productPhotos" type="file" multiple accept="image/jpeg,image/png,image/webp"></label><div class="admin-gallery" id="adminGallery"></div><label class="checkbox"><input type="checkbox" name="is_purchased" ${p.is_purchased ? "checked" : ""}><span>Comprado al proveedor</span></label><label class="checkbox"><input type="checkbox" name="in_stock" ${p.in_stock !== false ? "checked" : ""}><span>Disponible para consultar</span></label><button class="button primary" type="submit">Guardar pieza en catálogo</button>${id ? '<button type="button" class="button secondary" id="mergeProduct">Unir esta pieza con otra</button><button type="button" class="button secondary editor-danger" id="archiveProduct">Archivar pieza</button>' : ""}<p id="productSaveStatus" role="status"></p></form>`,
+      `<form class="admin-form" id="productAdminForm"><p class="editor-note">Al guardar se modifica el catálogo. La publicación del diseño es independiente.</p><label>Nombre<input name="title" required maxlength="160" value="${esc(p.title || p.name || "")}"></label><div class="editor-row"><label>Categoría<input name="category" required value="${esc(p.category || "Accesorios")}"></label><label>Marca<input name="brand" value="${esc(p.brand || "BOLETA")}"></label></div><label>Precio USD (vacío = por confirmar)<input name="price" type="number" min="0" step="0.01" value="${esc(p.numeric_usd ?? p.price ?? "")}"></label><label>Descripción / materiales<textarea name="description">${esc(p.description || p.material || "")}</textarea></label><label>Tallas separadas por coma (si no hay variantes detalladas)<input name="sizes" value="${esc(Array.isArray(p.sizes) ? p.sizes.join(", ") : "Única")}"></label><label>Variantes: una por línea · talla | color | existencias | precio USD<textarea name="variants" placeholder="S | Negro | 3 | 25&#10;M | Morado | 2 | 25">${esc(variantText)}</textarea><span class="micro">Deja existencias vacías si están por confirmar. No se preselecciona una variante al comprar.</span></label><label>Fotos (puedes elegir varias)<input id="productPhotos" type="file" multiple accept="image/jpeg,image/png,image/webp"></label><div class="admin-gallery" id="adminGallery"></div><label class="checkbox"><input type="checkbox" name="sold_out" ${p.sold_out === true ? "checked" : ""}><span>Sold out (visible, sin encargos)</span></label><label class="checkbox"><input type="checkbox" name="is_purchased" ${p.is_purchased ? "checked" : ""}><span>Comprado al proveedor</span></label><label class="checkbox"><input type="checkbox" name="in_stock" ${p.in_stock !== false ? "checked" : ""}><span>Disponible para consultar</span></label><button class="button primary" type="submit">Guardar pieza en catálogo</button>${id ? '<button type="button" class="button secondary" id="mergeProduct">Unir esta pieza con otra</button><button type="button" class="button secondary editor-danger" id="archiveProduct">Archivar pieza</button>' : ""}<p id="productSaveStatus" role="status"></p></form>`,
     );
     renderAdminGallery();
     $("productPhotos").onchange = async (e) => {
@@ -766,6 +768,7 @@ async function saveProduct(e) {
       name: f.get("title"),
       category: f.get("category"),
       brand: f.get("brand"),
+      sold_out: f.get("sold_out") === "on",
       numeric_usd: price,
       price,
       price_usd: price === null ? "Precio por confirmar" : `$${price} USD`,
@@ -819,6 +822,30 @@ async function refreshVisualProducts() {
   decorateProductCards();
   if (document.querySelector(".editor-panel") && panelTab === "products")
     await renderPanel("products");
+}
+async function toggleSoldOut(id, button) {
+  if (button) button.disabled = true;
+  try {
+    const products = await adminApi("/api/admin/products");
+    const product = products.find((p) => String(p.id) === String(id));
+    if (!product)
+      throw new Error("La pieza ya no está disponible para editar.");
+    const value = product.sold_out !== true;
+    await adminApi("/api/products/" + encodeURIComponent(id), {
+      method: "PATCH",
+      body: JSON.stringify({ sold_out: value }),
+    });
+    await refreshVisualProducts();
+    toast(
+      value
+        ? "Pieza marcada sold out. Sigue visible, sin encargos."
+        : "Pieza disponible de nuevo.",
+    );
+  } catch (error) {
+    toast(error.message);
+  } finally {
+    if (button?.isConnected) button.disabled = false;
+  }
 }
 function archiveVisualProduct(id) {
   const product =
@@ -959,7 +986,14 @@ export function decorateProductCards() {
       const hint = document.createElement("span");
       hint.className = "micro";
       hint.textContent = "Arrastra esta pieza sobre otra para unir fotos";
-      controls.append(archive, merge, hint);
+      const sold = document.createElement("button");
+      sold.type = "button";
+      sold.className = "small-button sold-out-toggle";
+      const product = state.products.find((p) => String(p.id) === String(id));
+      sold.textContent =
+        product?.sold_out === true ? "Marcar disponible" : "Marcar sold out";
+      sold.onclick = () => toggleSoldOut(id, sold);
+      controls.append(sold, archive, merge, hint);
       card.append(controls);
       card.draggable = true;
       card.addEventListener("dragstart", (event) => {

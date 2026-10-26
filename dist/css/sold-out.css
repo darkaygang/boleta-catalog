@@ -1,0 +1,39 @@
+.product-photo {
+  position: relative;
+}
+.sold-out-badge {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  padding: 8px 12px;
+  background: #171219;
+  color: #fff;
+  border: 1px solid #bca8c9;
+  font: 700 0.8rem/1.1 system-ui;
+  letter-spacing: 0.12em;
+  z-index: 2;
+}
+.is-sold-out .product-photo > img {
+  filter: saturate(0.35);
+  opacity: 0.76;
+}
+.sold-out-order {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px;
+  border: 1px solid var(--line, #777);
+  background: transparent;
+  color: var(--muted, #777);
+  font: 600 0.8rem system-ui;
+  cursor: not-allowed;
+}
+.sold-out-detail {
+  padding: 12px;
+  border: 1px solid var(--line, #777);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.sold-out-toggle {
+  min-height: 44px;
+}

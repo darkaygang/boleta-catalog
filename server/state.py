@@ -35,6 +35,8 @@ class StateStore:
     @staticmethod
     def complete(document):
         """Add new editor defaults without replacing previously saved decisions."""
+        for product in document.get("products", []):
+            product.setdefault("sold_out", False)
         for mode in ("draft", "published"):
             settings = document["settings"][mode]
             for key, default in DEFAULT_SETTINGS.items():
@@ -51,6 +53,8 @@ class StateStore:
         # The approved local snapshot is read-only. Never re-import Telegram here.
         path = Path(os.environ.get("BOLETA_CATALOG_SOURCE", str(BASE / "dist" / "data" / "products.json")))
         products = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+        for product in products:
+            product.setdefault("sold_out", False)
         return {"revision": 0, "products": products, "settings": {"version": 0, "draft": copy.deepcopy(DEFAULT_SETTINGS), "published": copy.deepcopy(DEFAULT_SETTINGS), "history": []}, "leads": [], "stats": {"events": {}, "daily": {}, "totals": 0}, "spins": {}}
 
     def _connection(self):
@@ -91,6 +95,7 @@ class StateStore:
                             p["image_url"] = p["image"]
                             p["thumb"] = row.get("thumb") or p["image"]
                             p["in_stock"] = p["available"]
+                            p.setdefault("sold_out", False)
                             if row.get("description") is not None:
                                 p["material"] = row["description"]
                             elif row.get("material") is not None:

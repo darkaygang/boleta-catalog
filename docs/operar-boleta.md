@@ -33,3 +33,13 @@ No necesitas ejecutar SQL: la migración privada del editor ya se aplicó en Sup
 Entra al editor y cierra el panel lateral con × para recorrer el catálogo. Cada tarjeta tiene Editar, Quitar publicación yUnir fotos. Quitar oculta la pieza sinborrar susdatos; se restaura desde Productos/Piezas con miniaturas.
 En escritorio arrastra una tarjeta sobre otra; en móvil pulsa Unirfotos y toca el destino. La confirmación muestra ambos productos: el destino recibe fotos y conserva precio/tallas/stock; el origen searchiva. Solo unir fotografías delmismoartículo, no variantes distintas.
 Contenido incluye losbeneficios deDigitalSolution. Fotos permitecambiar elambiente yposter sin3D; elposter no sustituye laescultura real en dispositivos compatibles. Estilo mantiene fuenteheroindependiente. SinWebGL/movimientoreducido/ahorrodatos usa imagenalternativa. No hacefaltaWebGLpara comprar.
+
+
+## Sold out (26/10)
+Entra al editor y cierra el panel con × para ver los controles sobre cada pieza. «Marcar sold out» mantiene la publicación visible, muestra SOLD OUT y deshabilita encargar. Los agotados aparecen al final de Todos. «Marcar disponible» revierte ese estado. También está la casilla Sold out dentro de Editar. «Quitar publicación» sigue siendo una acción distinta: archiva y oculta. Los cambios de producto se guardan al aplicarlos; no requieren publicar el diseño.
+
+## Enlaces compartidos
+El favicon del navegador y la imagen para WhatsApp/Telegram son elementos distintos. Se incluyen iconos y una imagen OG JPG1200×630 en el HTML inicial. Las aplicaciones pueden mantener una vista previa anterior en su caché; esto no implica que la nueva imagen haya fallado.
+
+## Imágenes y memoria
+Las fotos nuevas se guardan en Supabase Storage, con WebP de hasta1600px y una miniatura separada. Se conservan los originales del propietario. El servidor limita las conversiones simultáneas; no aumentar workers en una instancia pequeña sin medir la memoria, porque el límite es por proceso. Benchmark reproducible: python scripts/benchmark_image_memory.py (laboratorio aislado).
