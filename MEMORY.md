@@ -30,3 +30,8 @@ EditorContenido permiteactualizartasas/fechas/modo/anticipo. Root mantiene Rende
 
 ## Pagos publicados y verificados26/10
 Tasas manuales del dueño BCV887.30/USDT1005 fechadas26/10 yanticipo50% activos enproducción. Se preservaron158registros deproductos yelrestodeldiseño deldueño.45testsPython+7mathJS+9gruposbrowserlocal+5checksproducciónPASS,sinerroresJS; WhatsApp interceptado sinenvío. Tarjetascompactas, detalle/carritocontasasfechadas. Ejemplo30USD→30150Bs→33.98USDrefBCV, abono15075Bs/15USDbase. Settings/FAQguardados ypublicados; tasas editables ysinactualizaciónautomática. EstadoRenderconfirmadoLIVE. Dueño eligióseguirRender; noactivarAWSniVercel. HistoriaIGyplan guardadosfueraGit paraqueelpropietariopublique; no anuncios/mensajes enviados.
+
+
+## Presentacion en dolares 26/10
+Cambio autorizado: precios principales USD y Ref. BCV tambien expresada en USD; quitar importes Bs del escaparate, carrito y mensaje WhatsApp. Matematica/tasas y productos intactos. Anticipo50% expresado en USD y equivalente de referenciaBCV. Publicacion y QA pendientes.
+

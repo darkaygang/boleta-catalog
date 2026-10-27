@@ -49,3 +49,8 @@ Las fotos nuevas se guardan en Supabase Storage, con WebP de hasta1600px y una m
 En Personalizar → Contenido → Condiciones comerciales puedes cambiar el porcentaje de anticipo, tasaBCV, tasaUSDT, fecha de cada tasa y modo de conversión. Guarda borrador y publica.
 El modo «USD base × USDT; referencia USD aBCV» calcula Bs=precioUSD×tasaUSDT y la referenciaUSD aBCV=Bs/tasaBCV. Con1005y887.30,30USD son30150Bs y33.98USD de referenciaBCV. La referencia no es un cargo adicional. Las tasas son las configuradas por la tienda, con fecha; no hay actualización automática.
 Anticipo50%de una cotización completa de30USD:15USDbase o15075Bs aesas tasas. Si falta algún precio o disponibilidad, el anticipo completo queda por confirmar. Los precios de variantes y las cantidades se incluyen en el cálculo. Confirma condiciones y monto final porWhatsApp antes de recibir el abono, incluido qué sucede si cambia la tasa del saldo.
+
+
+## Precios visibles en dolares
+El catalogo muestra precio USD y Ref. BCV en USD, sin importes Bs en las tarjetas, detalle, carrito o mensaje de encargo. Ejemplo: $30,00 USD y Ref. BCV: $33,98 USD con las tasas configuradas el26/10. La referencia no se suma al precio base. Anticipo y saldo muestran las mismas dos alternativas. El editor conserva las tasas para actualizar el calculo.
+

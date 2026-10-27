@@ -23,7 +23,7 @@ test("USD30 uses exact USDT/BCV ratio, with 50 percent deposit", () => {
   assert.equal(q.balanceBaseUsd, 15);
   assert.notEqual(q.referenceBcvUsd, 36);
   assert.notEqual(q.referenceBcvUsd, 35);
-  assert.match(quoteConversion(q), /Referencia a BCV/);
+  assert.match(quoteConversion(q), /Ref\. BCV: \$33,98 USD/);
   assert.match(quoteRates(q), /2026-10-26/);
 });
 test("quantity and variant totals calculate from their actual base", () => {
@@ -74,3 +74,10 @@ test("odd cents allocate the balance by subtraction without inventing a cent", (
     q.baseUsd,
   );
 });
+
+test("customer reference is in dollars without bolivar amounts", () => {
+  const text = quoteConversion(quotePayment(30, payment));
+  assert.equal(text, "Ref. BCV: $33,98 USD");
+  assert.doesNotMatch(text, /Bs|30150/);
+});
+

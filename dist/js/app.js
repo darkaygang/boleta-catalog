@@ -1,10 +1,4 @@
-import {
-  quotePayment,
-  quoteRates,
-  quoteConversion,
-  moneyBs,
-  moneyUsd,
-} from "./payments.js";
+import { quotePayment, quoteConversion, moneyUsd } from "./payments.js";
 // BOLETA: small vanilla modules, no third-party code before a visitor asks for it.
 export const $ = (id) => document.getElementById(id);
 export const esc = (value) =>
@@ -632,28 +626,11 @@ function renderProductDialog() {
 }
 function primaryPrice(p) {
   const quote = quotePayment(priceNumber(p), state.settings.payment || {});
-  return quote?.bs !== null && quote?.bs !== undefined
-    ? moneyBs(quote.bs)
-    : priceLabel(p);
+  return quote ? moneyUsd(quote.baseUsd) : priceLabel(p);
 }
 function bcvPrice(p, compact = false) {
   const quote = quotePayment(priceNumber(p), state.settings.payment || {});
-  if (compact && quote?.bs !== null && quote?.bs !== undefined) {
-    return (
-      moneyUsd(quote.baseUsd) +
-      " base" +
-      (quote.referenceBcvUsd !== null
-        ? " · Referencia a BCV: " + moneyUsd(quote.referenceBcvUsd) + " ref."
-        : "")
-    );
-  }
-  return quoteConversion(quote)
-    ? moneyUsd(quote.baseUsd) +
-        " base · " +
-        quoteConversion(quote) +
-        ". " +
-        quoteRates(quote)
-    : "";
+  return quoteConversion(quote);
 }
 function detailPaymentText() {
   const p = state.product;
@@ -816,11 +793,8 @@ function paymentText(total, pending) {
   if (!quote) return "Precio, anticipo y saldo por confirmar.";
   let result =
     (pending ? "Subtotal conocido: " : "Total: ") +
-    (quoteConversion(quote) || moneyUsd(quote.baseUsd) + " base") +
-    ". Base: " +
     moneyUsd(quote.baseUsd) +
-    ". " +
-    quoteRates(quote) +
+    (quoteConversion(quote) ? " · " + quoteConversion(quote) : "") +
     ".";
   if (pending)
     return (
@@ -828,11 +802,22 @@ function paymentText(total, pending) {
       " Faltan precios o disponibilidad: el anticipo y saldo se confirman con la cotización completa."
     );
   if (quote.depositPercent !== null) {
-    result += ` Anticipo ${quote.depositPercent}%: ${quote.depositBs !== null ? moneyBs(quote.depositBs) + " / " : ""}${moneyUsd(quote.depositBaseUsd)} base. Saldo de referencia: ${quote.balanceBs !== null ? moneyBs(quote.balanceBs) + " / " : ""}${moneyUsd(quote.balanceBaseUsd)} base.`;
+    const depositRef =
+      quote.referenceBcvUsd !== null
+        ? " · Ref. BCV: " + moneyUsd(quote.depositBs / quote.bcvRate)
+        : "";
+    const balanceRef =
+      quote.referenceBcvUsd !== null
+        ? " · Ref. BCV: " + moneyUsd(quote.balanceBs / quote.bcvRate)
+        : "";
+    result += ` Anticipo ${quote.depositPercent}%: ${moneyUsd(quote.depositBaseUsd)}${depositRef}. Saldo: ${moneyUsd(quote.balanceBaseUsd)}${balanceRef}.`;
   }
+  if (quote.bcvDate)
+    result +=
+      " Referencia calculada con tasas configuradas al " + quote.bcvDate + ".";
   return (
     result +
-    " El saldo en bolívares se confirma en la cotización si cambian las tasas. Confirma las condiciones antes de pagar."
+    " Confirma la cotización y las condiciones antes de pagar; la referencia puede cambiar si cambian las tasas."
   );
 }
 function selectionSummary() {
@@ -1310,3 +1295,4 @@ document.querySelectorAll("[data-nav-category]").forEach((a) =>
     renderProducts();
   }),
 );
+
