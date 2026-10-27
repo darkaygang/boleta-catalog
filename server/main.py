@@ -443,6 +443,9 @@ def create_app(store=None):
             return JSONResponse({"detail": "Tamaño inválido."}, status_code=400)
         response = await call_next(request)
         response.headers.update({"X-Content-Type-Options": "nosniff", "X-Frame-Options": "DENY", "Referrer-Policy": "strict-origin-when-cross-origin", "Permissions-Policy": "geolocation=(), microphone=(), camera=()", "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self'; frame-src https://open.spotify.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'"})
+        if request.url.path == "/" or request.url.path.endswith((".html", ".js", ".css")):
+            # Revalidate release code so returning mobile browsers receive updates.
+            response.headers["Cache-Control"] = "no-cache"
         if request.url.path.startswith("/api/") and request.url.path != "/api/thumbnail":
             response.headers["Cache-Control"] = "no-store"
         return response
@@ -807,3 +810,4 @@ def create_app(store=None):
 
 
 app = create_app()
+

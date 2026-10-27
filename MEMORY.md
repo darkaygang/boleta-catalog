@@ -36,3 +36,8 @@ Tasas manuales del dueño BCV887.30/USDT1005 fechadas26/10 yanticipo50% activos 
 Cambio autorizado: precios principales USD y Ref. BCV tambien expresada en USD; quitar importes Bs del escaparate, carrito y mensaje WhatsApp. Matematica/tasas y productos intactos. Anticipo50% expresado en USD y equivalente de referenciaBCV. Publicado en Render y verificado: 45 pruebas Python, 8 JS y 6 comprobaciones de navegador en produccion sin erroresJS; tarjeta, detalle, variante, anticipo, carrito y mensajeWhatsApp interceptado sin envio. Productos158 preservados. Modo de referencia usdt_to_bcv restaurado con tasas existentes del propietario.
 
 
+
+
+## Iconos iPhone 27/10
+Correccion autorizada: flechas yasterisco deinterfaz como SVGinline currentColor, bolsa real en carrito; indicadores decorativos sin dependencia de emojisApple. Flechas de texto dinamico con selector de presentacion textual. HTML/JS/CSS revalidan cache para evitar versiones antiguas. Productos/tasas/editor intactos. QA ypublicacion pendientes.
+
