@@ -39,5 +39,6 @@ Cambio autorizado: precios principales USD y Ref. BCV tambien expresada en USD; 
 
 
 ## Iconos iPhone 27/10
-Correccion autorizada: flechas yasterisco deinterfaz como SVGinline currentColor, bolsa real en carrito; indicadores decorativos sin dependencia de emojisApple. Flechas de texto dinamico con selector de presentacion textual. HTML/JS/CSS revalidan cache para evitar versiones antiguas. Productos/tasas/editor intactos. QA ypublicacion pendientes.
+Correccion autorizada: flechas yasterisco deinterfaz como SVGinline currentColor, bolsa real en carrito; indicadores decorativos sin dependencia de emojisApple. Flechas de texto dinamico con selector de presentacion textual. HTML/JS/CSS revalidan cache para evitar versiones antiguas. Productos/tasas/editor intactos. Publicado yverificado enRender: 45testsPython, CI y6checks navegador movil enproduccion aprobados sinerroresJS, SVG presentes yCache-Control no-cache enHTML/JS/CSS. PreciosUSD/refBCV ycarrito verificados; WhatsApp interceptado sinenvio. No seprobo iPhonefisico.
+
 
