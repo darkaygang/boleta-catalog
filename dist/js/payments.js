@@ -57,7 +57,7 @@ export function quotePayment(base, payment = {}, pending = false) {
 export const moneyBs = (n) =>
   `Bs. ${Number(n).toLocaleString("es-VE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 export const moneyUsd = (n) =>
-  `USD ${Number(n).toLocaleString("es-VE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  `$${Number(n).toLocaleString("es-VE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`;
 export function quoteRates(quote) {
   if (!quote) return "";
   const parts = [];
@@ -70,13 +70,10 @@ export function quoteRates(quote) {
   return parts.join(". ");
 }
 export function quoteConversion(quote) {
-  if (!quote || quote.bs === null) return "";
-  return (
-    moneyBs(quote.bs) +
-    (quote.referenceBcvUsd !== null
-      ? ` · Referencia a BCV: ${moneyUsd(quote.referenceBcvUsd)} (no es otro precio en dólares)`
-      : quote.mode === "usdt_to_bcv"
-        ? " · Referencia BCV pendiente de tasa fechada"
-        : " · Conversión a BCV")
-  );
+  if (!quote) return "";
+  if (quote.referenceBcvUsd !== null)
+    return `Ref. BCV: ${moneyUsd(quote.referenceBcvUsd)}`;
+  if (quote.mode === "usdt_to_bcv") return "Ref. BCV por confirmar";
+  return quote.bcvRate !== null ? `Ref. BCV: ${moneyUsd(quote.baseUsd)}` : "";
 }
+
