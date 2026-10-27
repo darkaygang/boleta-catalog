@@ -33,5 +33,6 @@ Tasas manuales del dueño BCV887.30/USDT1005 fechadas26/10 yanticipo50% activos 
 
 
 ## Presentacion en dolares 26/10
-Cambio autorizado: precios principales USD y Ref. BCV tambien expresada en USD; quitar importes Bs del escaparate, carrito y mensaje WhatsApp. Matematica/tasas y productos intactos. Anticipo50% expresado en USD y equivalente de referenciaBCV. Publicacion y QA pendientes.
+Cambio autorizado: precios principales USD y Ref. BCV tambien expresada en USD; quitar importes Bs del escaparate, carrito y mensaje WhatsApp. Matematica/tasas y productos intactos. Anticipo50% expresado en USD y equivalente de referenciaBCV. Publicado en Render y verificado: 45 pruebas Python, 8 JS y 6 comprobaciones de navegador en produccion sin erroresJS; tarjeta, detalle, variante, anticipo, carrito y mensajeWhatsApp interceptado sin envio. Productos158 preservados. Modo de referencia usdt_to_bcv restaurado con tasas existentes del propietario.
+
 
