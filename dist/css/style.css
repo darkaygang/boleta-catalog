@@ -3148,3 +3148,28 @@ html[data-theme="light"] {
     transition: none;
   }
 }
+
+/* Draw interface symbols instead of delegating them to Apple Color Emoji. */
+.ui-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex: none;
+  vertical-align: -0.125em;
+  overflow: visible;
+}
+.card-arrow .ui-icon,
+.bag .ui-icon {
+  width: 23px;
+  height: 23px;
+}
+.archive-mark .ui-icon {
+  width: 1em;
+  height: 1em;
+}
+button,
+a,
+.archive-mark {
+  font-variant-emoji: text;
+}
+
