@@ -24,7 +24,7 @@ DEFAULT_SETTINGS = {
     "radio": {"playlist_url": "https://open.spotify.com/playlist/7JwsCKwcOZGfaWoJu8guQn"},
     "studio": {"title": "TU NEGOCIO. OTRA DIMENSIÓN.", "description": "Webs, automatización y experiencias digitales por Digital Solution.", "cta": "¿Quieres una página web así para tu negocio?", "url": "https://digital-solution-page.vercel.app", "logo": "/images/digital-solution-logo.webp"},
     "faq": [{"question": "¿Cómo encargar?", "answer": "Arma tu selección y consulta disponibilidad y condiciones por WhatsApp."}, {"question": "¿Cuándo llega?", "answer": "Llegada estimada el 15 de diciembre, sujeta a logística."}, {"question": "¿Cómo elijo mi talla?", "answer": "Consulta las medidas y confírmalas por WhatsApp antes de encargar."}],
-    "payment": {"deposit_percent": None, "bcv_rate": None, "bcv_date": ""},
+    "payment": {"deposit_percent": None, "bcv_rate": None, "bcv_date": "", "usdt_rate": None, "usdt_date": "", "conversion_mode": "bcv"},
     "rewards": {"enabled": False, "terms": "", "prizes": []},
 }
 ALLOWED_FONTS = {"Arial", "Arial Black", "Helvetica", "Georgia", "Courier New", "Impact", "Verdana", "Trebuchet MS", "system-ui", "Manrope", "DM Mono", "Barlow Condensed"}
