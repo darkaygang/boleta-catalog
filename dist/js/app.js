@@ -1,3 +1,10 @@
+import {
+  quotePayment,
+  quoteRates,
+  quoteConversion,
+  moneyBs,
+  moneyUsd,
+} from "./payments.js";
 // BOLETA: small vanilla modules, no third-party code before a visitor asks for it.
 export const $ = (id) => document.getElementById(id);
 export const esc = (value) =>
@@ -146,7 +153,14 @@ export const defaults = {
         "Consulta las medidas y confírmalas por WhatsApp antes de encargar.",
     },
   ],
-  payment: { deposit_percent: null, bcv_rate: null, bcv_date: "" },
+  payment: {
+    deposit_percent: null,
+    bcv_rate: null,
+    bcv_date: "",
+    usdt_rate: null,
+    usdt_date: "",
+    conversion_mode: "bcv",
+  },
   rewards: { enabled: false, terms: "", prizes: [] },
 };
 defaults.copy = {
@@ -525,7 +539,7 @@ export function renderProducts() {
         .slice(0, state.limit)
         .map(
           (p, i) =>
-            `<article class="product-card ${p.sold_out === true ? "is-sold-out" : ""}" data-id="${esc(p.id)}"><button class="product-open" data-open="${esc(p.id)}" aria-label="Ver ${esc(p.title || p.name)}"><div class="product-photo"><img src="${esc(thumbnail(p))}" alt="${esc(p.title || p.name)}" width="400" height="450" loading="lazy" decoding="async"><span class="product-index">${String(i + 1).padStart(2, "0")} / ${esc(p.code || p.id)}</span><span class="card-arrow" aria-hidden="true">↗</span>${p.sold_out === true ? '<span class="sold-out-badge">SOLD OUT</span>' : ""}</div><div class="product-info"><p class="micro">${esc(categoryOf(p))} / ${esc(p.brand || "BOLETA")}</p><h3>${esc(p.title || p.name)}</h3><span class="price">${esc(priceLabel(p))}</span></div></button>${p.sold_out === true ? '<button type="button" class="sold-out-order" disabled>Sold out · No disponible</button>' : ""}${state.editor ? `<button class="product-edit-button" data-edit="${esc(p.id)}">✎ Editar esta pieza</button>` : ""}</article>`,
+            `<article class="product-card ${p.sold_out === true ? "is-sold-out" : ""}" data-id="${esc(p.id)}"><button class="product-open" data-open="${esc(p.id)}" aria-label="Ver ${esc(p.title || p.name)}"><div class="product-photo"><img src="${esc(thumbnail(p))}" alt="${esc(p.title || p.name)}" width="400" height="450" loading="lazy" decoding="async"><span class="product-index">${String(i + 1).padStart(2, "0")} / ${esc(p.code || p.id)}</span><span class="card-arrow" aria-hidden="true">↗</span>${p.sold_out === true ? '<span class="sold-out-badge">SOLD OUT</span>' : ""}</div><div class="product-info"><p class="micro">${esc(categoryOf(p))} / ${esc(p.brand || "BOLETA")}</p><h3>${esc(p.title || p.name)}</h3><span class="price">${esc(primaryPrice(p))}</span>${bcvPrice(p) ? `<p class="privacy price-exchange">${esc(bcvPrice(p, true))}</p>` : ""}</div></button>${p.sold_out === true ? '<button type="button" class="sold-out-order" disabled>Sold out · No disponible</button>' : ""}${state.editor ? `<button class="product-edit-button" data-edit="${esc(p.id)}">✎ Editar esta pieza</button>` : ""}</article>`,
         )
         .join("")
     : '<p class="empty">No hay piezas con esos filtros. Prueba otra búsqueda.</p>';
@@ -614,15 +628,44 @@ function renderProductDialog() {
           }
         : p;
   $("productContent").innerHTML =
-    `<div class="product-layout"><button class="icon-btn product-close close-dialog" aria-label="Cerrar producto">×</button><div class="product-gallery"><div class="product-main-image"><img id="detailImage" src="${esc(photos[state.image] || "/images/boleta-logo.webp")}" alt="${esc(p.title || p.name)} — foto ${state.image + 1}" width="650" height="650">${photos.length > 1 ? `<div class="gallery-controls"><button data-gallery-prev aria-label="Foto anterior">←</button><span>${state.image + 1} / ${photos.length}</span><button data-gallery-next aria-label="Foto siguiente">→</button></div>` : ""}</div><div class="gallery-thumbs">${photos.map((src, i) => `<button data-photo="${i}" class="${i === state.image ? "active" : ""}" aria-label="Ver foto ${i + 1}" aria-pressed="${i === state.image}"><img src="${esc(thumbnail(src))}" alt="" width="62" height="62" loading="lazy"></button>`).join("")}</div></div><div class="product-detail"><p class="micro">${esc(p.code || p.id)} / ${esc(p.brand || "BOLETA")}</p><h2 id="productTitle">${esc(p.title || p.name)}</h2>${p.sold_out === true ? '<p class="sold-out-detail" role="status">SOLD OUT · Esta pieza está agotada.</p>' : ""}<p class="detail-price">${esc(priceLabel(priced))}</p>${bcvPrice(priced) ? `<p class="privacy">${esc(bcvPrice(priced))}</p>` : ""}<p class="product-description">${esc(p.description || p.material || "El detalle hace la diferencia. Consulta las medidas y disponibilidad antes de encargar.")}</p><p class="field-label" id="variantLabel">Elige tu variante</p><div class="variant-pills" role="group" aria-labelledby="variantLabel">${vs.map((v) => `<button data-variant="${esc(v.id)}" class="${state.variant?.id === v.id ? "active" : ""}" aria-pressed="${state.variant?.id === v.id}" ${p.sold_out === true || v.available === false || v.stock === 0 ? "disabled" : ""}>${esc(v.label)}</button>`).join("")}</div><div class="quantity-row"><span>Cantidad</span><button data-qty="-1" aria-label="Reducir cantidad">−</button><input id="detailQuantity" type="number" min="1" max="99" value="${state.quantity}" aria-label="Cantidad"><button data-qty="1" aria-label="Aumentar cantidad">+</button></div><div class="logistics-note">${esc(arrivalText())}<br>${esc(state.settings.logistics.note)}</div><button id="addSelection" class="button primary" ${p.sold_out === true || !state.variant ? "disabled" : ""}>${p.sold_out === true ? "SOLD OUT · No disponible" : state.variant ? "Añadir a mi selección ↗" : "Primero elige tu variante"}</button><p class="privacy">Consulta por WhatsApp antes de pagar. Añadir una pieza no confirma una reserva.</p></div></div>`;
+    `<div class="product-layout"><button class="icon-btn product-close close-dialog" aria-label="Cerrar producto">×</button><div class="product-gallery"><div class="product-main-image"><img id="detailImage" src="${esc(photos[state.image] || "/images/boleta-logo.webp")}" alt="${esc(p.title || p.name)} — foto ${state.image + 1}" width="650" height="650">${photos.length > 1 ? `<div class="gallery-controls"><button data-gallery-prev aria-label="Foto anterior">←</button><span>${state.image + 1} / ${photos.length}</span><button data-gallery-next aria-label="Foto siguiente">→</button></div>` : ""}</div><div class="gallery-thumbs">${photos.map((src, i) => `<button data-photo="${i}" class="${i === state.image ? "active" : ""}" aria-label="Ver foto ${i + 1}" aria-pressed="${i === state.image}"><img src="${esc(thumbnail(src))}" alt="" width="62" height="62" loading="lazy"></button>`).join("")}</div></div><div class="product-detail"><p class="micro">${esc(p.code || p.id)} / ${esc(p.brand || "BOLETA")}</p><h2 id="productTitle">${esc(p.title || p.name)}</h2>${p.sold_out === true ? '<p class="sold-out-detail" role="status">SOLD OUT · Esta pieza está agotada.</p>' : ""}<p class="detail-price">${esc(primaryPrice(priced))}</p>${bcvPrice(priced) ? `<p class="privacy">${esc(bcvPrice(priced, false))}</p>` : ""}<p class="product-description">${esc(p.description || p.material || "El detalle hace la diferencia. Consulta las medidas y disponibilidad antes de encargar.")}</p><p class="field-label" id="variantLabel">Elige tu variante</p><div class="variant-pills" role="group" aria-labelledby="variantLabel">${vs.map((v) => `<button data-variant="${esc(v.id)}" class="${state.variant?.id === v.id ? "active" : ""}" aria-pressed="${state.variant?.id === v.id}" ${p.sold_out === true || v.available === false || v.stock === 0 ? "disabled" : ""}>${esc(v.label)}</button>`).join("")}</div><div class="quantity-row"><span>Cantidad</span><button data-qty="-1" aria-label="Reducir cantidad">−</button><input id="detailQuantity" type="number" min="1" max="99" value="${state.quantity}" aria-label="Cantidad"><button data-qty="1" aria-label="Aumentar cantidad">+</button></div><p id="detailPaymentSummary" class="privacy">${esc(detailPaymentText())}</p><div class="logistics-note">${esc(arrivalText())}<br>${esc(state.settings.logistics.note)}</div><button id="addSelection" class="button primary" ${p.sold_out === true || !state.variant ? "disabled" : ""}>${p.sold_out === true ? "SOLD OUT · No disponible" : state.variant ? "Añadir a mi selección ↗" : "Primero elige tu variante"}</button><p class="privacy">Consulta por WhatsApp antes de pagar. Añadir una pieza no confirma una reserva.</p></div></div>`;
 }
-function bcvPrice(p) {
-  const { bcv_rate, bcv_date } = state.settings.payment || {};
-  return priceNumber(p) &&
-    Number(bcv_rate) > 0 &&
-    /^\d{4}-\d{2}-\d{2}$/.test(bcv_date || "")
-    ? `Bs. ${(priceNumber(p) * Number(bcv_rate)).toLocaleString("es-VE", { maximumFractionDigits: 2 })} · tasa ${dateLabel(bcv_date)}`
+function primaryPrice(p) {
+  const quote = quotePayment(priceNumber(p), state.settings.payment || {});
+  return quote?.bs !== null && quote?.bs !== undefined
+    ? moneyBs(quote.bs)
+    : priceLabel(p);
+}
+function bcvPrice(p, compact = false) {
+  const quote = quotePayment(priceNumber(p), state.settings.payment || {});
+  if (compact && quote?.bs !== null && quote?.bs !== undefined) {
+    return (
+      moneyUsd(quote.baseUsd) +
+      " base" +
+      (quote.referenceBcvUsd !== null
+        ? " · Referencia a BCV: " + moneyUsd(quote.referenceBcvUsd) + " ref."
+        : "")
+    );
+  }
+  return quoteConversion(quote)
+    ? moneyUsd(quote.baseUsd) +
+        " base · " +
+        quoteConversion(quote) +
+        ". " +
+        quoteRates(quote)
     : "";
+}
+function detailPaymentText() {
+  const p = state.product;
+  if (!p || p.sold_out === true) return "";
+  if (!state.variant)
+    return "Elige una variante para calcular el total y el anticipo.";
+  const base =
+    state.variant && Number(state.variant.price) > 0
+      ? Number(state.variant.price)
+      : priceNumber(p);
+  if (base === null) return "Precio y anticipo por confirmar.";
+  return `${state.quantity} unidad(es) · ${moneyUsd(base * state.quantity)} base. ${paymentText(base * state.quantity, false)}`;
 }
 $("productContent").onclick = (e) => {
   if (
@@ -664,6 +707,8 @@ $("productContent").onclick = (e) => {
       Math.max(1, state.quantity + Number(qty.dataset.qty)),
     );
     $("detailQuantity").value = state.quantity;
+    if ($("detailPaymentSummary"))
+      $("detailPaymentSummary").textContent = detailPaymentText();
   }
   if (e.target.closest("#addSelection")) addToCart();
 };
@@ -673,7 +718,11 @@ $("productContent").onchange = (e) => {
       99,
       Math.max(1, Math.floor(Number(e.target.value) || 1)),
     );
-  if (e.target.id === "detailQuantity") e.target.value = state.quantity;
+  if (e.target.id === "detailQuantity") {
+    e.target.value = state.quantity;
+    if ($("detailPaymentSummary"))
+      $("detailPaymentSummary").textContent = detailPaymentText();
+  }
 };
 function addToCart() {
   if (!state.product || !state.variant) return;
@@ -763,37 +812,28 @@ function selectionRows() {
   });
 }
 function paymentText(total, pending) {
-  const p = state.settings.payment || {};
-  let result = "";
-  const dated =
-    Number(p.bcv_rate) > 0 && /^\d{4}-\d{2}-\d{2}$/.test(p.bcv_date || "");
-  if (dated)
-    result =
-      (pending ? "Subtotal conocido" : "Total de referencia") +
-      " en Bs. " +
-      (total * Number(p.bcv_rate)).toLocaleString("es-VE", {
-        maximumFractionDigits: 2,
-      }) +
-      " · tasa configurada " +
-      Number(p.bcv_rate) +
-      " Bs./USD del " +
-      dateLabel(p.bcv_date) +
-      ".";
-  if (Number(p.deposit_percent) > 0 && !pending)
-    result +=
-      " Anticipo configurado " +
-      Number(p.deposit_percent) +
-      "%: USD " +
-      ((total * Number(p.deposit_percent)) / 100).toFixed(2) +
-      (dated
-        ? " / Bs. " +
-          (
-            (total * Number(p.bcv_rate) * Number(p.deposit_percent)) /
-            100
-          ).toLocaleString("es-VE", { maximumFractionDigits: 2 })
-        : "") +
-      ". Confirma condiciones antes de pagar.";
-  return result;
+  const quote = quotePayment(total, state.settings.payment || {}, pending);
+  if (!quote) return "Precio, anticipo y saldo por confirmar.";
+  let result =
+    (pending ? "Subtotal conocido: " : "Total: ") +
+    (quoteConversion(quote) || moneyUsd(quote.baseUsd) + " base") +
+    ". Base: " +
+    moneyUsd(quote.baseUsd) +
+    ". " +
+    quoteRates(quote) +
+    ".";
+  if (pending)
+    return (
+      result +
+      " Faltan precios o disponibilidad: el anticipo y saldo se confirman con la cotización completa."
+    );
+  if (quote.depositPercent !== null) {
+    result += ` Anticipo ${quote.depositPercent}%: ${quote.depositBs !== null ? moneyBs(quote.depositBs) + " / " : ""}${moneyUsd(quote.depositBaseUsd)} base. Saldo de referencia: ${quote.balanceBs !== null ? moneyBs(quote.balanceBs) + " / " : ""}${moneyUsd(quote.balanceBaseUsd)} base.`;
+  }
+  return (
+    result +
+    " El saldo en bolívares se confirma en la cotización si cambian las tasas. Confirma las condiciones antes de pagar."
+  );
 }
 function selectionSummary() {
   let total = 0,
@@ -820,11 +860,11 @@ export function renderSelection() {
     ? `<div class="selection-items">${selectionRows()
         .map(
           ({ item: x, p, v }, i) =>
-            `<div class="selection-item"><img src="${esc(thumbnail(p))}" alt="" width="75" height="90"><div><h3>${esc(p?.title || p?.name || "Producto pendiente de confirmar")}</h3><p>${esc(x.variant)} · ${p ? esc(priceLabel(p)) : "Precio por confirmar"}${!v || v.available === false || v.stock === 0 || (v.stock !== undefined && v.stock !== null && x.quantity > Number(v.stock)) ? " · DISPONIBILIDAD POR CONFIRMAR" : ""}</p><div class="quantity-row"><button data-cart-qty="${i}" data-delta="-1" aria-label="Reducir cantidad">−</button><span>${x.quantity}</span><button data-cart-qty="${i}" data-delta="1" aria-label="Aumentar cantidad">+</button><button data-remove="${i}" class="selection-remove">Quitar</button></div></div></div>`,
+            `<div class="selection-item"><img src="${esc(thumbnail(p))}" alt="" width="75" height="90"><div><h3>${esc(p?.title || p?.name || "Producto pendiente de confirmar")}</h3><p>${esc(x.variant)} · ${p ? esc(priceLabel(p)) + " base" : "Precio por confirmar"}${p && bcvPrice(p) ? " · " + esc(bcvPrice(p)) : ""}${!v || v.available === false || v.stock === 0 || (v.stock !== undefined && v.stock !== null && x.quantity > Number(v.stock)) ? " · DISPONIBILIDAD POR CONFIRMAR" : ""}</p><div class="quantity-row"><button data-cart-qty="${i}" data-delta="-1" aria-label="Reducir cantidad">−</button><span>${x.quantity}</span><button data-cart-qty="${i}" data-delta="1" aria-label="Aumentar cantidad">+</button><button data-remove="${i}" class="selection-remove">Quitar</button></div></div></div>`,
         )
         .join(
           "",
-        )}</div><div class="selection-bottom"><div class="selection-total"><span>${pending ? "Subtotal conocido" : "Total de referencia"}</span><span>${total.toLocaleString("es-VE", { style: "currency", currency: "USD" })}</span></div>${pending ? "<p>Hay precios o disponibilidad por confirmar. Solicita la cotización completa.</p>" : ""}${paymentText(total, pending) ? `<p>${esc(paymentText(total, pending))}</p>` : ""}<p>${esc(arrivalText())}. ${esc(state.settings.logistics.note)} Consultar no confirma reserva ni pago.</p><button id="checkoutButton" class="button primary">Consultar por WhatsApp ↗</button></div>`
+        )}</div><div class="selection-bottom"><div class="selection-total"><span>${pending ? "Subtotal conocido" : "Total de referencia"}</span><span>${esc(primaryPrice({ numeric_usd: total }))}</span></div>${pending ? "<p>Hay precios o disponibilidad por confirmar. Solicita la cotización completa.</p>" : ""}${paymentText(total, pending) ? `<p>${esc(paymentText(total, pending))}</p>` : ""}<p>${esc(arrivalText())}. ${esc(state.settings.logistics.note)} Consultar no confirma reserva ni pago.</p><button id="checkoutButton" class="button primary">Consultar por WhatsApp ↗</button></div>`
     : '<div class="empty"><p>Tu selección empieza con una pieza.</p><button class="small-button" id="continueShopping">Explorar el archivo ↗</button></div>';
 }
 function openSelection() {
@@ -877,10 +917,10 @@ $("selectionContent").onclick = async (e) => {
     const { total, pending } = selectionSummary();
     const lines = selectionRows().map(
       ({ item: x, p, v }) =>
-        `• ${p?.code || x.id} ${p?.title || p?.name || "Producto por confirmar"} | ${x.variant} | Cantidad: ${x.quantity} | ${p ? priceLabel(p) : "por confirmar"}${!v || v.available === false || v.stock === 0 || (v.stock !== undefined && v.stock !== null && x.quantity > Number(v.stock)) ? " | DISPONIBILIDAD POR CONFIRMAR" : ""}`,
+        `• ${p?.code || x.id} ${p?.title || p?.name || "Producto por confirmar"} | ${x.variant} | Cantidad: ${x.quantity} | ${p ? priceLabel(p) + " base" : "por confirmar"}${p && bcvPrice(p) ? " | " + bcvPrice(p) : ""}${!v || v.available === false || v.stock === 0 || (v.stock !== undefined && v.stock !== null && x.quantity > Number(v.stock)) ? " | DISPONIBILIDAD POR CONFIRMAR" : ""}`,
     );
     goWhatsApp(
-      `Hola BOLETA, quiero consultar esta selección:\n\n${lines.join("\n")}\n\n${pending ? "Subtotal conocido" : "Total de referencia"}: $${total.toFixed(2)}${pending ? " + precios pendientes" : ""}.\n${arrivalText()}.\n${paymentText(total, pending)}\nPor favor confirma disponibilidad, medidas, precio final, anticipo y condiciones de entrega. Entiendo que este mensaje no confirma una reserva.`,
+      `Hola BOLETA, quiero consultar esta selección:\n\n${lines.join("\n")}\n\n${pending ? "Subtotal USD base conocido" : "Total USD base"}: $${total.toFixed(2)}${pending ? " + precios pendientes" : ""}.\n${arrivalText()}.\n${paymentText(total, pending)}\nPor favor confirma disponibilidad, medidas, precio final, anticipo y condiciones de entrega. Entiendo que este mensaje no confirma una reserva.`,
       false,
       checkoutWindow,
     );

@@ -273,12 +273,22 @@ def validate_settings(payload):
     payment = settings["payment"]
     if payment["deposit_percent"] is not None:
         number(payment["deposit_percent"], 0, 100)
-    if payment["bcv_rate"] is not None:
-        number(payment["bcv_rate"], 0.00001, 1000000)
-        try:
-            datetime.strptime(payment["bcv_date"], "%Y-%m-%d")
-        except (TypeError, ValueError):
-            raise HTTPException(422, "Indica la fecha de la tasa.")
+    if not isinstance(payment["conversion_mode"], str) or payment["conversion_mode"] not in {"bcv", "usdt_to_bcv"}:
+        raise HTTPException(422, "Selecciona un modo de conversión válido.")
+    for kind in ("bcv", "usdt"):
+        rate, date = payment[kind + "_rate"], payment[kind + "_date"]
+        if rate is not None:
+            number(rate, 0.00001, 1000000)
+        if not isinstance(date, str):
+            raise HTTPException(422, "Indica una fecha válida para cada tasa.")
+        if rate is not None or date:
+            try:
+                if datetime.strptime(date, "%Y-%m-%d").strftime("%Y-%m-%d") != date:
+                    raise ValueError()
+            except (TypeError, ValueError):
+                raise HTTPException(422, "Indica la fecha de cada tasa configurada.")
+        if payment["conversion_mode"] == "usdt_to_bcv" and rate is None:
+            raise HTTPException(422, "Configura las tasas BCV y USDT con sus fechas.")
     # Retired reward configuration is retained as historical data only.
     return settings
 
