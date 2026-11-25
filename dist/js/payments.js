@@ -72,8 +72,43 @@ export function quoteRates(quote) {
 export function quoteConversion(quote) {
   if (!quote) return "";
   if (quote.referenceBcvUsd !== null)
-    return `Ref. BCV: ${moneyUsd(quote.referenceBcvUsd)}`;
+    return `Ref. BCV: ${quote.catalogReference ? "$" + quote.referenceBcvUsd.toLocaleString("es-VE", { maximumFractionDigits: 0 }) + " USD" : moneyUsd(quote.referenceBcvUsd)}`;
   if (quote.mode === "usdt_to_bcv") return "Ref. BCV por confirmar";
   return quote.bcvRate !== null ? `Ref. BCV: ${moneyUsd(quote.baseUsd)}` : "";
+}
+
+export function catalogReference(base) {
+  const usd = positive(base);
+  return usd === null ? null : Math.ceil(cents(usd + 4));
+}
+
+export function quoteCatalogPayment(
+  base,
+  payment = {},
+  pending = false,
+  reference = catalogReference(base),
+) {
+  const quote = quotePayment(base, payment, pending);
+  if (!quote) return null;
+  const fraction =
+    quote.depositPercent === null ? null : quote.depositPercent / 100;
+  const depositReferenceUsd =
+    fraction === null ? null : cents(reference * fraction);
+  const bs = quote.bcvRate === null ? null : cents(reference * quote.bcvRate);
+  const depositBs =
+    fraction === null || bs === null ? null : cents(bs * fraction);
+  return {
+    ...quote,
+    catalogReference: true,
+    referenceBcvUsd: reference,
+    depositReferenceUsd,
+    balanceReferenceUsd:
+      depositReferenceUsd === null
+        ? null
+        : cents(reference - depositReferenceUsd),
+    bs,
+    depositBs,
+    balanceBs: depositBs === null ? null : cents(bs - depositBs),
+  };
 }
 

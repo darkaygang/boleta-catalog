@@ -81,3 +81,25 @@ test("customer reference is in dollars without bolivar amounts", () => {
   assert.doesNotMatch(text, /Bs|30150/);
 });
 
+import { catalogReference, quoteCatalogPayment } from "../dist/js/payments.js";
+test("catalog rounds the four-dollar markup per unit and sums before deposits", () => {
+  assert.equal(catalogReference(20), 24);
+  assert.equal(catalogReference(25), 29);
+  assert.equal(catalogReference(20.1), 25);
+  assert.equal(catalogReference(null), null);
+  const ref = catalogReference(20) * 2 + catalogReference(25);
+  const q = quoteCatalogPayment(65, payment, false, ref);
+  assert.equal(q.referenceBcvUsd, 77);
+  assert.equal(q.depositReferenceUsd, 38.5);
+  assert.equal(q.balanceReferenceUsd, 38.5);
+  assert.equal(q.bs, 68322.1);
+  assert.equal(
+    quoteConversion(quoteCatalogPayment(20, payment)),
+    "Ref. BCV: $24 USD",
+  );
+  assert.equal(
+    quoteCatalogPayment(20, payment, true).depositReferenceUsd,
+    null,
+  );
+});
+

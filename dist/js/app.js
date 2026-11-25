@@ -1,4 +1,9 @@
-import { quotePayment, quoteConversion, moneyUsd } from "./payments.js";
+import {
+  quoteCatalogPayment as quotePayment,
+  catalogReference,
+  quoteConversion,
+  moneyUsd,
+} from "./payments.js";
 // BOLETA: small vanilla modules, no third-party code before a visitor asks for it.
 export const $ = (id) => document.getElementById(id);
 export const esc = (value) =>
@@ -642,7 +647,7 @@ function detailPaymentText() {
       ? Number(state.variant.price)
       : priceNumber(p);
   if (base === null) return "Precio y anticipo por confirmar.";
-  return `${state.quantity} unidad(es) · ${moneyUsd(base * state.quantity)} base. ${paymentText(base * state.quantity, false)}`;
+  return `${state.quantity} unidad(es) · ${moneyUsd(base * state.quantity)} base. ${paymentText(base * state.quantity, false, catalogReference(base) * state.quantity)}`;
 }
 $("productContent").onclick = (e) => {
   if (
@@ -788,8 +793,13 @@ function selectionRows() {
     };
   });
 }
-function paymentText(total, pending) {
-  const quote = quotePayment(total, state.settings.payment || {}, pending);
+function paymentText(total, pending, reference) {
+  const quote = quotePayment(
+    total,
+    state.settings.payment || {},
+    pending,
+    reference,
+  );
   if (!quote) return "Precio, anticipo y saldo por confirmar.";
   let result =
     (pending ? "Subtotal conocido: " : "Total: ") +
@@ -804,24 +814,22 @@ function paymentText(total, pending) {
   if (quote.depositPercent !== null) {
     const depositRef =
       quote.referenceBcvUsd !== null
-        ? " · Ref. BCV: " + moneyUsd(quote.depositBs / quote.bcvRate)
+        ? " · Ref. BCV: " + moneyUsd(quote.depositReferenceUsd)
         : "";
     const balanceRef =
       quote.referenceBcvUsd !== null
-        ? " · Ref. BCV: " + moneyUsd(quote.balanceBs / quote.bcvRate)
+        ? " · Ref. BCV: " + moneyUsd(quote.balanceReferenceUsd)
         : "";
     result += ` Anticipo ${quote.depositPercent}%: ${moneyUsd(quote.depositBaseUsd)}${depositRef}. Saldo: ${moneyUsd(quote.balanceBaseUsd)}${balanceRef}.`;
   }
-  if (quote.bcvDate)
-    result +=
-      " Referencia calculada con tasas configuradas al " + quote.bcvDate + ".";
   return (
     result +
-    " Confirma la cotización y las condiciones antes de pagar; la referencia puede cambiar si cambian las tasas."
+    " Referencia por pieza: USD + $4, redondeada hacia arriba a dólares enteros. Confirma las condiciones antes de pagar."
   );
 }
 function selectionSummary() {
   let total = 0,
+    reference = 0,
     pending = false;
   for (const { item, p, v } of selectionRows()) {
     if (
@@ -835,12 +843,15 @@ function selectionSummary() {
       priceNumber(p) === null
     )
       pending = true;
-    else total += priceNumber(p) * item.quantity;
+    else {
+      total += priceNumber(p) * item.quantity;
+      reference += catalogReference(priceNumber(p)) * item.quantity;
+    }
   }
-  return { total, pending };
+  return { total, pending, reference };
 }
 export function renderSelection() {
-  const { total, pending } = selectionSummary();
+  const { total, pending, reference } = selectionSummary();
   $("selectionContent").innerHTML = state.cart.length
     ? `<div class="selection-items">${selectionRows()
         .map(
@@ -849,7 +860,7 @@ export function renderSelection() {
         )
         .join(
           "",
-        )}</div><div class="selection-bottom"><div class="selection-total"><span>${pending ? "Subtotal conocido" : "Total de referencia"}</span><span>${esc(primaryPrice({ numeric_usd: total }))}</span></div>${pending ? "<p>Hay precios o disponibilidad por confirmar. Solicita la cotización completa.</p>" : ""}${paymentText(total, pending) ? `<p>${esc(paymentText(total, pending))}</p>` : ""}<p>${esc(arrivalText())}. ${esc(state.settings.logistics.note)} Consultar no confirma reserva ni pago.</p><button id="checkoutButton" class="button primary">Consultar por WhatsApp ↗︎</button></div>`
+        )}</div><div class="selection-bottom"><div class="selection-total"><span>${pending ? "Subtotal conocido" : "Total de referencia"}</span><span>${esc(primaryPrice({ numeric_usd: total }))}</span></div>${pending ? "<p>Hay precios o disponibilidad por confirmar. Solicita la cotización completa.</p>" : ""}${paymentText(total, pending, reference) ? `<p>${esc(paymentText(total, pending, reference))}</p>` : ""}<p>${esc(arrivalText())}. ${esc(state.settings.logistics.note)} Consultar no confirma reserva ni pago.</p><button id="checkoutButton" class="button primary">Consultar por WhatsApp ↗︎</button></div>`
     : '<div class="empty"><p>Tu selección empieza con una pieza.</p><button class="small-button" id="continueShopping">Explorar el archivo ↗︎</button></div>';
 }
 function openSelection() {
@@ -899,13 +910,13 @@ $("selectionContent").onclick = async (e) => {
       toast("Tu selección no contiene piezas disponibles para encargar.");
       return;
     }
-    const { total, pending } = selectionSummary();
+    const { total, pending, reference } = selectionSummary();
     const lines = selectionRows().map(
       ({ item: x, p, v }) =>
         `• ${p?.code || x.id} ${p?.title || p?.name || "Producto por confirmar"} | ${x.variant} | Cantidad: ${x.quantity} | ${p ? priceLabel(p) + " base" : "por confirmar"}${p && bcvPrice(p) ? " | " + bcvPrice(p) : ""}${!v || v.available === false || v.stock === 0 || (v.stock !== undefined && v.stock !== null && x.quantity > Number(v.stock)) ? " | DISPONIBILIDAD POR CONFIRMAR" : ""}`,
     );
     goWhatsApp(
-      `Hola BOLETA, quiero consultar esta selección:\n\n${lines.join("\n")}\n\n${pending ? "Subtotal USD base conocido" : "Total USD base"}: $${total.toFixed(2)}${pending ? " + precios pendientes" : ""}.\n${arrivalText()}.\n${paymentText(total, pending)}\nPor favor confirma disponibilidad, medidas, precio final, anticipo y condiciones de entrega. Entiendo que este mensaje no confirma una reserva.`,
+      `Hola BOLETA, quiero consultar esta selección:\n\n${lines.join("\n")}\n\n${pending ? "Subtotal USD base conocido" : "Total USD base"}: $${total.toFixed(2)}${pending ? " + precios pendientes" : ""}.\n${arrivalText()}.\n${paymentText(total, pending, reference)}\nPor favor confirma disponibilidad, medidas, precio final, anticipo y condiciones de entrega. Entiendo que este mensaje no confirma una reserva.`,
       false,
       checkoutWindow,
     );
