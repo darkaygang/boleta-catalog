@@ -42,3 +42,8 @@ Cambio autorizado: precios principales USD y Ref. BCV tambien expresada en USD; 
 Correccion autorizada: flechas yasterisco deinterfaz como SVGinline currentColor, bolsa real en carrito; indicadores decorativos sin dependencia de emojisApple. Flechas de texto dinamico con selector de presentacion textual. HTML/JS/CSS revalidan cache para evitar versiones antiguas. Productos/tasas/editor intactos. Publicado yverificado enRender: 45testsPython, CI y6checks navegador movil enproduccion aprobados sinerroresJS, SVG presentes yCache-Control no-cache enHTML/JS/CSS. PreciosUSD/refBCV ycarrito verificados; WhatsApp interceptado sinenvio. No seprobo iPhonefisico.
 
 
+
+
+## Precios24nov
+Regla autorizada: referenciaBCV por pieza=ceil(USD+4), expresada endolares enteros. Totales suman referencia por variante ycantidad antes de calcular anticipo50%; anticipo ysaldo pueden incluir centavos. 111productos publicados conUSD valido auditados. PrecioUSD base no cambia. QA/publicacion pendientes.
+
